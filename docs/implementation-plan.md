@@ -30,9 +30,14 @@ Working rules set by Luis on 2026-11-05:
 4. **Always explain and ask.** Any conflict between decisions or open
    question is explained to Luis with the evidence, and he decides. Nothing
    is changed silently.
-5. **Close and stop.** At the end of a step: tests pass, the §7 boxes are
+5. **One branch and one PR per step.** Each step is built on its own branch
+   (`step-N-<short-name>`), committed when the step is complete (not file by
+   file), pushed, and opened as a pull request that Luis reviews and merges
+   into `main`. The agent drafts the PR description.
+6. **Close and stop.** At the end of a step: tests pass, the §7 boxes are
    ticked, `CLAUDE.md` "Current state" and the status table below are
-   updated, and the agent offers the next step without starting it.
+   updated, the PR is merged, and the agent offers the next step without
+   starting it.
 
 ## Ordering principles
 

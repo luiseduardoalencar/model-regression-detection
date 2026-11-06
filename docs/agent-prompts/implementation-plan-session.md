@@ -78,7 +78,10 @@ For each step:
    matching §7 checkboxes in `docs/planning.md`; update the status in
    `docs/implementation-plan.md` and `CLAUDE.md` "Current state".
    Documentation files are written by the agent.
-6. Stop and offer the next step; do not advance without being asked.
+6. Close the branch: the step lives on `step-N-<short-name>`; Luis commits
+   when the step is complete (not file by file), pushes and opens the PR
+   (the agent drafts its description), then reviews and merges it.
+7. Stop and offer the next step; do not advance without being asked.
 
 If implementation shows that a recorded decision does not work, **stop**,
 explain the problem, propose a change and wait for approval. Then record it

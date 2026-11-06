@@ -13,7 +13,9 @@ in [`../CLAUDE.md`](../CLAUDE.md) also apply.
   [`docs/implementation-plan.md`](docs/implementation-plan.md), with the
   working rules for each step and a status table.
 - **Current step: 1** (git + public GitHub repository, domain models,
-  offline golden validation). Progress is pushed step by step. Detail and references presented on 2026-11-05; waiting for
+  offline golden validation), on branch
+  `step-1-models-and-golden-validation`. One branch and one PR per step,
+  merged by Luis. Detail and references presented on 2026-11-05; waiting for
   Luis to approve before the first file. Approximate coverage targets are
   information only and edition 1 is kept as it is (decided 2026-11-05).
 - **Scaffold exists** (uv project, package skeleton, empty folders, golden
