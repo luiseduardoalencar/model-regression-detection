@@ -13,7 +13,9 @@ in [`../CLAUDE.md`](../CLAUDE.md) also apply.
   [`docs/implementation-plan.md`](docs/implementation-plan.md), with the
   working rules for each step and a status table.
 - **Current step: 1** (git + public GitHub repository, domain models,
-  offline golden validation). Progress is pushed step by step. Detail and references presented on 2026-11-05; waiting for
+  offline golden validation), on branch
+  `step-1-models-and-golden-validation`. One branch and one PR per step,
+  merged by Luis. Detail and references presented on 2026-11-05; waiting for
   Luis to approve before the first file. Approximate coverage targets are
   information only and edition 1 is kept as it is (decided 2026-11-05).
 - **Scaffold exists** (uv project, package skeleton, empty folders, golden
@@ -68,7 +70,9 @@ in [`../CLAUDE.md`](../CLAUDE.md) also apply.
 - **Luis types the code.** Agents never create code, test or config files
   unless Luis asks: they prepare each file's content, Luis types or copies
   it, and the agent explains the code. Documentation files are written by
-  the agent (delegated by Luis on 2026-11-05).
+  the agent (delegated by Luis on 2026-11-05). The agent may test code in a
+  scratch copy under `/tmp` (never in the repository) to verify it and to
+  compare it with what Luis typed, never as a copy-paste shortcut.
 - **Before every build step:** explain it in Portuguese (what it is in
   practice; "with it done we can X, which makes Y possible"; technologies;
   every file and why it exists) and survey the references behind that

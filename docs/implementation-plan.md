@@ -24,15 +24,23 @@ Working rules set by Luis on 2026-11-05:
 3. **Luis types the code.** The agent never creates code, test or config
    files unless Luis asks. It prepares each file's content, Luis types or
    copies it, and the agent explains the code and then reads the file to
-   check it. Documentation files (this plan, `CLAUDE.md`, `README.md`,
+   check it. Before handing code over, the agent may run it in a scratch
+   copy outside the repository (`/tmp`), only to verify it and later to
+   compare it with what Luis typed; it never offers that copy as a
+   shortcut (decided 2026-11-05). Documentation files (this plan, `CLAUDE.md`, `README.md`,
    `planning.md`, phase documents, guides, checkboxes) are written by the
    agent.
 4. **Always explain and ask.** Any conflict between decisions or open
    question is explained to Luis with the evidence, and he decides. Nothing
    is changed silently.
-5. **Close and stop.** At the end of a step: tests pass, the §7 boxes are
+5. **One branch and one PR per step.** Each step is built on its own branch
+   (`step-N-<short-name>`), committed when the step is complete (not file by
+   file), pushed, and opened as a pull request that Luis reviews and merges
+   into `main`. The agent drafts the PR description.
+6. **Close and stop.** At the end of a step: tests pass, the §7 boxes are
    ticked, `CLAUDE.md` "Current state" and the status table below are
-   updated, and the agent offers the next step without starting it.
+   updated, the PR is merged, and the agent offers the next step without
+   starting it.
 
 ## Ordering principles
 
@@ -151,5 +159,5 @@ None of these changes a recorded decision until Luis approves.
 
 | Step | Status |
 |---|---|
-| 1 | Detail and references presented (2026-11-05); waiting for Luis's approval before the first file |
+| 1 | In progress on branch `step-1-models-and-golden-validation`: `feature/models.py` typed; golden schema, dedup, validation, CLI and tests handed to Luis |
 | 2–18 | Not started |

@@ -17,6 +17,9 @@ dependencies = [
     "scikit-learn>=1.9.1",
 ]
 
+[project.scripts]
+validate-golden = "regression_detector.golden.cli:main"
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

@@ -12,7 +12,7 @@ script reports something about the golden draft or the few-shot examples.
 | Lexical near-duplicate (`token_sort_ratio` ≥ 90) | Blocks | Both cases and the score | Rewrite one so the scenario differs, or delete one |
 | Lexical warning (80–90) | Warns | Both cases and the score | Keep (explain the difference in `notes`) or rewrite |
 | Semantic warning (cosine ≥ 0.92) | Warns | Both cases and the score | Same as above: is it really the same scenario? |
-| **Label conflict** (similar pair, different `expected_category`) | Highest priority | Both cases, both labels, the tie-break rule involved | Fix one label; or add `acceptable_categories`; or make the difference explicit in both texts and `notes` |
+| **Label conflict** (similar pair, different `expected_category`) | Highest priority (listed first; the pair's duplicate flag decides whether it blocks) | Both cases, both labels, the tie-break rule involved | Fix one label; or add `acceptable_categories`; or make the difference explicit in both texts and `notes` |
 | Few-shot overlap (a prompt example similar to a golden case) | Blocks | The example and the case | Change the **few-shot example** (the golden case stays) |
 | Matrix gap (exact targets: counts per category / case type, each edge type ≥ 2, adversarial subtypes, ≥ 35 `hard`) | Blocks freezing | The missing cells | Write the missing cases with [`golden-case-authoring.md`](golden-case-authoring.md) |
 

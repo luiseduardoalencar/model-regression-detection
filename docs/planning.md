@@ -392,7 +392,8 @@ src/regression_detector/
   ports/          # Protocols: LLMClient, Notifier, RunRepository, Tracer
   adapters/       # openai_client, telegram_notifier, console_notifier,
                   # sqlite_repository, langfuse_tracer, noop_tracer
-  feature/        # classifier + PromptConfig
+  feature/        # classifier + PromptConfig; output models (Category, EmailClassification)
+  golden/         # edition file schema, duplicate detection, validation, validate-golden CLI
   prompts/        # loader for versioned YAML
   eval/           # runner, scorers, judge
   compare/        # diff, thresholds, signal vs noise
@@ -1149,7 +1150,8 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
 - [x] **GitHub repository from step 1** (decided 2026-11-05, replaces
       "public GitHub repository" in build step 14): the public repository
       is created with the first commit and progress is pushed step by step,
-      so the build is documented as it happens. Nothing in it is sensitive
+      so the build is documented as it happens: one branch and one pull
+      request per build step, reviewed and merged by Luis. Nothing in it is sensitive
       (`.env` is gitignored; the golden set is fictional). No workflow
       exists until step 14, so pushes trigger nothing. Side effect: classifier
       prompt v1 and its few-shot examples are approved in a real PR

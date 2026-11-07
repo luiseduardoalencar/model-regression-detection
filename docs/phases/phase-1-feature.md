@@ -171,3 +171,5 @@ changes; `status` separates "the call worked" from "the answer is usable".
 18. DeepEval — Evaluation flags and configs — https://deepeval.com/docs/evaluation-flags-and-configs
 19. LangSmith — Evaluate with retry — https://docs.langchain.com/langsmith/evaluate-with-retry
 20. OpenAI Community — Responses API incomplete by `max_output_tokens` — https://community.openai.com/t/responses-api-empty-output-text-no-message-item-when-status-incomplete-due-to-max-output-tokens-reasoning-only-output/1373609
+21. Python — `enum.StrEnum` (build step 1: `Category`) — https://docs.python.org/3.11/library/enum.html
+22. Pydantic — Model config, `extra='forbid'` (build step 1: `EmailClassification`) — https://pydantic.dev/docs/validation/latest/api/pydantic/config/
