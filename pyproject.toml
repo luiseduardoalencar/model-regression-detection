@@ -30,6 +30,8 @@ packages = ["src/regression_detector"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_default_fixture_loop_scope = "function"
+markers = ["live: calls the real OpenAI API and spends money; run with -m live"]
+addopts = "-m 'not live'"
 
 [tool.ruff]
 line-length = 100

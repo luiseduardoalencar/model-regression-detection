@@ -4,9 +4,12 @@
 that make a fair, hard-enough exam for the classifier, frozen and versioned.
 
 **Status:** all decisions taken (2.1–2.6). 140 cases drafted and reviewed in
-`golden/drafts/edition-1.json` (2026-11-04, review items R1–R5 resolved);
-validation script, label audit, intra-annotator check and freeze pending
-(they need code). Edition 1 stays frozen once released: tests and demos
+`golden/drafts/edition-1.json` (2026-11-04, review items R1–R5 resolved).
+Build step 1 (2026-11-06) delivered the file schema and the offline
+validation (`uv run validate-golden`): every exact target met, no exact or
+lexical duplicates. Pending: semantic duplicates and label audit (step 3),
+few-shot overlap (step 4), intra-annotator check and freeze (step 10).
+Edition 1 stays frozen once released: tests and demos
 change prompts only (decisions 5.1, 6.1).
 Implementation checklist: [`planning.md` §7, Phase 2](../planning.md#phase-2--golden-dataset).
 Manual procedures: [`guides/`](../guides/).

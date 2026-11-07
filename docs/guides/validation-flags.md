@@ -20,6 +20,13 @@ Approximate targets (~10 % English/mixed per case type, the difficulty mix
 per case type) are printed as information, never as flags; nothing to
 resolve (decided 2026-11-05).
 
+Implementation status (2026-11-06): `uv run validate-golden` reports schema
+errors, exact and lexical duplicates, label conflicts, matrix gaps and
+edge-type rule flags (an edge case with no type, an adversarial case without
+its allowed subtype, an adversarial type on a non-adversarial case). The
+semantic warning arrives in build step 3 and the few-shot overlap flag in
+step 4.
+
 ## Procedure
 
 1. Show flags grouped by severity: label conflicts first, then blocking

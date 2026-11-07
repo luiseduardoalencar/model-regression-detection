@@ -40,7 +40,10 @@ Working rules set by Luis on 2026-11-05:
 6. **Close and stop.** At the end of a step: tests pass, the §7 boxes are
    ticked, `CLAUDE.md` "Current state" and the status table below are
    updated, the PR is merged, and the agent offers the next step without
-   starting it.
+   starting it. Steps cross phases, so a §7 box is ticked only when every
+   part of it is built; a box the step covers only in part stays unticked
+   and gets a dated status line under it saying what exists and which step
+   completes it (2026-11-06).
 
 ## Ordering principles
 
@@ -138,6 +141,15 @@ None of these changes a recorded decision until Luis approves.
   Edition 1 is kept; the confounding of language with adversarial subtype
   is a recorded limitation (`planning.md` §12,
   `phases/phase-2-golden-dataset.md` 2.1).
+- **Step 4 — few-shot overlap wiring.** Step 1 built and tested
+  `find_cross_pairs` (few-shot × golden), but `validate()` and
+  `validate-golden` do not call it yet and there is no few-shot overlap flag
+  kind; step 4 connects them once `prompts/classifier/v1.yaml` exists.
+- **Step 10 — freeze header.** The freeze records the taxonomy version, the
+  summary-guide version and the audit date in the header
+  (`planning.md` §7, Phase 2). The step 1 schema has no such fields and
+  forbids extra keys, and `quality_checks` holds untyped dictionaries; step
+  10 adds and types them.
 - **Step 3 — embeddings.** The `LLMClient` port only has `complete`; how the
   embeddings call is wired, and how the semantic layer behaves in
   `checks.yml` on fork PRs (no secrets).
@@ -159,5 +171,6 @@ None of these changes a recorded decision until Luis approves.
 
 | Step | Status |
 |---|---|
-| 1 | In progress on branch `step-1-models-and-golden-validation`: `feature/models.py` typed; golden schema, dedup, validation, CLI and tests handed to Luis |
-| 2–18 | Not started |
+| 1 | Done (2026-11-06), branch `step-1-models-and-golden-validation`: `feature/models.py`, `golden/schema.py`, `golden/dedup.py`, `golden/validation.py`, `golden/cli.py` and their tests; `uv run pytest` passes (41 tests); `uv run validate-golden` reports 0 flags on the draft. §7: F1 output models, F2 schema + validation and F2 fixture partly done, so no box is ticked yet (status lines in `planning.md`) |
+| 2 | Done (2026-11-06), branch `step-2-llm-client`: `ports/llm.py`, `adapters/openai_client.py`, `pricing.py`, `config/pricing.yaml` (`cached_input`), `live` marker in `pyproject.toml`; `tests/test_pricing.py`, `tests/test_openai_client.py`, `tests/test_openai_live.py`. `uv run pytest`: 67 passed, 1 deselected; one real call to `gpt-6-luna` passed (completed, 153 input / 38 output tokens, US$ 0.000034). §7 Phase 1: port + adapter, pricing and failure handling ticked |
+| 3–18 | Not started |
