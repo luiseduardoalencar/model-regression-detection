@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = "==3.12.*"
 
 [[package]]
@@ -1019,6 +1019,7 @@ dependencies = [
     { name = "httpx" },
     { name = "jinja2" },
     { name = "langfuse" },
+    { name = "numpy" },
     { name = "openai" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
@@ -1040,6 +1041,7 @@ requires-dist = [
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "jinja2", specifier = ">=3.1.6" },
     { name = "langfuse", specifier = ">=5.1.0" },
+    { name = "numpy", specifier = ">=2.5.4" },
     { name = "openai", specifier = ">=3.45.0" },
     { name = "pydantic", specifier = ">=2.14.2" },
     { name = "pydantic-settings", specifier = ">=2.16.2" },

@@ -111,7 +111,12 @@ Escreva: o email e o resumo esperado (uma frase, regras do guia de resumo).
 - An adversarial email whose real request is unclear — the real request must
   be identifiable, otherwise the expected answer is not defensible.
 - Two cases describing the same scenario with different words — flag it now
-  rather than waiting for the semantic duplicate check.
+  rather than waiting for the semantic duplicate check. Same scenario = same
+  operational mechanics (what the support team must recognise and do),
+  whatever the product, the reason given or the customer profile (decided
+  2026-11-07). Profiles vary across scenarios, never within one scenario;
+  the same scenario in several voices is an invariance test, a separate
+  future suite.
 
 ## References
 

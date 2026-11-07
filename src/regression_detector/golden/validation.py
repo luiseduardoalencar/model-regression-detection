@@ -1,6 +1,7 @@
 """Golden set validation: coverage matrix, edge-type rules and duplicates (2.1-2.3, 2.6)."""
 
 from collections import Counter
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from enum import StrEnum
 
@@ -11,9 +12,11 @@ from regression_detector.golden.schema import (
     CaseType,
     Difficulty,
     EdgeType,
+    GoldenCase,
     GoldenEdition,
     Language,
 )
+from regression_detector.golden.semantic import find_semantic_pairs
 
 CASES_PER_CATEGORY = {
     CaseType.TYPICAL: 14,
@@ -35,6 +38,7 @@ class FlagKind(StrEnum):
     EXACT_DUPLICATE = "exact_duplicate"
     NEAR_DUPLICATE = "near_duplicate"
     SIMILAR_PAIR = "similar_pair"
+    SEMANTIC_PAIR = "semantic_pair"
     MATRIX_GAP = "matrix_gap"
     EDGE_TYPE_RULE = "edge_type_rule"
 
@@ -62,9 +66,16 @@ _PAIR_FLAGS = {
 }
 
 
-def validate(edition: GoldenEdition) -> list[Flag]:
-    """All flags: label conflicts first, then blocking flags, then warnings."""
+def validate(
+    edition: GoldenEdition, vectors: Mapping[str, Sequence[float]] | None = None
+) -> list[Flag]:
+    """All flags: label conflicts first, then blocking flags, then warnings.
+
+    Without `vectors` (one embedding per case id) the semantic layer is skipped.
+    """
     flags = check_matrix(edition) + check_edge_types(edition) + check_duplicates(edition)
+    if vectors is not None:
+        flags += check_semantic_duplicates(edition, vectors)
     return sorted(
         flags,
         key=lambda flag: (flag.kind != FlagKind.LABEL_CONFLICT, flag.severity != Severity.BLOCK),
@@ -129,12 +140,27 @@ def check_duplicates(edition: GoldenEdition) -> list[Flag]:
         ids = (pair.first_id, pair.second_id)
         kind, severity = _PAIR_FLAGS[pair.match.kind]
         flags.append(Flag(kind, severity, f"lexical score {pair.match.score:.0f}", ids))
-        first, second = cases[pair.first_id], cases[pair.second_id]
-        if first.expected_category != second.expected_category:
-            labels = f"{first.expected_category} vs {second.expected_category}"
-            flags.append(
-                Flag(FlagKind.LABEL_CONFLICT, Severity.WARN, f"similar emails, {labels}", ids)
-            )
+        flags += _label_conflict(cases[pair.first_id], cases[pair.second_id])
+    return flags
+
+
+def check_semantic_duplicates(
+    edition: GoldenEdition, vectors: Mapping[str, Sequence[float]]
+) -> list[Flag]:
+    """Pairs with the same meaning in other words; pairs already caught lexically are skipped."""
+    cases = {case.id: case for case in edition.cases}
+    lexical = {
+        frozenset((pair.first_id, pair.second_id))
+        for pair in find_pairs({case.id: case.input_email for case in edition.cases})
+    }
+    flags = []
+    for pair in find_semantic_pairs({case_id: vectors[case_id] for case_id in cases}):
+        if frozenset((pair.first_id, pair.second_id)) in lexical:
+            continue
+        ids = (pair.first_id, pair.second_id)
+        message = f"semantic score {pair.score:.3f}"
+        flags.append(Flag(FlagKind.SEMANTIC_PAIR, Severity.WARN, message, ids))
+        flags += _label_conflict(cases[pair.first_id], cases[pair.second_id])
     return flags
 
 
@@ -159,6 +185,15 @@ def _allowed_adversarial_types(category: Category) -> set[EdgeType]:
     if category == Category.GENERAL:
         return {EdgeType.OUT_OF_SCOPE}
     return {EdgeType.PROMPT_INJECTION, EdgeType.LABEL_FORCING}
+
+
+def _label_conflict(first: GoldenCase, second: GoldenCase) -> list[Flag]:
+    """A flag when two similar emails carry different expected categories."""
+    if first.expected_category == second.expected_category:
+        return []
+    labels = f"{first.expected_category} vs {second.expected_category}"
+    ids = (first.id, second.id)
+    return [Flag(FlagKind.LABEL_CONFLICT, Severity.WARN, f"similar emails, {labels}", ids)]
 
 
 def _gap(message: str) -> Flag:

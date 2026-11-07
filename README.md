@@ -12,10 +12,11 @@ categories plus a one-sentence summary. It is never deployed to production.
 
 **Status:** all planning decisions closed (Phases 1–6); the
 [implementation plan](docs/implementation-plan.md) (18 build steps) was
-approved on 2026-11-05. Steps 1 and 2 are done (2026-11-06): domain models,
-the golden file schema and offline validation of the golden draft; the LLM
-port, the OpenAI adapter and cost per call from `config/pricing.yaml`. There
-is no classifier or evaluation code yet.
+approved on 2026-11-05. Steps 1–3 are done (2026-11-06/07): domain models,
+the golden file schema and its validation (exact, lexical and semantic
+duplicates); the LLM and embedding ports, the OpenAI adapters and cost per
+call; the LLM label audit of the golden draft. There is no classifier or
+evaluation code yet.
 
 ## Quick start
 
@@ -23,6 +24,7 @@ is no classifier or evaluation code yet.
 uv sync          # Python 3.12, dependencies from uv.lock
 uv run pytest    # unit tests (tests marked `live` are skipped)
 uv run validate-golden   # validate the golden draft and list its flags
+uv run --env-file .env audit-labels   # LLM label audit (~US$ 0.50); prints IDs only
 uv run --env-file .env pytest -m live -s   # one real OpenAI call; spends money
 uv run ruff check .
 cp .env.example .env   # fill in secrets locally; never commit .env
@@ -38,6 +40,7 @@ cp .env.example .env   # fill in secrets locally; never commit .env
 | [`docs/phases/`](docs/phases/) | One document per phase, with every sub-step's decision, its rationale and its references |
 | [`docs/guides/`](docs/guides/) | Step-by-step procedures for the manual work (writing golden cases, label checks, judge calibration, prompt changes, setup) |
 | [`docs/agent-prompts/`](docs/agent-prompts/) | Ready-to-paste prompts for an AI agent (e.g. in Cursor): manual work, and [`implementation-plan-session.md`](docs/agent-prompts/implementation-plan-session.md) to start the build |
+| [`docs/lessons-learned.md`](docs/lessons-learned.md) | Problems met while building (decisions that did not hold, misleading measurements, process and security slips), with evidence and takeaways; raw material for content |
 | [`docs/summary-guide.md`](docs/summary-guide.md) | The rules a correct summary follows (used by the golden set, the prompt and the judge) |
 | [`CLAUDE.md`](CLAUDE.md) / [`AGENTS.md`](AGENTS.md) | Entry point and rules for AI agents working on this project (`AGENTS.md` points to `CLAUDE.md`) |
 

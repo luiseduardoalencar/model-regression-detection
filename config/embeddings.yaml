@@ -1,0 +1,5 @@
+# Embedding model of the semantic duplicate layer (decision 2.6). Not a secret.
+# The 0.74 threshold (golden/semantic.py) was chosen for this model from the
+# crafted pairs of tests/test_semantic_live.py (decided 2026-11-07); changing
+# the model means running that test again and re-deciding the threshold.
+model: text-embedding-3-large

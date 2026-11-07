@@ -11,7 +11,7 @@ script reports something about the golden draft or the few-shot examples.
 | Exact duplicate | Blocks | Both cases side by side | Delete one, or rewrite one into a different scenario |
 | Lexical near-duplicate (`token_sort_ratio` ≥ 90) | Blocks | Both cases and the score | Rewrite one so the scenario differs, or delete one |
 | Lexical warning (80–90) | Warns | Both cases and the score | Keep (explain the difference in `notes`) or rewrite |
-| Semantic warning (cosine ≥ 0.92) | Warns | Both cases and the score | Same as above: is it really the same scenario? |
+| Semantic warning (cosine ≥ 0.74) | Warns | Both cases and the score | Same as above: is it really the same scenario? |
 | **Label conflict** (similar pair, different `expected_category`) | Highest priority (listed first; the pair's duplicate flag decides whether it blocks) | Both cases, both labels, the tie-break rule involved | Fix one label; or add `acceptable_categories`; or make the difference explicit in both texts and `notes` |
 | Few-shot overlap (a prompt example similar to a golden case) | Blocks | The example and the case | Change the **few-shot example** (the golden case stays) |
 | Matrix gap (exact targets: counts per category / case type, each edge type ≥ 2, adversarial subtypes, ≥ 35 `hard`) | Blocks freezing | The missing cells | Write the missing cases with [`golden-case-authoring.md`](golden-case-authoring.md) |
@@ -23,9 +23,13 @@ resolve (decided 2026-11-05).
 Implementation status (2026-11-06): `uv run validate-golden` reports schema
 errors, exact and lexical duplicates, label conflicts, matrix gaps and
 edge-type rule flags (an edge case with no type, an adversarial case without
-its allowed subtype, an adversarial type on a non-adversarial case). The
-semantic warning arrives in build step 3 and the few-shot overlap flag in
-step 4.
+its allowed subtype, an adversarial type on a non-adversarial case). Build
+step 3 (2026-11-07) adds the semantic warning (`semantic_pair`, model in
+`config/embeddings.yaml`); a pair already caught by the lexical layer is not
+repeated. Without `OPENAI_API_KEY`, or when the API stays unavailable after
+its retries, the command prints "semantic layer skipped: <reason>" and goes
+on: the layer only warns, so skipping it never hides a blocking flag. The
+few-shot overlap flag arrives in step 4.
 
 ## Procedure
 

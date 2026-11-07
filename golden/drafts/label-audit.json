@@ -1,0 +1,3952 @@
+{
+  "audited_at": "2026-11-07T04:50:57+00:00",
+  "golden_file": "golden/drafts/edition-1.json",
+  "taxonomy": "config/taxonomy/v1.md",
+  "variants": [
+    {
+      "name": "variant-a",
+      "model": "gpt-6.1-terra",
+      "reasoning_effort": "low"
+    },
+    {
+      "name": "variant-b",
+      "model": "gpt-6.1-terra",
+      "reasoning_effort": "low"
+    },
+    {
+      "name": "variant-c",
+      "model": "gpt-6.1-terra",
+      "reasoning_effort": "low"
+    }
+  ],
+  "variants_dir": "config/label-audit",
+  "summary": {
+    "flagged": 1,
+    "confirmed": 138,
+    "no_consensus": 1,
+    "not_audited": 0
+  },
+  "cost_usd": 0.522996,
+  "cases": [
+    {
+      "case_id": "general-002",
+      "outcome": "flagged",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente pede como “deixar meu endereço já salvo pras próximas compras”, uma alteração de dados cadastrais.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe de conta vai orientar o cliente a salvar seu endereço no aplicativo para futuras compras.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente pede orientação para salvar seu endereço nos dados cadastrais da conta.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "account-001",
+      "outcome": "confirmed",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "A cliente relata que esqueceu a senha e solicita um “link de redefinição” para acessar o perfil.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe ajudará a cliente a redefinir a senha e recuperar o acesso à conta.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "A cliente solicita o envio de um link para redefinir a senha e recuperar o acesso à conta.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "account-002",
+      "outcome": "confirmed",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente relata que «a senha da minha conta não passa» e pede a liberação do acesso.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe de contas ajudará o cliente a recuperar o acesso, resolvendo o problema com a senha.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente pede a liberação do acesso à conta, pois sua senha está sendo recusada.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "account-003",
+      "outcome": "confirmed",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente pede para redefinir a senha porque “n to conseguino entra na minha conta” e “a senha n passa”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe de conta ajudará o cliente a redefinir a senha e recuperar o acesso.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente pede a redefinição da senha para voltar a acessar sua conta.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "account-004",
+      "outcome": "confirmed",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente pede o desbloqueio da conta e relata estar “impedido de acessar o meu próprio perfil”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe de conta verificará o bloqueio e ajudará o cliente a recuperar o acesso ao perfil.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "A ação principal pedida é o desbloqueio da conta para recuperar o acesso ao perfil.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "account-005",
+      "outcome": "confirmed",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente pede para “tirar esse número velho e colocar o meu telefone novo”, solicitando a atualização dos dados da conta.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe de conta ajudará o cliente a atualizar o telefone cadastrado.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "A ação principal é atualizar o telefone cadastrado na conta do cliente.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "account-006",
+      "outcome": "confirmed",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente pede acesso à conta e redefinição da senha: “dar um reset nessa senha pra mim”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe de conta ajudará o cliente a redefinir a senha e recuperar o acesso ao perfil.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente pede a redefinição da senha para recuperar o acesso à conta.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "account-007",
+      "outcome": "confirmed",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente pede o “link para redefinir a senha” porque não consegue entrar na conta.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe de conta ajudará o cliente a redefinir a senha e recuperar o acesso.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente pede o link para redefinir a senha e recuperar o acesso à conta.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "account-008",
+      "outcome": "confirmed",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente relata que alguém entrou na conta por um celular desconhecido e pede que bloqueiem a conta e troquem a senha.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe de contas vai ajudar a bloquear a conta e trocar a senha após o acesso desconhecido.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente pede o bloqueio imediato da conta e a troca da senha após um acesso desconhecido.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "account-009",
+      "outcome": "confirmed",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente solicita que “encerrem imediatamente essa sessão ativa em Recife” por se tratar de um acesso desconhecido à sua conta.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe de conta encerrará a sessão desconhecida para proteger os dados do cliente.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente pede que encerrem uma sessão desconhecida para proteger sua conta.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "account-010",
+      "outcome": "confirmed",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente solicita a “atualização do endereço de email cadastrado na minha conta”, uma alteração de dados cadastrais.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe de conta ajudará o cliente a atualizar o endereço de email cadastrado.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente solicita a atualização do endereço de email cadastrado em sua conta.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "account-011",
+      "outcome": "confirmed",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "O pedido principal é recuperar o acesso à conta: “gerem uma senha nova para a minha conta com urgência”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe de conta ajudará o cliente a redefinir a senha e recuperar o acesso.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "A ação principal é gerar uma nova senha para recuperar o acesso à conta; o conserto do aplicativo é um pedido secundário.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "account-012",
+      "outcome": "confirmed",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente não consegue acessar a conta porque o “código de verificação” não chegou por SMS.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe de conta ajudará o cliente a receber um novo código de verificação para acessar o perfil.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente pede o envio de outro código de verificação para conseguir acessar sua conta.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "account-013",
+      "outcome": "confirmed",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "O pedido principal é reverter a alteração não autorizada do “endereço de email cadastrado na minha conta”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe de conta verificará a alteração não autorizada e ajudará a restaurar o email cadastrado anterior.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "A ação principal é reverter a alteração não autorizada do email cadastrado na conta.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "account-014",
+      "outcome": "confirmed",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente pede para “cancelar a minha conta” e “fechar meu cadastro de vez”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe de conta ajudará o cliente a encerrar definitivamente seu cadastro.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "A ação principal é encerrar a conta e o cadastro do cliente.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "account-015",
+      "outcome": "confirmed",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente informa que sua conta foi bloqueada e pede: “please unlock my account”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe de conta ajudará o cliente a desbloquear o acesso ao perfil.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "A ação principal pedida é o desbloqueio da conta para recuperar o acesso ao perfil.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "account-016",
+      "outcome": "confirmed",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "A cliente pede que atualizem seu nome no cadastro da conta: “atualizem o meu nome no sistema”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe de conta atualizará o nome cadastrado da cliente para o nome de casada.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "A cliente pede a atualização do nome cadastrado em sua conta.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "account-017",
+      "outcome": "confirmed",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente pede que removam o cartão dos dados cadastrais por segurança e afirma que “não houve nenhuma cobrança nele”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe de contas ajudará a remover o cartão salvo dos dados cadastrais do cliente.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente pede a remoção do cartão salvo nos dados da sua conta por segurança.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "account-018",
+      "outcome": "confirmed",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente pede ajuda para localizar a conta porque não lembra “qual foi o email” utilizado no cadastro.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe de conta ajudará o cliente a localizar a conta e recuperar o acesso.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente pede que a empresa localize sua conta pelo nome, pois não se lembra do e-mail cadastrado.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "account-019",
+      "outcome": "confirmed",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente diz que quer “trocar a minha senha por outra nova”, uma ação relacionada à segurança da conta.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe de conta ajudará o cliente a trocar a senha para proteger seu acesso.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente quer trocar a senha da conta por segurança.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "account-020",
+      "outcome": "confirmed",
+      "audit_category": "account",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "account",
+          "justification": "O cliente solicita o desbloqueio do acesso, pois sua “conta encontra-se bloqueada”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe de contas verificará o bloqueio e ajudará o cliente a recuperar o acesso.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "account",
+          "justification": "A ação principal é desbloquear o acesso à conta do cliente.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "cancellation-001",
+      "outcome": "confirmed",
+      "audit_category": "cancellation",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede para “cancelarem o pedido antes que saia do depósito”, informando que o item ainda não foi enviado.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A equipe vai providenciar o cancelamento do pedido, que ainda não foi enviado nem recebido.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede o cancelamento do pedido, que ainda não recebeu.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "cancellation-002",
+      "outcome": "confirmed",
+      "audit_category": "cancellation",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede “cancela essa compra” e informa que o pacote ainda nem saiu.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A equipe vai cancelar o pedido que o cliente ainda não recebeu.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede o cancelamento da compra de um tênis que ainda não recebeu.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "cancellation-003",
+      "outcome": "confirmed",
+      "audit_category": "cancellation",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente afirma que o pacote “ainda não chegou” e que quer “desistir da compra”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A equipe vai orientar o cancelamento do pedido ainda não recebido e o procedimento para reembolso.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A ação principal é desistir da compra de um pedido que ainda não foi recebido.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "cancellation-004",
+      "outcome": "confirmed",
+      "audit_category": "cancellation",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente ainda não recebeu o pedido e pede: “quero que cancelem esse pedido imediatamente”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A equipe de cancelamento vai tratar o pedido de cancelamento da mala que ainda não foi recebida.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede o cancelamento imediato do pedido que ainda não recebeu.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "cancellation-005",
+      "outcome": "confirmed",
+      "audit_category": "cancellation",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente ainda não recebeu o pedido e pede para “desfazerem essa compra” para que não seja enviado.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A equipe vai cancelar a compra do ferro que ainda não foi recebido, para evitar o envio.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede para cancelar a compra de um produto que ainda não recebeu.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "cancellation-006",
+      "outcome": "confirmed",
+      "audit_category": "cancellation",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente quer desistir do pedido ainda não recebido, ao dizer: “não quero mais receber esse equipamento” e “não façam a entrega”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A equipe de cancelamento vai atender ao pedido de desistência da impressora, que ainda não foi entregue.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede que o pedido ainda não recebido seja cancelado e não seja entregue.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "cancellation-007",
+      "outcome": "confirmed",
+      "audit_category": "cancellation",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede “cancelar essa compra” de um pedido que “ainda não chegou”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A equipe vai cancelar o pedido que o cliente ainda não recebeu.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede o cancelamento de uma compra que ainda não recebeu.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "cancellation-008",
+      "outcome": "confirmed",
+      "audit_category": "cancellation",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente afirma que não recebeu o livro e pede: “quero cancelar esse pedido”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A equipe vai processar o cancelamento do pedido que o cliente ainda não recebeu.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede o cancelamento do pedido que ainda não recebeu.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "cancellation-009",
+      "outcome": "confirmed",
+      "audit_category": "cancellation",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente solicita o “cancelamento imediato do pedido antes que a entrega seja efetuada”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A equipe solicitará a interceptação e o cancelamento do pedido que ainda não foi entregue.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede o cancelamento do pedido antes da entrega, com interceptação junto à transportadora.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "cancellation-010",
+      "outcome": "confirmed",
+      "audit_category": "cancellation",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede “cancela esse pedido” e informa que ele ainda não foi enviado.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A equipe vai cuidar do cancelamento do pedido ainda não recebido para que o cliente possa refazer a compra com o cupom.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A ação principal é cancelar o pedido ainda não recebido para refazê-lo com o cupom.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "cancellation-011",
+      "outcome": "confirmed",
+      "audit_category": "cancellation",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede que “cancelem essa compra” de um pedido que ainda não foi entregue.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A equipe vai cancelar a compra do patinete ainda não entregue e verificar a possibilidade de barrar a entrega.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A ação principal pedida é cancelar a compra do patinete que ainda não foi entregue; a localização do pacote é um pedido secundário.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "cancellation-012",
+      "outcome": "confirmed",
+      "audit_category": "cancellation",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede para “cancelar esse pedido” antes de o pacote ser enviado ou recebido.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A equipe vai ajudar a cancelar o pedido da jaqueta, que ainda não foi enviado.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede o cancelamento do pedido, que ainda não foi enviado, porque escolheu o tamanho errado.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "cancellation-013",
+      "outcome": "confirmed",
+      "audit_category": "cancellation",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente diz que desistiu e quer “cancelar esse pedido hoje mesmo”, que ainda está em separação.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A equipe vai processar o cancelamento do pedido ainda não recebido e encaminhar o estorno do Pix.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A ação principal é cancelar o pedido ainda não recebido; o estorno é consequência do cancelamento.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "cancellation-014",
+      "outcome": "confirmed",
+      "audit_category": "cancellation",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente solicita o “cancelamento desse pedido”, sem indicar que o recebeu.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A equipe vai ajudar a cancelar o pedido que o cliente ainda não recebeu.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A cliente solicita o cancelamento do pedido que ainda não recebeu.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "cancellation-015",
+      "outcome": "confirmed",
+      "audit_category": "cancellation",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede o cancelamento de um pedido ainda não recebido: “please cancel my order right away”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A equipe vai processar o cancelamento do pedido que ainda não foi entregue.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A ação principal pedida é cancelar imediatamente o pedido que ainda não foi recebido.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "cancellation-016",
+      "outcome": "confirmed",
+      "audit_category": "cancellation",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente ainda não recebeu o pedido e solicita: \"podem cancelar esse pedido agora\".",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A equipe de cancelamento vai cancelar o pedido que ainda não foi recebido pelo cliente.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A ação principal é cancelar o pedido que o cliente ainda não recebeu.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "cancellation-017",
+      "outcome": "confirmed",
+      "audit_category": "cancellation",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede para “cancelar somente o segundo pedido” e informa que nenhum dos pedidos foi enviado.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A equipe vai cancelar o pedido 15421 e manter o pedido 15420 ativo, conforme solicitado.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede o cancelamento do pedido 15421, que ainda não foi recebido, mantendo o pedido 15420.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "cancellation-018",
+      "outcome": "confirmed",
+      "audit_category": "cancellation",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente desistiu da compra e pede para “cancelarem o pedido aí no sistema de vez” antes de recebê-lo.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A equipe de cancelamento vai cancelar o pedido ainda não recebido e verificar possíveis pendências relacionadas ao boleto.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede o cancelamento do pedido que ainda não recebeu.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "cancellation-019",
+      "outcome": "confirmed",
+      "audit_category": "cancellation",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A cliente afirma que ainda não recebeu o produto e pede: “prefiro cancelar o pedido”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A equipe vai cancelar o pedido, pois a cliente ainda não recebeu o produto e não aceita o novo prazo de envio.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A cliente pede o cancelamento do pedido que ainda não recebeu, pois o novo prazo de envio não atende à sua necessidade.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "cancellation-020",
+      "outcome": "confirmed",
+      "audit_category": "cancellation",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede o cancelamento do pedido ainda não recebido: “Prefiro que cancelem essa compra”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "A equipe vai cancelar o pedido para que o cliente possa refazê-lo com o endereço atualizado.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "cancellation",
+          "justification": "O cliente pede o cancelamento da compra ainda não recebida para refazer o pedido com o endereço atualizado.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "delivery-001",
+      "outcome": "confirmed",
+      "audit_category": "delivery",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A cliente pergunta “onde o pacote se encontra” e qual é a previsão de entrega do pedido ainda não recebido.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A equipe de entrega verificará o status do pedido, o rastreamento e a previsão de envio.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A cliente pede que verifiquem onde está o pedido ainda não recebido e informem a previsão de saída para entrega.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "delivery-002",
+      "outcome": "confirmed",
+      "audit_category": "delivery",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente pergunta “cadê esse pacote?” após informar que o rastreio está parado e não recebeu atualizações.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A equipe vai verificar o rastreamento e a localização da entrega do pedido 8842.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente quer saber onde está o pacote e obter uma atualização da entrega.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "delivery-003",
+      "outcome": "confirmed",
+      "audit_category": "delivery",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente ainda não recebeu o pedido e pergunta “onde o pacote está e se ainda chega hoje”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A equipe vai verificar o rastreamento do pacote e informar a previsão de entrega.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente pede informações sobre a localização do pacote e se ele ainda será entregue hoje.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "delivery-004",
+      "outcome": "confirmed",
+      "audit_category": "delivery",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente afirma que “não recebi nada” e pede para verificar onde o pedido está.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A equipe de entrega vai verificar a localização do pedido, que consta como entregue, mas não foi recebido pelo cliente.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente pede que a empresa verifique onde está o pedido que ele não recebeu.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "delivery-005",
+      "outcome": "confirmed",
+      "audit_category": "delivery",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente pergunta “onde está a minha compra?” e informa que “ainda não chegou nada”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A equipe de entrega vai verificar o rastreamento e informar onde está o pedido ainda não recebido.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente quer saber onde está a compra que ainda não recebeu.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "delivery-006",
+      "outcome": "confirmed",
+      "audit_category": "delivery",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente informa que o pedido “ainda não chegou” e pergunta “onde está o pacote”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A equipe verificará o rastreamento e a situação da entrega do pacote.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente pede informações sobre a localização de um pacote que ainda não recebeu.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "delivery-007",
+      "outcome": "confirmed",
+      "audit_category": "delivery",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente pede a localização do pacote, pois “o rastreio parou de atualizar”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A equipe de entrega investigará o rastreio e a localização atual do pacote.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente pede que informem a localização atual do pacote que ainda não recebeu.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "delivery-008",
+      "outcome": "confirmed",
+      "audit_category": "delivery",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente pede a alteração do endereço de entrega antes que o pedido saia do centro de distribuição.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A equipe de entrega verificará a possibilidade de corrigir o endereço do pedido antes do envio.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente pede a alteração do endereço de entrega de um pedido que ainda não recebeu.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "delivery-009",
+      "outcome": "confirmed",
+      "audit_category": "delivery",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O pedido principal é localizar o produto: “verifiquem de verdade onde está o meu produto”; o cancelamento é condicionado à falta de localização até amanhã.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A equipe vai verificar a localização do pedido e atualizar o cliente sobre a entrega.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A ação principal é localizar o pedido ainda não recebido e informar sua situação; o cancelamento é uma possibilidade futura.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "delivery-010",
+      "outcome": "confirmed",
+      "audit_category": "delivery",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente ainda não recebeu o pedido e pergunta onde ele está: “where it's stuck”, além de solicitar um código de rastreio funcional.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A equipe verificará o atraso e a localização do pedido e fornecerá um código de rastreamento válido.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente pede que a empresa localize o pedido ainda não recebido e forneça um código de rastreamento funcional.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "delivery-011",
+      "outcome": "confirmed",
+      "audit_category": "delivery",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O trecho “Meu pacote 73910 sumiu” indica um pedido extraviado.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A equipe vai investigar o possível extravio e localizar o pacote do cliente.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente solicita a localização do pacote que desapareceu.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "delivery-012",
+      "outcome": "confirmed",
+      "audit_category": "delivery",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente ainda não recebeu o pedido e pergunta «onde essa entrega parou».",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A equipe verificará o rastreamento e o atraso na entrega do pedido.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente pede que a empresa verifique onde está a entrega do pedido ainda não recebido.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "delivery-014",
+      "outcome": "confirmed",
+      "audit_category": "delivery",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente pergunta “onde essa caixa está agora” e se será redirecionada para seu endereço.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A equipe de entregas verificará a localização do monitor e se ele será redirecionado para o endereço do cliente.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente pede que a empresa localize o pedido ainda não recebido e verifique seu redirecionamento para o endereço de entrega.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "delivery-015",
+      "outcome": "confirmed",
+      "audit_category": "delivery",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente ainda espera o pedido e pergunta “where my package is right now” após o prazo de entrega.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A equipe de entregas verificará o rastreamento e a localização do pedido atrasado.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A ação principal é saber onde está o pedido que ainda não foi entregue.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "delivery-016",
+      "outcome": "confirmed",
+      "audit_category": "delivery",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente pergunta pela calça ainda não recebida, cujo “rastreio do pacote [...] empacou faz dias”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A equipe vai verificar o rastreio e localizar o volume da calça que ainda não foi entregue.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente quer saber onde está o pacote da calça que ainda não foi entregue.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "delivery-017",
+      "outcome": "confirmed",
+      "audit_category": "delivery",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A cliente ainda não recebeu o colchão e pergunta “que dia esse moço volta para entregar”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A equipe de entrega verificará a previsão de entrega do colchão que ainda não foi recebido.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A cliente pede que a empresa informe em que dia o colchão será entregue.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "delivery-018",
+      "outcome": "confirmed",
+      "audit_category": "delivery",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente pergunta «para onde levaram esse pacote» e quando haverá uma nova tentativa de entrega.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A equipe de entregas verificará onde está o pacote e quando será feita uma nova tentativa de entrega.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente quer saber onde está o pacote e quando será feita uma nova tentativa de entrega.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "delivery-019",
+      "outcome": "confirmed",
+      "audit_category": "delivery",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente pergunta a “data prevista de chegada” de um pedido ainda não recebido.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A equipe de entregas verificará a previsão de chegada do pedido 25731.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente pede a data prevista de chegada de um pedido que ainda não recebeu.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "delivery-020",
+      "outcome": "confirmed",
+      "audit_category": "delivery",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente pede para repassar ao motorista instruções de acesso para “concluir a entrega ainda hoje”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A equipe de entregas poderá registrar e repassar a orientação de acesso ao motorista para facilitar a entrega do pedido.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "O cliente pede que o código de acesso seja repassado e registrado para que o motorista conclua a entrega.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "delivery-021",
+      "outcome": "confirmed",
+      "audit_category": "delivery",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A ação principal é localizar a entrega da furadeira: “Preciso que localizem onde está essa entrega”. O cancelamento da parafusadeira é um pedido secundário.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A equipe vai localizar a entrega da furadeira e atualizar o cliente sobre o rastreio.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "delivery",
+          "justification": "A ação principal pedida é localizar a entrega da furadeira e informar sua situação; o cancelamento da parafusadeira é secundário.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "general-001",
+      "outcome": "confirmed",
+      "audit_category": "general",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente apresenta uma sugestão de melhoria: “incluir uma opção de filtro por cor nas pesquisas da busca da loja”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "general",
+          "justification": "A equipe receberá a sugestão de incluir um filtro por cor nas pesquisas da loja.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "general",
+          "justification": "A ação principal é sugerir a inclusão de um filtro por cor na busca da plataforma.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "general-003",
+      "outcome": "confirmed",
+      "audit_category": "general",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente pergunta por curiosidade sobre o significado de um status e afirma que “não tenho nenhum pedido feito com vocês no momento”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "general",
+          "justification": "A equipe vai explicar o significado do status “saiu para entrega”, pois o cliente não tem um pedido em andamento.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente pede uma explicação geral sobre o significado do status de envio, sem ter um pedido em andamento.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "general-004",
+      "outcome": "confirmed",
+      "audit_category": "general",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente faz uma sugestão para “colocarem um aviso claro de falta de estoque logo na vitrine” e informa que não tem pedido aberto.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "general",
+          "justification": "A equipe vai receber a sugestão de exibir o aviso de falta de estoque já na vitrine.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "general",
+          "justification": "A ação principal é sugerir que a plataforma avise sobre a falta de estoque já na vitrine.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "general-005",
+      "outcome": "confirmed",
+      "audit_category": "general",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "general",
+          "justification": "A cliente pergunta “de que horas até que horas tem alguma pessoa disponível” para atendimento telefônico, sem solicitar ação sobre pedido ou conta.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "general",
+          "justification": "A equipe informará o horário de atendimento telefônico da loja.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "general",
+          "justification": "A cliente pede informações sobre o horário de atendimento telefônico da loja.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "general-006",
+      "outcome": "confirmed",
+      "audit_category": "general",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente pergunta onde inserir o cupom: “Where exactly do I type this code antes de fechar o pedido?”",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "general",
+          "justification": "A equipe orientará o cliente sobre onde inserir o cupom no checkout.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente quer saber onde inserir o cupom promocional antes de concluir a compra.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "general-007",
+      "outcome": "confirmed",
+      "audit_category": "general",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "general",
+          "justification": "O email traz apenas um elogio ao atendimento: “atendimento excelente e super educado”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "general",
+          "justification": "A equipe vai registrar o elogio do cliente ao atendimento recebido.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "general",
+          "justification": "A ação principal é registrar um elogio ao atendimento recebido.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "general-008",
+      "outcome": "confirmed",
+      "audit_category": "general",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "general",
+          "justification": "O remetente afirma ser “lojista parceiro” e pergunta sobre o “repasse financeiro dessa venda”, portanto é um vendedor fora do escopo.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "general",
+          "justification": "A equipe encaminhará a dúvida do lojista sobre o prazo de repasse, pois solicitações de vendedores estão fora do escopo das demais filas.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "general",
+          "justification": "O remetente é vendedor e pergunta quando receberá o repasse de uma venda, estando fora do escopo da taxonomia.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "general-009",
+      "outcome": "confirmed",
+      "audit_category": "general",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente pergunta sobre a regra de parcelamento “antes de fazer qualquer compra”, sem relatar problema em um pagamento.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "general",
+          "justification": "A equipe esclarecerá se o parcelamento em três vezes sem juros vale para todo o catálogo ou apenas para produtos selecionados.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "general",
+          "justification": "A ação principal é esclarecer a regra de parcelamento da loja antes de realizar uma compra.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "general-010",
+      "outcome": "confirmed",
+      "audit_category": "general",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "general",
+          "justification": "O email é um elogio, pois a cliente escreve “apenas para agradecer pelo capricho” no envio.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "general",
+          "justification": "A equipe registrará o elogio do cliente pelo cuidado no envio e pela entrega antecipada.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "general",
+          "justification": "A ação principal é agradecer e elogiar o cuidado com o envio do pedido.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "general-011",
+      "outcome": "confirmed",
+      "audit_category": "general",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente pergunta apenas sobre a «regra geral da plataforma» para solicitar uma devolução no futuro, sem pedir uma devolução concreta.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "general",
+          "justification": "A equipe esclarecerá o prazo previsto na política da plataforma para solicitar uma devolução.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente pede informação sobre o prazo geral da política de devolução para uma eventual necessidade futura.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "general-012",
+      "outcome": "confirmed",
+      "audit_category": "general",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente pergunta “o que exatamente significam aquelas estrelas ali no perfil dele”, buscando entender como a plataforma funciona.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "general",
+          "justification": "A equipe vai explicar o significado das estrelas exibidas no perfil do vendedor.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente quer saber o significado das estrelas no perfil do vendedor.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "general-013",
+      "outcome": "confirmed",
+      "audit_category": "general",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente pergunta “Como funciona o frete daqui?”, sem mencionar um pedido específico.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "general",
+          "justification": "A equipe vai explicar ao cliente como funciona o frete na plataforma.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "general",
+          "justification": "A ação principal é esclarecer como funciona o frete da plataforma.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "general-014",
+      "outcome": "confirmed",
+      "audit_category": "general",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente faz uma sugestão de melhoria: “coloca mais foto de outros ângulos nos anúncios”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "general",
+          "justification": "A equipe registrará a sugestão de incluir mais fotos dos produtos em diferentes ângulos.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente sugere adicionar fotos de outros ângulos aos anúncios de produtos.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "general-015",
+      "outcome": "confirmed",
+      "audit_category": "general",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "general",
+          "justification": "O email propõe uma parceria comercial, como indica o trecho “schedule a brief 15-minute introductory call”, e não trata de uma solicitação de comprador.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "general",
+          "justification": "A equipe encaminhará a proposta comercial ao responsável por parcerias de operações.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "general",
+          "justification": "O remetente pede uma reunião comercial e o contato responsável por parcerias de operações, não suporte como comprador.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "general-016",
+      "outcome": "confirmed",
+      "audit_category": "general",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente pergunta sobre o prazo da garantia do programa de proteção e afirma que “não tenho nenhum item para devolver no momento”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "general",
+          "justification": "A equipe esclarecerá por quantos dias após a entrega vale a proteção ao comprador.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "general",
+          "justification": "A ação principal é esclarecer por quantos dias após a entrega vale a proteção ao comprador.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "general-017",
+      "outcome": "confirmed",
+      "audit_category": "general",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente quer entender como funcionam os avisos e onde configurá-los, sem relatar falha no aplicativo.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "general",
+          "justification": "A equipe explicará como funcionam os avisos do aplicativo e onde configurar as preferências de notificações.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente quer entender como funcionam os avisos do aplicativo e onde configurar os alertas que deseja receber.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "general-019",
+      "outcome": "confirmed",
+      "audit_category": "general",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente pergunta se “vocês entregam normal aqui no estado do Acre” antes de fazer uma compra, sem tratar de um pedido existente.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "general",
+          "justification": "A equipe informará se o marketplace atende entregas no Acre.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente quer saber se a plataforma realiza entregas no Acre antes de fazer uma compra.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "general-020",
+      "outcome": "confirmed",
+      "audit_category": "general",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente pede orientação sobre como “favoritar um produto no site e deixá-lo salvo em uma lista de desejos”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "general",
+          "justification": "A equipe orientará o cliente sobre como favoritar um produto e salvá-lo na lista de desejos.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente pede orientação sobre como favoritar um produto e salvá-lo em uma lista de desejos.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "payment-001",
+      "outcome": "confirmed",
+      "audit_category": "payment",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente relata que a compra gerou “duas cobranças idênticas” e solicita o estorno da cobrança duplicada.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A equipe de pagamentos verificará a cobrança duplicada e providenciará o estorno devido.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede o estorno de uma cobrança duplicada no cartão.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "payment-002",
+      "outcome": "confirmed",
+      "audit_category": "payment",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede a confirmação do Pix, pois “o dinheiro já saiu da minha conta” mas o pedido continua “aguardando pagamento”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A equipe de pagamentos vai verificar e confirmar o Pix do pedido 81930.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede que a empresa confirme o pagamento via Pix, que ainda aparece como pendente.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "payment-003",
+      "outcome": "confirmed",
+      "audit_category": "payment",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O trecho “Pix pedido 9033 saiu dobrado” indica uma cobrança duplicada.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A equipe de pagamentos vai verificar a cobrança duplicada do Pix e corrigir o valor pago.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede a resolução da cobrança duplicada via Pix no pedido 9033.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "payment-004",
+      "outcome": "confirmed",
+      "audit_category": "payment",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente relata que “cobraram R$ 1.200” por uma cadeira anunciada por R$ 900 e pede o estorno da diferença.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A equipe de pagamentos vai verificar a cobrança acima do preço anunciado e providenciar o estorno da diferença.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A ação principal é estornar a diferença cobrada a mais no cartão.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "payment-005",
+      "outcome": "confirmed",
+      "audit_category": "payment",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede a confirmação do pagamento do boleto, pois no site ainda constava que ele “não pagou nada”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A equipe de pagamentos verificará o boleto pago e ajudará a confirmar o pagamento do pedido.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A cliente pede que a empresa verifique e confirme o pagamento do boleto, que ainda consta como não pago no site.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "payment-006",
+      "outcome": "confirmed",
+      "audit_category": "payment",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente informa que “my credit card was declined” e pede ajuda para realizar o pagamento recusado.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A equipe de pagamentos vai verificar a recusa do cartão e orientar o cliente sobre como pagar o pedido.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede esclarecimentos sobre a recusa do cartão e como efetuar o pagamento.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "payment-007",
+      "outcome": "confirmed",
+      "audit_category": "payment",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede a “segunda via da nota fiscal”, assunto incluído na categoria de pagamento.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A equipe de pagamentos vai providenciar a segunda via da nota fiscal do pedido.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A ação principal é solicitar o envio da segunda via da nota fiscal do pedido.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "payment-008",
+      "outcome": "confirmed",
+      "audit_category": "payment",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente informa que o banco estava “debitando o Pix duas vezes” e pede o estorno de um dos pagamentos duplicados.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A equipe de pagamentos verificará a cobrança duplicada via Pix e providenciará o estorno do pagamento excedente.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente solicita o estorno de um pagamento Pix debitado em duplicidade.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "payment-009",
+      "outcome": "confirmed",
+      "audit_category": "payment",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede a correção da cobrança, pois foi lançada “em 10 parcelas mensais” em vez das 3 combinadas.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A equipe de pagamento verificará a cobrança e buscará corrigir o parcelamento para as três parcelas combinadas.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede a correção do parcelamento cobrado no cartão para as três parcelas acordadas.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "payment-010",
+      "outcome": "confirmed",
+      "audit_category": "payment",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A cliente relata uma “cobrança indevida” por compra não autorizada e solicita o estorno na fatura.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A equipe de pagamentos investigará a cobrança não autorizada e tratará o estorno solicitado.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A cliente solicita o estorno de uma cobrança por uma compra que afirma não ter realizado nem autorizado.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "payment-011",
+      "outcome": "confirmed",
+      "audit_category": "payment",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente relata que “passaram a cobrança dele duas vezes” e pede o dinheiro da segunda cobrança, sem querer devolver o produto.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A equipe de pagamentos verificará a cobrança duplicada e providenciará a correção do valor cobrado a mais.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede o estorno da segunda cobrança pelo mesmo produto, sem devolvê-lo.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "payment-012",
+      "outcome": "confirmed",
+      "audit_category": "payment",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente relata que “cobraram o preço cheio de R$ 250” e pede o estorno da diferença de uma cobrança errada.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A equipe de pagamentos vai analisar a cobrança sem o desconto e providenciar o estorno da diferença, se devido.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede o estorno de R$ 50 cobrados indevidamente pela não aplicação do desconto.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "payment-013",
+      "outcome": "confirmed",
+      "audit_category": "payment",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede o estorno de uma cobrança duplicada: “estornar uma dessas cobranças repetidas”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A equipe de pagamentos vai verificar a cobrança duplicada e providenciar o estorno de uma delas.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede o estorno de uma das duas cobranças pelo mesmo aparelho.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "payment-014",
+      "outcome": "confirmed",
+      "audit_category": "payment",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente relata que “o frete de R$ 25 caiu duas vezes” no cartão e pede o estorno da cobrança duplicada.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A equipe de pagamentos vai verificar a cobrança duplicada do frete e providenciar o estorno de uma delas.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede o estorno de uma cobrança duplicada de frete no cartão.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "payment-015",
+      "outcome": "confirmed",
+      "audit_category": "payment",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente relata uma cobrança não autorizada no cartão: “an unauthorized charge of R$ 80”. ",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A equipe de pagamentos vai investigar a cobrança não reconhecida e verificar o estorno no cartão.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede o estorno de uma cobrança não autorizada no cartão, sem relação com devolução ou cancelamento.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "payment-016",
+      "outcome": "confirmed",
+      "audit_category": "payment",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede a correção da nota fiscal, pois “o valor total da nota fiscal saiu emitido como R$ 1.500”, embora tenha pago R$ 1.100.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A equipe de pagamento verificará o valor incorreto e providenciará a correção ou substituição da nota fiscal.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A ação principal é corrigir ou substituir a nota fiscal para registrar o valor correto da compra.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "payment-017",
+      "outcome": "confirmed",
+      "audit_category": "payment",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede um novo código Pix porque “o prazo de validade do código Pix acabou vencendo” e o pagamento não entrou.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A equipe de pagamentos ajudará o cliente a obter um novo código Pix para quitar o pedido.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede a geração e o envio de um novo código Pix para pagar o pedido.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "payment-018",
+      "outcome": "confirmed",
+      "audit_category": "payment",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente relata que “o segundo deu negado” e pede ajuda para pagar o restante usando outro cartão.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A equipe de pagamentos ajudará o cliente a pagar o valor restante com outro cartão, considerando a cobrança já realizada no primeiro.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede ajuda para pagar o valor restante com outro cartão após a recusa do segundo pagamento.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "payment-019",
+      "outcome": "confirmed",
+      "audit_category": "payment",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede o estorno de uma taxa que não autorizou: “incluíram na cobrança uma taxa de proteção de R$ 39 que eu não selecionei nem aceitei”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A equipe de pagamentos vai analisar a taxa não autorizada e providenciar o estorno, se devido.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede o estorno de uma taxa extra cobrada sem sua autorização.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "payment-020",
+      "outcome": "confirmed",
+      "audit_category": "payment",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente informa que “o pagamento por cartão de crédito foi recusado pela operadora” e pede esclarecimentos para finalizá-lo.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "payment",
+          "justification": "A equipe de pagamentos verificará a recusa do cartão e orientará o cliente para concluir o pagamento.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "payment",
+          "justification": "O cliente pede esclarecimentos sobre a recusa do cartão para conseguir finalizar o pagamento.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "return_refund-001",
+      "outcome": "confirmed",
+      "audit_category": "return_refund",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A cliente informa que recebeu o tablet com a tela trincada e solicita “a devolução do produto e o reembolso integral”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A equipe orientará a devolução do tablet recebido com a tela trincada e cuidará do reembolso integral.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A cliente solicita a devolução do tablet recebido com a tela trincada e o reembolso integral.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "return_refund-002",
+      "outcome": "confirmed",
+      "audit_category": "return_refund",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A cliente recebeu o vestido e pede devolução: “quero devolver essa peça aí”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A equipe orientará o cliente sobre como devolver o vestido que já recebeu.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A cliente quer saber como devolver o vestido que já recebeu.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "return_refund-003",
+      "outcome": "confirmed",
+      "audit_category": "return_refund",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A cafeteira “foi entregue aqui em casa ontem” e o cliente não quer ficar com o aparelho.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A equipe ajudará o cliente a devolver a cafeteira já recebida e a obter o reembolso.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente quer cancelar a compra de uma cafeteira que já recebeu e não pretende manter.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "return_refund-004",
+      "outcome": "confirmed",
+      "audit_category": "return_refund",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente recebeu um produto diferente do anunciado e pede: \"Quero que façam a troca desse produto pelo modelo caramelo\".",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A equipe cuidará da troca do óculos recebido na cor errada pelo modelo caramelo solicitado.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente pede a troca do produto recebido pelo modelo caramelo que comprou.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "return_refund-005",
+      "outcome": "confirmed",
+      "audit_category": "return_refund",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A cliente informa que a chaleira já chegou e pede para “mandar essa chaleira de volta pelo correio” e receber o dinheiro de volta.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A equipe vai orientar a devolução da chaleira recebida e o reembolso do cliente.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A cliente pede para devolver a chaleira já recebida e receber o dinheiro de volta.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "return_refund-006",
+      "outcome": "confirmed",
+      "audit_category": "return_refund",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente informa que o notebook chegou, mas não liga, e pede: “Quero fazer a devolução desse notebook e receber o meu dinheiro de volta”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A equipe organizará a devolução do notebook com defeito e o reembolso do cliente.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A ação principal é devolver o notebook recebido com defeito e obter o reembolso.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "return_refund-007",
+      "outcome": "confirmed",
+      "audit_category": "return_refund",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente recebeu o produto danificado e pede para devolvê-lo e receber o reembolso integral: “return it and get a full refund”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A equipe orientará a devolução da caixa de som recebida com dano e o reembolso integral.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente pede para devolver a caixa de som recebida com defeito e obter reembolso integral.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "return_refund-008",
+      "outcome": "confirmed",
+      "audit_category": "return_refund",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente afirma que o relógio chegou, parou de funcionar e pede: “Quero devolver esse relógio e receber o meu dinheiro de volta”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A equipe vai ajudar o cliente a devolver o relógio defeituoso e receber o reembolso.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente pede a devolução do relógio recebido com defeito e o reembolso do valor pago.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "return_refund-009",
+      "outcome": "confirmed",
+      "audit_category": "return_refund",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente solicita a liberação do “reembolso pendente” após o cancelamento confirmado da compra.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A equipe verificará e providenciará o reembolso pendente do pedido cancelado.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente solicita a verificação e a liberação do reembolso pendente de um pedido já cancelado.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "return_refund-010",
+      "outcome": "confirmed",
+      "audit_category": "return_refund",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente recebeu o forno e pede para “devolve isso ai e pega meu dinhero d volta” porque ele não esquenta.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A equipe orientará a devolução do forno recebido com defeito e o reembolso do cliente.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente quer devolver o forno recebido com defeito e obter seu dinheiro de volta.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "return_refund-011",
+      "outcome": "confirmed",
+      "audit_category": "return_refund",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente informa que o produto “chegou hoje” e que quer “fazer a devolução”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A equipe ajudará o cliente a devolver a capa de celular que já recebeu.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente pede a devolução da capa de celular que já recebeu.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "return_refund-012",
+      "outcome": "confirmed",
+      "audit_category": "return_refund",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente solicita “o envio desta unidade defeituosa e a substituição por um aparelho novo”, após receber o produto.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A equipe orientará o envio do produto defeituoso e cuidará da solicitação de troca por outro do mesmo modelo.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente solicita instruções para devolver o aspirador defeituoso e substituí-lo por um novo.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "return_refund-013",
+      "outcome": "confirmed",
+      "audit_category": "return_refund",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente já recebeu o sapato e afirma que quer “fazer a troca pelo tamanho 40 certinho”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A equipe vai ajudar o cliente a trocar o sapato recebido pelo tamanho 40.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente pede a troca do sapato recebido pelo tamanho 40.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "return_refund-014",
+      "outcome": "confirmed",
+      "audit_category": "return_refund",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente recebeu o drone sem o controle remoto e pede: “quero devolver esse kit inteiro logo”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A equipe vai ajudar o cliente a devolver o kit recebido sem o controle remoto.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente quer devolver o kit recebido porque o controle remoto não veio na caixa.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "return_refund-015",
+      "outcome": "confirmed",
+      "audit_category": "return_refund",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente recebeu a câmera com a lente rachada e pede: “return this unit and get a full refund”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A equipe cuidará da devolução da câmera recebida com a lente quebrada e do reembolso integral.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente pede a devolução da câmera recebida com a lente quebrada e o reembolso integral.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "return_refund-016",
+      "outcome": "confirmed",
+      "audit_category": "return_refund",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A cliente recebeu o produto com defeito e pede reembolso: “não vou ficar com esse produto” e “exijo o reembolso”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A equipe vai tratar a devolução do edredom recebido com mancha e o reembolso do valor pago.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A cliente pede o reembolso do edredom recebido com uma mancha.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "return_refund-017",
+      "outcome": "confirmed",
+      "audit_category": "return_refund",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente pede orientações para devolver o produto danificado e receber o reembolso: “como eu devolvo essa maravilha para receber o meu reembolso”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A equipe orientará a devolução do abajur recebido quebrado para que o cliente receba o reembolso.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente pede instruções para devolver o abajur recebido quebrado e obter o reembolso.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "return_refund-018",
+      "outcome": "confirmed",
+      "audit_category": "return_refund",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente informa que recebeu o produto e diz que gostaria de “solicitar a devolução”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A equipe vai orientar o cliente na devolução da carteira já recebida.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente solicita a devolução de um produto que já recebeu.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "return_refund-019",
+      "outcome": "confirmed",
+      "audit_category": "return_refund",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente cobra o reembolso de uma devolução: “postei a devolução” e “os R$ 640 que paguei não caíram de volta na minha conta”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A equipe verificará a devolução já entregue e a pendência do reembolso de R$ 640.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente pede a verificação e a liberação do reembolso de uma poltrona já devolvida.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "return_refund-020",
+      "outcome": "confirmed",
+      "audit_category": "return_refund",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente recebeu o pedido e pergunta “como faço para devolver essa unidade que veio a mais”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "A equipe orientará o cliente sobre como devolver a unidade recebida a mais.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "return_refund",
+          "justification": "O cliente quer devolver a unidade extra que recebeu no pedido.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "technical-001",
+      "outcome": "confirmed",
+      "audit_category": "technical",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O aplicativo falha porque “a tela inicial fecha sozinha logo em seguida, impedindo qualquer navegação”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A equipe técnica vai investigar e corrigir a falha que fecha o aplicativo e impede a navegação.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A cliente pede que corrijam a falha que fecha a tela inicial do aplicativo e impede a navegação.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "technical-002",
+      "outcome": "confirmed",
+      "audit_category": "technical",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O trecho “o site fica travado naquela rodinha de carregamento e não abre nunca” indica uma falha técnica na página.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A equipe técnica vai investigar e corrigir o travamento da página que impede o cliente de usar o site.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente pede que a empresa corrija a página do site que fica carregando e não abre.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "technical-003",
+      "outcome": "confirmed",
+      "audit_category": "technical",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A tela de login falha, pois “simplesmente fecha sozinha antes de eu conseguir digitar qualquer coisa”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A equipe técnica vai investigar e corrigir a tela de login que fecha sozinha.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A ação principal é consertar a tela de login, que fecha sozinha antes de permitir a digitação.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "technical-004",
+      "outcome": "confirmed",
+      "audit_category": "technical",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente relata que a página “só exibe uma mensagem de erro interno” e pede que ela volte a funcionar.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A equipe técnica vai investigar e corrigir o erro que impede o acesso à página do produto.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente pede que a página do kit de ferramentas seja corrigida para voltar a funcionar.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "technical-005",
+      "outcome": "confirmed",
+      "audit_category": "technical",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente relata que a loja fica com a “tela totalmente branca e não abre”, indicando uma falha técnica.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A equipe técnica vai investigar e corrigir o erro que deixa a tela da loja em branco.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente pede que a empresa corrija o erro que deixa a tela da loja em branco e impede sua abertura.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "technical-006",
+      "outcome": "confirmed",
+      "audit_category": "technical",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A frase “a página do umidificador fica completamente branca e travada” descreve uma falha no site.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A equipe técnica vai investigar e corrigir a falha que impede o carregamento da página do umidificador.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente pede que a empresa corrija o erro do site que deixa a página do umidificador branca e travada.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "technical-007",
+      "outcome": "confirmed",
+      "audit_category": "technical",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente relata uma falha no site: “a página do site travou na rolagem e não desce”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A equipe técnica vai investigar e corrigir o travamento da rolagem na página.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente pede que seja corrigida a falha de rolagem na página do site.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "technical-008",
+      "outcome": "confirmed",
+      "audit_category": "technical",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente relata que a página do carrinho “mostra a mensagem de erro ao carregar e não abre”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A equipe técnica verificará e corrigirá o erro que impede o carregamento da página do carrinho.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente pede que a página do carrinho seja corrigida, pois apresenta erro ao carregar.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "technical-009",
+      "outcome": "confirmed",
+      "audit_category": "technical",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente relata que a página exibiu “código de erro E-17” e pede que seja corrigida.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A equipe técnica verificará e corrigirá o erro que impede o acesso à página de ofertas.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A ação principal é verificar e corrigir a página de ofertas que apresenta um erro e não carrega.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "technical-010",
+      "outcome": "confirmed",
+      "audit_category": "technical",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A busca apresenta uma “mensagem de falha interna” e o cliente solicita a correção do mecanismo.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A equipe técnica vai corrigir a falha na busca que impede a exibição dos produtos.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente pede a correção do mecanismo de busca do site, que apresenta uma falha interna.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "technical-011",
+      "outcome": "confirmed",
+      "audit_category": "technical",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O pedido principal é corrigir a falha descrita em “a tela inicial do aplicativo abre totalmente preta”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A equipe técnica vai investigar e corrigir a tela inicial preta do aplicativo.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A ação principal pedida é corrigir a falha que deixa a tela inicial do aplicativo preta.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "technical-012",
+      "outcome": "confirmed",
+      "audit_category": "technical",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente relata que “as fotos principais não estão carregando” e pede que o carregamento seja corrigido.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A equipe técnica vai investigar e corrigir o carregamento das imagens na página de produtos.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente pede que seja corrigido o carregamento das imagens na página de listagem de produtos.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "technical-013",
+      "outcome": "confirmed",
+      "audit_category": "technical",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente relata que o botão “Pagar simplesmente não responde” e pede que ele volte a funcionar.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A equipe técnica vai investigar e corrigir o botão de pagamento que não responde, permitindo que o cliente conclua a compra.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente quer que o botão Pagar volte a funcionar para concluir a compra.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "technical-014",
+      "outcome": "confirmed",
+      "audit_category": "technical",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente relata que o filtro de preço não funciona: “o site simplesmente ignora meu clique”.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A equipe técnica vai verificar e corrigir o botão do filtro de preço que não responde ao clique.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A ação principal é corrigir o filtro de preço que não responde ao clique no site.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "technical-015",
+      "outcome": "confirmed",
+      "audit_category": "technical",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente relata que “the website shows an error page” e que o catálogo não abre, indicando uma falha no site.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A equipe técnica vai investigar e corrigir o erro do site que impede a abertura do catálogo.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A ação principal é corrigir o site, que exibe uma página de erro e impede a abertura do catálogo.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "technical-016",
+      "outcome": "confirmed",
+      "audit_category": "technical",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O site apresenta falha, pois “qualquer clique em um link exibe a mensagem de erro” de conexão ao servidor.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A equipe técnica vai investigar o erro de conexão e restaurar o funcionamento dos links no site.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente pede que restaurem o funcionamento do site, pois os links exibem erro de conexão ao servidor.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "technical-017",
+      "outcome": "confirmed",
+      "audit_category": "technical",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente pede a correção de uma falha no site ou aplicativo: “o botão Enviar da tela de depoimento não reage”. ",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A equipe técnica verificará e corrigirá o botão de envio da avaliação que não responde.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente pede que corrijam o botão de envio da avaliação, que não responde ao clique.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "technical-018",
+      "outcome": "confirmed",
+      "audit_category": "technical",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente relata que “o menu lateral simplesmente não desce e a página fica travada”, indicando uma falha na interface.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A equipe técnica vai investigar e corrigir o travamento do menu lateral na página.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente pede que consertem o menu lateral que não abre e trava a página.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "technical-019",
+      "outcome": "confirmed",
+      "audit_category": "technical",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente relata que o chat “fica travado na rodinha de carregamento” e pede que ele volte a funcionar.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A equipe técnica vai investigar e corrigir o travamento do chat de atendimento.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente pede que o chat de atendimento do site volte a funcionar.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "technical-020",
+      "outcome": "confirmed",
+      "audit_category": "technical",
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente relata que, ao abrir a lista de avisos, “o sistema inteiro fecha sozinho” e pede a correção da falha.",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "technical",
+          "justification": "A equipe técnica vai investigar e corrigir o fechamento do aplicativo ao abrir a lista de avisos.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "technical",
+          "justification": "O cliente pede que corrijam a falha que fecha o aplicativo ao abrir a lista de avisos.",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "case_id": "general-018",
+      "outcome": "no_consensus",
+      "audit_category": null,
+      "answers": [
+        {
+          "variant": "variant-a",
+          "status": "completed",
+          "category": "general",
+          "justification": "O cliente pede orientações sobre como começar a usar a plataforma: “Como é que eu faço para abrir uma conta nova do zero?”",
+          "detail": null
+        },
+        {
+          "variant": "variant-b",
+          "status": "completed",
+          "category": "account",
+          "justification": "A equipe vai orientar o cliente a criar uma conta nova na plataforma.",
+          "detail": null
+        },
+        {
+          "variant": "variant-c",
+          "status": "completed",
+          "category": "general",
+          "justification": "A ação principal é pedir orientação sobre como criar uma conta, sem relatar problema na conta ou falha no site.",
+          "detail": null
+        }
+      ]
+    }
+  ]
+}

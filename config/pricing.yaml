@@ -1,6 +1,9 @@
-   # cached_input applies to the part of the input served from the prompt cache.
-checked_on: 2026-11-03
-source: https://developers.openai.com/docs/pricing
+# Model prices in US$ per 1M tokens. Not secrets; versioned on purpose.
+# Re-check on the OpenAI pricing page before changing a model.
+# cached_input applies to the part of the input served from the prompt cache.
+# Embedding models have no output and no cache: cached_input = input, output = 0.
+checked_on: 2026-11-07
+source: https://developers.openai.com/api/docs/pricing
 models:
   gpt-6-luna:
     input: 0.10
@@ -10,3 +13,7 @@ models:
     input: 1.00
     cached_input: 0.05
     output: 5.00
+  text-embedding-3-large:
+    input: 0.13
+    cached_input: 0.13
+    output: 0.00

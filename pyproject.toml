@@ -9,6 +9,7 @@ dependencies = [
     "httpx>=0.28.1",
     "jinja2>=3.1.6",
     "langfuse>=5.1.0",
+    "numpy>=2.5.4",
     "openai>=3.45.0",
     "pydantic>=2.14.2",
     "pydantic-settings>=2.16.2",
@@ -19,6 +20,7 @@ dependencies = [
 
 [project.scripts]
 validate-golden = "regression_detector.golden.cli:main"
+audit-labels = "regression_detector.golden.audit_cli:main"
 
 [build-system]
 requires = ["hatchling"]

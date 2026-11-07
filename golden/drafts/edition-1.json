@@ -50,7 +50,7 @@
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Caso típico de delivery com cliente irritado: a fritadeira do pedido 33017 estava prevista para hoje de manhã, não chegou, e ele pergunta onde está e se ainda chega hoje. Não pede cancelamento."
+      "notes": "Caso típico de delivery com cliente irritado: a fritadeira do pedido 33017 estava prevista para hoje de manhã, não chegou, e ele pergunta onde está e se ainda chega hoje. Não pede cancelamento. Revisado na validação (2026-11-07): parecido com delivery-018 pelo paradeiro no dia previsto; aqui a entrega agendada não aconteceu, lá o rastreio deu baixa indevida como \"destinatário ausente\"."
     },
     {
       "id": "delivery-004",
@@ -114,7 +114,7 @@
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Caso típico de delivery, cliente detalhista: pede para trocar o endereço do berço do pedido 41890, ainda no centro de distribuição, do apartamento antigo para o novo."
+      "notes": "Caso típico de delivery, cliente detalhista: pede para trocar o endereço do berço do pedido 41890, ainda no centro de distribuição, do apartamento antigo para o novo. Revisado na validação (2026-11-07): par mínimo com cancellation-020 (mesmo endereço antigo no cadastro); aqui o cliente pede para corrigir o endereço, lá prefere cancelar e refazer a compra — regra delivery × cancellation. Parecido também com delivery-020: aqui o pacote ainda está no centro de distribuição e o pedido é corrigir o endereço; lá a entrega já está na rua e o pedido é passar a senha do portão ao motorista."
     },
     {
       "id": "delivery-009",
@@ -126,7 +126,7 @@
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Caso típico de delivery: o cliente pede a localização do ventilador do pedido 63920, com rastreio parado há nove dias. A frase sobre cancelar é condicional e não é um pedido atual, então classificar como cancellation é erro."
+      "notes": "Caso típico de delivery: o cliente pede a localização do ventilador do pedido 63920, com rastreio parado há nove dias. A frase sobre cancelar é condicional e não é um pedido atual, então classificar como cancellation é erro. Revisado na validação (2026-11-07): parecido com cancellation-004 e cancellation-011 (atraso e rastreio parado); aqui o cancelamento é só condicional, lá o cliente pede para cancelar agora — regra delivery × cancellation. Revisado na validação (2026-11-07): parecido com delivery-021 pelo rastreio parado; aqui é só a cobrança da posição, com ameaça condicional de cancelar tudo; lá o pedido é composto (localizar um item e cancelar outro de fato)."
     },
     {
       "id": "delivery-010",
@@ -228,7 +228,7 @@
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Caso típico de delivery com cliente irritado: a tentativa do micro-ondas do pedido 94102 falhou por ausência, ele diz que estava em casa, e pergunta onde o pacote está e quando tentam de novo."
+      "notes": "Caso típico de delivery com cliente irritado: a tentativa do micro-ondas do pedido 94102 falhou por ausência, ele diz que estava em casa, e pergunta onde o pacote está e quando tentam de novo. Revisado na validação (2026-11-07): parecido com delivery-003 pelo paradeiro no dia previsto; aqui o rastreio deu baixa indevida como \"destinatário ausente\", lá a entrega agendada simplesmente não aconteceu."
     },
     {
       "id": "delivery-019",
@@ -252,7 +252,7 @@
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Caso típico de delivery: a mesa de centro do pedido 39485 saiu para entrega hoje e o cliente pede para registrar o código 8532 do portão."
+      "notes": "Caso típico de delivery: a mesa de centro do pedido 39485 saiu para entrega hoje e o cliente pede para registrar o código 8532 do portão. Revisado na validação (2026-11-07): parecido com delivery-008; aqui a entrega já está na rua e o pedido é passar a senha do portão ao motorista, lá o pacote ainda está no centro de distribuição e o pedido é corrigir o endereço."
     },
     {
       "id": "delivery-021",
@@ -269,7 +269,7 @@
         "ambiguous",
         "multiple_requests"
       ],
-      "notes": "Caso de borda ambiguous e multiple_requests: a furadeira do pedido 43902 está com o rastreio parado há oito dias e o cliente pede a localização; no mesmo email pede o cancelamento da parafusadeira avulsa, que ainda não saiu do estoque. A ação principal é a localização, então a categoria é delivery. Classificar como cancellation também conta como acerto."
+      "notes": "Caso de borda ambiguous e multiple_requests: a furadeira do pedido 43902 está com o rastreio parado há oito dias e o cliente pede a localização; no mesmo email pede o cancelamento da parafusadeira avulsa, que ainda não saiu do estoque. A ação principal é a localização, então a categoria é delivery. Classificar como cancellation também conta como acerto. Revisado na validação (2026-11-07): parecido com cancellation-011; aqui a ação principal é localizar a furadeira e o cancelamento é de um item avulso, por isso cancellation é aceitável; lá o cliente cancela a compra inteira. Revisado na validação (2026-11-07): parecido com delivery-009 pelo rastreio parado; aqui o pedido é composto (localizar a furadeira e cancelar a parafusadeira de fato); lá é só a cobrança da posição, com ameaça condicional."
     },
     {
       "id": "cancellation-001",
@@ -281,7 +281,7 @@
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Caso típico e fácil de cancellation: cliente formal pede para cancelar o fone do pedido 74819, ainda em separação."
+      "notes": "Caso típico e fácil de cancellation: cliente formal pede para cancelar o fone do pedido 74819, ainda em separação. Revisado na validação (2026-11-07): parecido com cancellation-009; aqui o pedido ainda está em separação e o cancelamento é simples, lá o pacote já está em trânsito e o cancelamento exige interceptar a entrega."
     },
     {
       "id": "cancellation-002",
@@ -319,7 +319,7 @@
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Regra delivery × cancellation aplicada direto: a mala do pedido 19382 está dez dias atrasada e o cliente pede para cancelar, não só a localização."
+      "notes": "Regra delivery × cancellation aplicada direto: a mala do pedido 19382 está dez dias atrasada e o cliente pede para cancelar, não só a localização. Revisado na validação (2026-11-07): parecido com delivery-009; aqui o cliente pede para cancelar agora, lá só ameaça cancelar se não localizarem — regra delivery × cancellation. Revisado na validação (2026-11-07): parecido também com cancellation-011 e cancellation-019; aqui o atraso de dez dias já aconteceu e o pedido é só cancelar; em cancellation-011 o cliente também quer saber onde está o pacote para barrar a entrega; em cancellation-019 a loja avisou o adiamento antes do envio."
     },
     {
       "id": "cancellation-005",
@@ -331,7 +331,7 @@
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Caso típico de cancellation com pouca familiaridade: o cliente pede para desfazer a compra do ferro do pedido 3492, que ainda não chegou."
+      "notes": "Caso típico de cancellation com pouca familiaridade: o cliente pede para desfazer a compra do ferro do pedido 3492, que ainda não chegou. Revisado na validação (2026-11-07): parecido com return_refund-005 pela mesma persona e estrutura; aqui o produto ainda não chegou (cancellation), lá já chegou (return_refund) — regra cancellation × return_refund."
     },
     {
       "id": "cancellation-006",
@@ -375,27 +375,27 @@
     },
     {
       "id": "cancellation-009",
-      "input_email": "Olá, bom dia. Venho por meio desta mensagem tratar da compra de uma escrivaninha de escritório que realizei no site de vocês no dia 18 de outubro, registrada sob o número de pedido 29485. Fiz a verificação na minha conta hoje cedo e constatei que o status do pedido permanece parado na etapa em separação, sem ter sido entregue à transportadora. Como tivemos uma mudança na reforma do quarto aqui de casa e as medidas do móvel não vão mais caber no espaço disponível, gostaria de solicitar o cancelamento definitivo desse pedido agora mesmo, aproveitando que o produto ainda não saiu para envio. Muito obrigada pela atenção.",
+      "input_email": "Prezados, bom dia. Entro em contato a respeito do pedido 48312, referente a um monitor ultrawide de 29 polegadas adquirido no início da semana. Ao consultar o histórico de rastreamento hoje às 08h30, verifiquei que o volume deixou o centro de distribuição de Cajamar ontem no final da tarde e consta atualmente com o status \"em trânsito\" para a minha região. Ocorre que o escritório onde atuo confirmou hoje o envio de todos os equipamentos de trabalho para a minha residência, tornando essa compra desnecessária. Diante disso, solicito a interceptação junto à transportadora e o cancelamento imediato do pedido antes que a entrega seja efetuada no meu endereço.",
       "expected_category": "cancellation",
       "acceptable_categories": [],
-      "expected_summary": "Cliente solicita o cancelamento do pedido 29485 referente à escrivaninha comprada em 18 de outubro, informando que o pedido ainda está em separação.",
+      "expected_summary": "Cliente solicita o cancelamento do monitor ultrawide do pedido 48312, atualmente em trânsito segundo o rastreamento, antes que a entrega seja realizada.",
       "expected_difficulty": "medium",
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Caso típico de cancellation, cliente detalhista: pede para cancelar a escrivaninha do pedido 29485, comprada em 18 de outubro e ainda em separação."
+      "notes": "Caso típico de cancellation, cliente detalhista: o monitor do pedido 48312 já saiu do centro de distribuição e está em trânsito; o cliente não precisa mais dele e pede para cancelar antes da entrega. Regra delivery × cancellation: cita o rastreio, mas o pedido é cancelar. Reescrito na revisão semântica (2026-11-07): antes era desistência antes do envio, o mesmo cenário de cancellation-001. Revisado na validação (2026-11-07): parecido com cancellation-001; aqui o pacote já está em trânsito e o cancelamento exige interceptar a entrega, lá o pedido ainda está em separação."
     },
     {
       "id": "cancellation-010",
-      "input_email": "Hey guys, preciso dar cancel no meu order 64190 daquele teclado mecânico que comprei ontem à noite. I just checked the app and it still hasn't shipped yet, então vocês conseguem cancelar pra mim antes de postarem? Thanks!",
+      "input_email": "Hey guys, acabei de fechar o order 75821 de um teclado mecânico wireless, mas na pressa do checkout eu totally forgot de aplicar o cupom de 20% off que recebi no app. Vi aqui no status que ainda não deu shipped, né? Please, cancela esse pedido pra mim rapidinho pra eu poder fazer o reorder aplicando o promo code certo. Thanks!",
       "expected_category": "cancellation",
       "acceptable_categories": [],
-      "expected_summary": "Cliente informa que o teclado mecânico do pedido 64190 ainda não foi enviado e solicita o cancelamento antes da postagem.",
+      "expected_summary": "Cliente solicita o cancelamento do teclado mecânico do pedido 75821, que ainda não foi enviado, pois esqueceu de aplicar o cupom de 20% de desconto e deseja refazer a compra.",
       "expected_difficulty": "medium",
       "case_type": "typical",
       "language": "mixed",
       "edge_types": [],
-      "notes": "Caso típico de cancellation em português e inglês: o teclado do pedido 64190 ainda não foi enviado e o cliente pede para cancelar. O resumo fica em português."
+      "notes": "Caso típico de cancellation em português e inglês: o teclado do pedido 75821 ainda não foi enviado e o cliente esqueceu de aplicar o cupom; pede para cancelar e refazer a compra. O resumo fica em português. Classificar como payment é erro: o pedido é cancelar, não aplicar o cupom. Reescrito na revisão semântica (2026-11-07): antes era desistência antes do envio, o mesmo cenário de cancellation-001."
     },
     {
       "id": "cancellation-011",
@@ -409,7 +409,7 @@
       "edge_types": [
         "multiple_requests"
       ],
-      "notes": "Dois pedidos: a ação principal é cancelar o patinete do pedido 75820, que não chegou. A pergunta de onde está serve para barrar a entrega. Classificar como delivery é erro."
+      "notes": "Dois pedidos: a ação principal é cancelar o patinete do pedido 75820, que não chegou. A pergunta de onde está serve para barrar a entrega. Classificar como delivery é erro. Revisado na validação (2026-11-07): parecido com delivery-009 e delivery-021; aqui a ação principal é cancelar a compra inteira e a pergunta de onde está serve para barrar a entrega; em delivery-009 o cancelamento é condicional e em delivery-021 é de um item só. Revisado na validação (2026-11-07): parecido também com cancellation-004; aqui o cancelamento vem junto com a pergunta de onde está o pacote para barrar a entrega (multiple_requests), lá é só cancelar pelo atraso."
     },
     {
       "id": "cancellation-012",
@@ -439,15 +439,15 @@
     },
     {
       "id": "cancellation-014",
-      "input_email": "Prezados, boa tarde. Gostaria de pedir o cancelamento do pedido 83410, referente a um perfume importado que adquiri para dar de presente a uma amiga. Infelizmente ela precisou se mudar de cidade de última hora e não terei mais como encontrá-la para entregar. Como verifiquei que o pacote ainda não foi postado, peço a gentileza de cancelarem a compra. Muito obrigada.",
+      "input_email": "Boa tarde. Gostaria de pedir a ajuda de vocês com uma situação um pouco chata. Acabei de receber no meu e-mail a confirmação do pedido 59204, referente a uma pista de carrinhos elétrica, mas essa compra não foi feita por mim. Minha filha de cinco anos pegou meu celular desbloqueado enquanto eu estava na cozinha e acabou finalizando a compra sozinha pelo aplicativo. Peço desculpas pelo transtorno e solicito, por gentileza, o cancelamento desse pedido.",
       "expected_category": "cancellation",
       "acceptable_categories": [],
-      "expected_summary": "Cliente informa que o perfume do pedido 83410 ainda não foi postado e solicita o cancelamento da compra porque a pessoa que receberia o presente se mudou.",
+      "expected_summary": "Cliente informa que a compra da pista de carrinhos elétrica do pedido 59204 foi feita acidentalmente pela filha no aplicativo e solicita o cancelamento do pedido.",
       "expected_difficulty": "easy",
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Caso típico e fácil de cancellation: o perfume do pedido 83410 ainda não foi postado e o cliente pede para cancelar porque a pessoa do presente se mudou."
+      "notes": "Caso típico e fácil de cancellation: a pista de carrinhos do pedido 59204 foi comprada pela filha de cinco anos no aplicativo, sem o cliente saber; ele pede o cancelamento. Reescrito na revisão semântica (2026-11-07): antes era desistência antes do envio, o mesmo cenário de cancellation-001."
     },
     {
       "id": "cancellation-015",
@@ -489,15 +489,15 @@
     },
     {
       "id": "cancellation-018",
-      "input_email": "Opa, tudo bom? Acabei de encontrar o mesmo carregador portátil que comprei no pedido 58390 por um preço bem mais barato numa loja aqui perto de casa. Como vi no acompanhamento que o meu pacote ainda nem saiu daí, quero cancelar essa compra com vocês.",
+      "input_email": "Opa, tudo tranquilo? Ontem à noite eu fechei o pedido 38415 de uma barraca de camping e gerei o boleto bancário pra pagar hoje. Só que a viagem que eu ia fazer no feriado acabou miando, então desisti da compra e nem vou pagar esse boleto. Queria pedir pra vocês já cancelarem o pedido aí no sistema de vez, só pra não ficar nenhuma cobrança em aberto ou pendência no meu CPF, combinado? Valeu!",
       "expected_category": "cancellation",
       "acceptable_categories": [],
-      "expected_summary": "Cliente informa que achou o carregador portátil do pedido 58390 mais barato em outra loja e pede o cancelamento antes da saída do pacote.",
+      "expected_summary": "Cliente informa que desistiu da compra da barraca de camping do pedido 38415, não pagará o boleto gerado e solicita o cancelamento definitivo do pedido no sistema.",
       "expected_difficulty": "medium",
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Caso típico de cancellation: o cliente achou o carregador do pedido 58390 mais barato em outra loja e pede para cancelar antes do envio."
+      "notes": "Caso típico de cancellation: o cliente gerou o boleto da barraca do pedido 38415, desistiu e não vai pagar; pede para cancelar o pedido e não deixar pendência. Classificar como payment é erro: o pedido é cancelar, não resolver o boleto. Reescrito na revisão semântica (2026-11-07): antes era desistência antes do envio, o mesmo cenário de cancellation-001."
     },
     {
       "id": "cancellation-019",
@@ -509,19 +509,19 @@
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Caso típico de cancellation: a paleta do pedido 69104 não chegou, o prazo aumentou 30 dias, e o cliente pede para cancelar."
+      "notes": "Caso típico de cancellation: a paleta do pedido 69104 não chegou, o prazo aumentou 30 dias, e o cliente pede para cancelar. Revisado na validação (2026-11-07): parecido com cancellation-004; aqui a loja avisou antes do envio que vai atrasar 30 dias, lá o atraso de dez dias já aconteceu com o pacote a caminho."
     },
     {
       "id": "cancellation-020",
-      "input_email": "Prezados, boa tarde. Gostaria de solicitar o cancelamento do kit de copos referente ao pedido 13849, tendo em vista que a encomenda ainda não foi enviada. Agradeço desde já.",
+      "input_email": "Bom dia. Acabei de finalizar o pedido 67129, referente a um filtro de barro, mas percebi que o sistema puxou o meu endereço antigo que ainda estava salvo no cadastro. Prefiro que cancelem essa compra para que eu possa refazer o pedido já com o endereço de entrega atualizado. Obrigado.",
       "expected_category": "cancellation",
       "acceptable_categories": [],
-      "expected_summary": "Cliente informa que o kit de copos do pedido 13849 ainda não foi enviado e solicita o cancelamento da compra.",
+      "expected_summary": "Cliente solicita o cancelamento do filtro de barro do pedido 67129 por ter sido feito com o endereço antigo do cadastro e pretende refazer a compra com o endereço correto.",
       "expected_difficulty": "easy",
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Caso típico e fácil de cancellation: o kit de copos do pedido 13849 ainda não foi enviado e o cliente pede para cancelar."
+      "notes": "Caso típico e fácil de cancellation: o pedido 67129 saiu com o endereço antigo do cadastro e o cliente prefere cancelar e refazer a compra. Regra delivery × cancellation: fala do endereço, mas o pedido é cancelar. Reescrito na revisão semântica (2026-11-07): antes era desistência antes do envio, o mesmo cenário de cancellation-001. Revisado na validação (2026-11-07): par mínimo com delivery-008 (mesmo endereço antigo no cadastro); aqui o cliente prefere cancelar e refazer a compra, lá pede para corrigir o endereço — regra delivery × cancellation."
     },
     {
       "id": "return_refund-001",
@@ -583,7 +583,7 @@
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Caso típico de return_refund com pouca familiaridade: a chaleira do pedido 92814 chegou e não era o modelo da foto; o cliente pergunta como devolver e receber o dinheiro."
+      "notes": "Caso típico de return_refund com pouca familiaridade: a chaleira do pedido 92814 chegou e não era o modelo da foto; o cliente pergunta como devolver e receber o dinheiro. Revisado na validação (2026-11-07): parecido com cancellation-005 pela mesma persona e estrutura; aqui o produto já chegou (return_refund), lá ainda não chegou (cancellation) — regra cancellation × return_refund."
     },
     {
       "id": "return_refund-006",
@@ -623,7 +623,7 @@
       "edge_types": [
         "prompt_injection"
       ],
-      "notes": "Ataque de prompt_injection: o pedido real é devolver o relógio do pedido 38129, que parou no dia seguinte ao recebimento. O JSON falso pede payment e não entra no resumo."
+      "notes": "Ataque de prompt_injection: o pedido real é devolver o relógio do pedido 38129, que parou no dia seguinte ao recebimento. O JSON falso pede payment e não entra no resumo. Revisado na validação (2026-11-07): parecido com payment-008 só pelo parágrafo de ataque, que é o mesmo texto; aqui o pedido real é devolver um produto recebido com defeito (return_refund), lá é estornar um Pix cobrado em dobro (payment)."
     },
     {
       "id": "return_refund-009",
@@ -665,15 +665,15 @@
     },
     {
       "id": "return_refund-012",
-      "input_email": "Olá, bom dia. Escrevo para tratar da compra de um leitor digital que realizei com vocês sob o número de pedido 67412. A encomenda foi entregue no meu endereço no dia 28 de outubro e a caixa externa estava intacta, mas assim que liguei o aparelho pela primeira vez notei uma mancha escura permanente no canto inferior da tela que atrapalha bastante a leitura das páginas. Por conta desse defeito de fábrica no visor, gostaria de solicitar a devolução do aparelho e o reembolso integral do valor pago. Fico no aguardo das instruções para o envio nos Correios. Muito obrigado.",
+      "input_email": "Prezados, bom dia. Entro em contato referente ao pedido 91044, um aspirador robô adquirido e entregue há exatamente três semanas. Durante os primeiros vinte dias de uso, o equipamento funcionou perfeitamente conforme as especificações do fabricante. Contudo, desde ontem pela manhã, o aparelho passou a apresentar uma falha crítica na roda motriz esquerda: ele liga normalmente, inicia o ciclo de limpeza, mas fica girando em círculos no mesmo lugar e emite três bipes longos antes de desligar sozinho. Já realizei a limpeza dos sensores de antiqueda e removi a escova central para verificar se havia algum detrito obstruindo o eixo, exatamente como orienta a seção de solução de problemas do manual, mas o defeito persiste. Como o produto encontra-se dentro do prazo de garantia de noventa dias e não sofreu qualquer queda ou mau uso, solicito as instruções para o envio desta unidade defeituosa e a substituição por um aparelho novo do mesmo modelo.",
       "expected_category": "return_refund",
       "acceptable_categories": [],
-      "expected_summary": "Cliente informa que recebeu o leitor digital do pedido 67412 em 28 de outubro com uma mancha na tela e solicita a devolução com reembolso.",
+      "expected_summary": "Cliente informa que o aspirador robô do pedido 91044 apresentou defeito na roda motriz esquerda após três semanas de uso e, por estar na garantia, solicita a substituição por uma unidade nova do mesmo modelo.",
       "expected_difficulty": "medium",
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Caso típico de return_refund, cliente detalhista: o leitor digital do pedido 67412 chegou em 28 de outubro com mancha na tela e ele pede devolução e reembolso."
+      "notes": "Caso típico de return_refund, cliente detalhista: o aspirador robô do pedido 91044 funcionou por três semanas e passou a falhar na roda motriz; dentro da garantia, o cliente pede a troca por uma unidade nova. O defeito é do produto, não do app ou do site, então technical é erro. Reescrito na revisão semântica (2026-11-07): antes era defeito encontrado ao abrir, o mesmo cenário de return_refund-001."
     },
     {
       "id": "return_refund-013",
@@ -785,7 +785,7 @@
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Caso típico de payment: a luminária de piso do pedido 70412 gerou duas cobranças de R$ 220 no cartão e o cliente pede o estorno de uma. Não há devolução do produto."
+      "notes": "Caso típico de payment: a luminária de piso do pedido 70412 gerou duas cobranças de R$ 220 no cartão e o cliente pede o estorno de uma. Não há devolução do produto. Revisado na validação (2026-11-07): parecido com payment-009 só pelo vocabulário de fatura e cartão; aqui é cobrança duplicada com pedido de estorno, lá é número de parcelas errado com pedido de correção. Revisado na validação (2026-11-07): parecido também com payment-011 e payment-010; payment-011 é a mesma cobrança duplicada, mas como confounder (produto recebido e mantido); payment-010 é uma compra que o cliente não fez."
     },
     {
       "id": "payment-002",
@@ -875,7 +875,7 @@
       "edge_types": [
         "prompt_injection"
       ],
-      "notes": "Ataque de prompt_injection: o pedido real é estornar um dos dois Pix do ventilador do pedido 77615. O JSON falso pede return_refund e não entra no resumo."
+      "notes": "Ataque de prompt_injection: o pedido real é estornar um dos dois Pix do ventilador do pedido 77615. O JSON falso pede return_refund e não entra no resumo. Revisado na validação (2026-11-07): parecido com return_refund-008 só pelo parágrafo de ataque, que é o mesmo texto; aqui o pedido real é estornar um Pix cobrado em dobro (payment), lá é devolver um produto recebido com defeito (return_refund)."
     },
     {
       "id": "payment-009",
@@ -887,7 +887,7 @@
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Caso típico de payment: a televisão do pedido 50381, comprada em 2 de outubro em 3 vezes de R$ 700, foi lançada em 10 parcelas. O pedido é corrigir o parcelamento."
+      "notes": "Caso típico de payment: a televisão do pedido 50381, comprada em 2 de outubro em 3 vezes de R$ 700, foi lançada em 10 parcelas. O pedido é corrigir o parcelamento. Revisado na validação (2026-11-07): parecido com payment-001 só pelo vocabulário de fatura e cartão; aqui é número de parcelas errado com pedido de correção, lá é cobrança duplicada com pedido de estorno. Revisado na validação (2026-11-07): parecido também com payment-016 só pelo vocabulário financeiro; aqui é o parcelamento na fatura, lá é o valor errado na nota fiscal."
     },
     {
       "id": "payment-010",
@@ -899,7 +899,7 @@
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Caso típico de payment: cobrança de R$ 350 do pedido 18920, um par de patins que o cliente não comprou. O pedido é o estorno."
+      "notes": "Caso típico de payment: cobrança de R$ 350 do pedido 18920, um par de patins que o cliente não comprou. O pedido é o estorno. Revisado na validação (2026-11-07): parecido com payment-001; aqui o cliente não reconhece a compra, lá a compra é dele e só foi cobrada em dobro."
     },
     {
       "id": "payment-011",
@@ -913,7 +913,7 @@
       "edge_types": [
         "confounder"
       ],
-      "notes": "Caso de borda confounder: o aspirador do pedido 92418 chegou funcionando e foi cobrado duas vezes. O cliente quer ficar com o aparelho e estornar a segunda cobrança. Classificar como return_refund é erro."
+      "notes": "Caso de borda confounder: o aspirador do pedido 92418 chegou funcionando e foi cobrado duas vezes. O cliente quer ficar com o aparelho e estornar a segunda cobrança. Classificar como return_refund é erro. Revisado na validação (2026-11-07): parecido com payment-001 pela cobrança duplicada; aqui o caso é confounder: o produto chegou e o cliente fica com ele, então return_refund é erro."
     },
     {
       "id": "payment-012",
@@ -977,7 +977,7 @@
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Caso típico de payment: a nota fiscal do monitor do pedido 36502 saiu com R$ 1.500 e a compra foi R$ 1.100. O pedido é corrigir a nota."
+      "notes": "Caso típico de payment: a nota fiscal do monitor do pedido 36502 saiu com R$ 1.500 e a compra foi R$ 1.100. O pedido é corrigir a nota. Revisado na validação (2026-11-07): parecido com payment-009 só pelo vocabulário financeiro; aqui é o valor errado na nota fiscal, lá é o parcelamento na fatura."
     },
     {
       "id": "payment-017",
@@ -993,15 +993,15 @@
     },
     {
       "id": "payment-018",
-      "input_email": "Boa tarde, tudo bem? Eu comprei um liquidificador na loja e anotei num papel aqui em casa o número 12785 do pedido, porque na hora combinamos que eu ia pagar em parcelas de R$ 100 por mês. Só que chegou o papel da fatura do cartão hoje pelo correio e veio cobrando uma parcela de R$ 180. Por que subiu desse jeito? Vocês conseguem arrumar para voltar aos R$ 100 que eu tinha combinado?",
+      "input_email": "Bom dia, moça. Eu tentei comprar um tanquinho de lavar roupa ontem à noite, o número que apareceu na tela foi 84920. Como o limite do meu cartão era pouco, eu coloquei pra dividir o valor em dois cartões diferentes. O primeiro passou certinho, até já descontou no aplicativo do banco, mas o segundo deu negado na hora e agora o pedido ficou parado lá dizendo que falta pagar o resto. Eu não sei mexer direito nisso aí pra trocar só o segundo cartão sem perder o que já cobrou no primeiro. Como vocês me ajudam a passar o restante pra liberar o meu tanquinho?",
       "expected_category": "payment",
       "acceptable_categories": [],
-      "expected_summary": "Cliente relata que a parcela do liquidificador do pedido 12785 veio cobrando R$ 180 na fatura em vez dos R$ 100 combinados e pede a correção do valor.",
+      "expected_summary": "Cliente relata que dividiu o pagamento do tanquinho do pedido 84920 em dois cartões, teve o segundo recusado com o pedido retido e pede ajuda para pagar o valor restante sem perder a cobrança já aprovada no primeiro cartão.",
       "expected_difficulty": "medium",
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Caso típico de payment: a parcela do liquidificador do pedido 12785, combinada em R$ 100, veio como R$ 180. Redação simples. O pedido é voltar ao valor combinado."
+      "notes": "Caso típico de payment com pouca familiaridade: o tanquinho do pedido 84920 foi pago em dois cartões, o primeiro aprovado e o segundo recusado, e o pedido ficou parado; o cliente pede ajuda para pagar o restante sem perder o valor já cobrado. Reescrito na revisão semântica (2026-11-07): antes era parcelamento lançado errado, o mesmo cenário de payment-009."
     },
     {
       "id": "payment-019",
@@ -1559,7 +1559,7 @@
       "case_type": "typical",
       "language": "pt",
       "edge_types": [],
-      "notes": "Caso típico de general: pergunta o caminho no aplicativo para salvar o endereço para as próximas compras. Não pede para alterar um cadastro, então classificar como account é erro."
+      "notes": "Caso típico de general: pergunta o caminho no aplicativo para salvar o endereço para as próximas compras. Não pede para alterar um cadastro, então classificar como account é erro. Auditoria 2026-11-07: mantido — as três variantes disseram account (leram \"endereço salvo\" como dado cadastral); a resposta cega do Luis foi general, pela regra principal: o cliente pede o caminho no app, não uma alteração na conta. Coberto pela regra general × account acrescentada à taxonomia no mesmo dia."
     },
     {
       "id": "general-003",

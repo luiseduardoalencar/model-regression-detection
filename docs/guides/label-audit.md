@@ -10,6 +10,22 @@ taxonomy only. A case is **flagged** when the 3 variants agree with each
 other and disagree with Luis's `expected_category` (and the predicted label is
 not in `acceptable_categories`). The LLM never writes a label.
 
+How to run it (build step 3): `uv run --env-file .env audit-labels`.
+
+- Variants: `config/label-audit/variant-{a,b,c}.yaml` (A definitions, B
+  support queues, C main action first), each including
+  `config/taxonomy/v1.md` (Portuguese taxonomy). They live outside
+  `prompts/`, so editing them never triggers the eval gate.
+- The terminal shows only counts and case IDs. Labels and justifications go
+  to `golden/drafts/label-audit.json`; the agent opens that file, never Luis,
+  and only after his blind answer (step 1 below).
+- Outcomes: `flagged`, `confirmed` (unanimous and equal to an accepted
+  label), `no_consensus` (the variants disagree with each other: not a flag,
+  but a hint of an ambiguous email), `not_audited` (a variant gave no valid
+  answer: refusal, incomplete, invalid output or API error; the command exits
+  1 and should be re-run).
+- Cost: about US$ 0.70 for 420 calls (cost printed at the end).
+
 ## Procedure for each flagged case
 
 1. Show **only the email** and ask Luis: "Para qual fila esse email vai?"
