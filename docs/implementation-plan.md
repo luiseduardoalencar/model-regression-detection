@@ -24,7 +24,10 @@ Working rules set by Luis on 2026-11-05:
 3. **Luis types the code.** The agent never creates code, test or config
    files unless Luis asks. It prepares each file's content, Luis types or
    copies it, and the agent explains the code and then reads the file to
-   check it. Documentation files (this plan, `CLAUDE.md`, `README.md`,
+   check it. Before handing code over, the agent may run it in a scratch
+   copy outside the repository (`/tmp`), only to verify it and later to
+   compare it with what Luis typed; it never offers that copy as a
+   shortcut (decided 2026-11-05). Documentation files (this plan, `CLAUDE.md`, `README.md`,
    `planning.md`, phase documents, guides, checkboxes) are written by the
    agent.
 4. **Always explain and ask.** Any conflict between decisions or open
@@ -156,5 +159,5 @@ None of these changes a recorded decision until Luis approves.
 
 | Step | Status |
 |---|---|
-| 1 | Detail and references presented (2026-11-05); waiting for Luis's approval before the first file |
+| 1 | In progress on branch `step-1-models-and-golden-validation`: `feature/models.py` typed; golden schema, dedup, validation, CLI and tests handed to Luis |
 | 2–18 | Not started |

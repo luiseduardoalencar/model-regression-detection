@@ -392,7 +392,8 @@ src/regression_detector/
   ports/          # Protocols: LLMClient, Notifier, RunRepository, Tracer
   adapters/       # openai_client, telegram_notifier, console_notifier,
                   # sqlite_repository, langfuse_tracer, noop_tracer
-  feature/        # classifier + PromptConfig
+  feature/        # classifier + PromptConfig; output models (Category, EmailClassification)
+  golden/         # edition file schema, duplicate detection, validation, validate-golden CLI
   prompts/        # loader for versioned YAML
   eval/           # runner, scorers, judge
   compare/        # diff, thresholds, signal vs noise

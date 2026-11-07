@@ -70,7 +70,9 @@ in [`../CLAUDE.md`](../CLAUDE.md) also apply.
 - **Luis types the code.** Agents never create code, test or config files
   unless Luis asks: they prepare each file's content, Luis types or copies
   it, and the agent explains the code. Documentation files are written by
-  the agent (delegated by Luis on 2026-11-05).
+  the agent (delegated by Luis on 2026-11-05). The agent may test code in a
+  scratch copy under `/tmp` (never in the repository) to verify it and to
+  compare it with what Luis typed, never as a copy-paste shortcut.
 - **Before every build step:** explain it in Portuguese (what it is in
   practice; "with it done we can X, which makes Y possible"; technologies;
   every file and why it exists) and survey the references behind that

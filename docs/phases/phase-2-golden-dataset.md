@@ -162,6 +162,12 @@ few-shot examples:
 Thresholds are checked against a crafted fixture of pairs in unit tests,
 never tuned on the golden set.
 
+Implementation note (build step 1): label conflicts are listed first but do
+not block on their own, because one of the guide's resolutions ("explain the
+difference in `notes`") leaves the pair in place and a blocking conflict
+could never be cleared. The pair's duplicate flag still blocks when its
+score is ≥ 90.
+
 **Why.** Dedup practice uses three layers with strategy-specific thresholds
 (TF-IDF cosine 0.9 conservative, embeddings 0.85–0.95) and warns against
 tuning on the test set [13]; MinHash thresholds of 0.7–0.85 are common
@@ -192,3 +198,23 @@ Procedure for flags: [`guides/validation-flags.md`](../guides/validation-flags.m
 17. Example implementation of the same BASWE project (golden dataset PR) — https://github.com/onkar-thete-04/model_regreesion_detection_system/pull/2
 18. RapidFuzz — fuzzy matching functions — https://tessl.io/registry/tessl/pypi-rapidfuzz/3.14.0/files/docs/fuzzy-matching.md
 19. Wikipedia — Confounding — https://en.wikipedia.org/wiki/Confounding
+
+Build step 1 (schema, duplicate detection and validation code):
+
+20. Breck et al., *Data Validation for Machine Learning* (MLSys 2019) — https://proceedings.mlsys.org/paper_files/paper/2019/hash/928f1160e52192e3e0017fb63ab65391-Abstract.html
+21. *Data Infrastructure for Machine Learning* (SysML 2018) — https://mlsys.org/Conferences/doc/2018/9.pdf
+22. Pydantic vs Pandera vs Great Expectations — https://drivedatascience.com/python-data-validation-pydantic-pandera-great-expectations-schema-enforcement/
+23. Pandera discussion #598 (Pydantic vs Pandera) — https://github.com/unionai-oss/pandera/discussions/598
+24. Langfuse — Datasets (schema enforcement) — https://langfuse.com/docs/evaluation/experiments/datasets
+25. Pydantic — Strict mode — https://pydantic.dev/docs/validation/latest/concepts/strict%5Fmode/
+26. Pydantic — Standard library types — https://pydantic.dev/docs/validation/latest/api/pydantic/standard_library_types/
+27. Pydantic — Performance (`model_validate_json`) — https://pydantic.dev/docs/validation/latest/concepts/performance
+28. Python — `unicodedata` — https://docs.python.org/3/library/unicodedata.html ; Unicode HOWTO — https://docs.python.org/3/howto/unicode.html
+29. James Bennett — Compare strings the right way — https://www.b-list.org/weblog/2023/dec/23/compare-python-strings/
+30. RapidFuzz — `fuzz` usage — https://rapidfuzz.github.io/RapidFuzz/Usage/fuzz.html ; changelog 3.0 (`processor=None` default) — https://github.com/rapidfuzz/RapidFuzz/blob/6bbd17e84881500032965897bf2ae058d8ab9361/CHANGELOG.rst
+31. Near-duplicate detection on small data — https://jarnaldich.me/blog/2023/03/19/near-duplicates.html
+32. text-dedup — MinHash — https://chenghaomou.github.io/text-dedup/minhash.html ; MinHash limitations — https://mbrenndoerfer.com/writing/minhash-algorithm-jaccard-similarity-lsh-deduplication/limitations-and-practical-considerations
+33. pytest — Parametrizing tests — https://docs.pytest.org/en/stable/how-to/parametrize.html
+34. uv — Project configuration (entry points) — https://docs.astral.sh/uv/concepts/projects/config/ ; Running commands — https://docs.astral.sh/uv/concepts/projects/run/
+35. Pro Git — Getting a Git Repository — https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository
+36. GitHub — Setting your commit email address — https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address
