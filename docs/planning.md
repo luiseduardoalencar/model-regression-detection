@@ -125,6 +125,7 @@ the context they tell. Secondary requests may go into `acceptable_categories`.
 | `account` × `payment` | Access, data or security of the account → `account`; the transaction itself → `payment` | "My account was blocked after a purchase" → `account` |
 | `technical` × `payment` | The app/site breaks (error screen, button does nothing) → `technical`; the payment is processed and declined or wrong → `payment` | "Checkout shows an error and won't finish" → `technical`; "my card was declined" → `payment` |
 | `technical` × `account` | Cannot log in because of password, block or data → `account`; the login page or app itself fails → `technical` | "The app closes when I open the login screen" → `technical` |
+| `general` × `account` | Asks how to do something in the account or on the platform, with no problem in the account → `general`; the account has a problem (access, block, wrong data) or the customer asks the company to change something in it → `account` | "Where do I save my address in the app?" → `general` (added 2026-11-07) |
 
 ### Golden file
 - **Language of the data: Brazilian Portuguese.** This is a Brazilian
@@ -236,7 +237,7 @@ the context they tell. Secondary requests may go into `acceptable_categories`.
   |---|---|---|
   | Exact | Hash of normalized text (NFKC, casefold, no punctuation, collapsed whitespace) | Match blocks |
   | Lexical | `rapidfuzz.token_sort_ratio` (not `token_set_ratio`, which scores 100 when one text is contained in the other) | ≥ 90 blocks; 80–90 warns; texts under 5 words only get the exact check |
-  | Semantic | Cosine similarity of OpenAI embeddings (model ID confirmed at implementation, kept in config) | ≥ 0.92 warns for review |
+  | Semantic | Cosine similarity of OpenAI embeddings (`text-embedding-3-large`, in `config/embeddings.yaml`) | ≥ 0.74 warns for review (was 0.92; changed 2026-11-07, see §12) |
   | Label conflict | Any lexical or semantic pair with different `expected_category` | Highest-priority flag: fix a label or explain the difference in `notes` |
 
   Starting thresholds come from published practice (TF-IDF cosine 0.9
@@ -476,19 +477,24 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
       Status 2026-11-06: built in step 1 — schema, unique IDs, enums,
       exact targets, approximate targets as information, exact and lexical
       duplicates and label conflicts within the golden set, and
-      `uv run validate-golden` (0 flags on the draft). Remaining: semantic
-      layer (step 3), few-shot × golden overlap (step 4; `find_cross_pairs`
+      `uv run validate-golden` (0 flags on the draft). Status 2026-11-07:
+      semantic layer built in step 3 (0.74, skipped without a key).
+      Remaining: few-shot × golden overlap (step 4; `find_cross_pairs`
       exists but is not wired), CI (step 14).
-- [ ] Unit-test fixture of crafted text pairs (must / must not be flagged)
+- [x] Unit-test fixture of crafted text pairs (must / must not be flagged)
       to check the duplicate thresholds — never tuned on the golden set.
-      Status 2026-11-06: exact and lexical pairs done in build step 1
-      (`tests/test_dedup.py`); pairs for the semantic threshold come in
-      step 3.
+      Done 2026-11-07: exact and lexical pairs in build step 1
+      (`tests/test_dedup.py`); 23 semantic pairs in build step 3
+      (`tests/test_semantic_live.py`, `live`), which set the threshold 0.74.
 - [ ] Label audit (decision 2.5): `gpt-6.1-terra` with 3 prompt variants
       re-labels every case; cases where the 3 agree with each other and
       disagree with Luis's label are flagged; Luis resolves each flag (keep /
       relabel / add `acceptable_categories` / rewrite) and records the reason
       in `notes`. The LLM never writes a label.
+      Status 2026-11-07: built in step 3 (`uv run audit-labels`) and run on
+      the draft: 138 confirmed, 1 flagged (`general-002`), 1 no consensus
+      (`general-018`), 0 not audited, US$ 0.52. Remaining: Luis resolves the
+      flag (before the freeze, step 10).
 - [ ] Intra-annotator check (decision 2.5): days later, Luis blindly
       re-labels 20 random cases (~15 %); Cohen's kappa ≥ 0.7 required,
       otherwise revise taxonomy definitions / tie-break rules before freezing.
@@ -1232,3 +1238,86 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
       `incomplete` status, the token usage (cost) and the request ID. The
       helper lives in an internal SDK module; the version is locked in
       `uv.lock` and a unit test checks the strict format is still sent.
+- [x] **Embeddings behind their own port** (decided 2026-11-07, build step
+      3; resolves the step 3 open item): `EmbeddingClient` with one method,
+      `embed(model, texts)`, and `OpenAIEmbeddingClient`. Reason: the
+      `CachingLLMClient` (step 5) and the DeepEval adapter (step 8) never
+      need embeddings; one port per capability keeps every client small.
+- [x] **Embedding model** (decided 2026-11-07, build step 3):
+      `text-embedding-3-large` in `config/embeddings.yaml` (better
+      multilingual quality; 140 emails cost under US$ 0.002). Cosine
+      thresholds depend on the embedding model, so the 0.92 of decision 2.6
+      is checked for this model by a `live` test with crafted pairs; if the
+      crafted pairs do not separate, Luis decides a new threshold from those
+      numbers, never from the golden set (done the same day, see "Semantic
+      threshold 0.74" below).
+- [x] **Semantic layer without a key** (decided 2026-11-07, build step 3):
+      without `OPENAI_API_KEY` (fork PRs) or when the API stays unavailable
+      after its retries, `validate-golden` prints "semantic layer skipped:
+      <reason>" and goes on. The layer only warns, so skipping it never hides
+      a blocking flag. A pair already caught by the lexical layer is not
+      repeated by the semantic layer.
+- [x] **Portuguese taxonomy, versioned** (decided 2026-11-07, build step 3):
+      `config/taxonomy/v1.md` holds the definitions, master rule and
+      tie-break rules of §4 in Portuguese, drafted by Claude and reviewed by
+      Luis. The label-audit variants include it; classifier prompt v1 (step
+      4) starts from it; the freeze (step 10) records its version. §4 stays
+      the English reference.
+- [x] **Label-audit variants** (decided 2026-11-07, build step 3):
+      `config/label-audit/variant-{a,b,c}.yaml`, outside `prompts/` (never
+      triggers the eval gate), in Portuguese, drafted by Claude and approved
+      by Luis: A definitions, B support queues ("para qual fila"), C main
+      action first. `gpt-6.1-terra`, reasoning effort `low`, no temperature,
+      `max_output_tokens` 1000 (reasoning tokens count toward it). Output
+      `{category, justification}`. Outcomes: `flagged`, `confirmed`,
+      `no_consensus`, `not_audited` (a variant without a valid answer: no
+      unanimity can be claimed, so no flag; the command exits 1).
+- [x] **Blind audit output** (decided 2026-11-07, build step 3):
+      `uv run audit-labels` prints only counts and case IDs; labels and
+      justifications go to `golden/drafts/label-audit.json`, opened by the
+      agent after Luis's blind answer (guide `label-audit.md`).
+- [x] **`numpy` as a direct dependency** (decided 2026-11-07, build step 3):
+      cosine of 140 × 140 vectors of 3072 dimensions; it was only a
+      transitive dependency of scikit-learn.
+- [x] **Semantic threshold 0.74** (decided 2026-11-07, build step 3;
+      changes decision 2.6, replaces 0.92): measured with
+      `text-embedding-3-large` on 23 crafted pairs
+      (`tests/test_semantic_live.py`, never the golden set). Paraphrases
+      0.745–0.875, unrelated pairs 0.300–0.451, minimal pairs (same context,
+      different category, one per tie-break rule) 0.565–0.803. 0.92 caught
+      no paraphrase. 0.74 is the highest value that still catches all 10
+      paraphrases with no unrelated pair warning; 2 of 7 minimal pairs warn,
+      as label conflicts (cancellation × return_refund 0.803, delivery ×
+      cancellation 0.773). Caveats: the margin to the lowest paraphrase is
+      small (0.745), and the fixture has no "same category, different
+      scenario" pairs, the commonest kind in the golden set, so the number
+      of warnings on the golden set is unknown until it runs. Minimal pairs
+      are printed, never asserted: embeddings measure the topic, not the
+      request, so no threshold separates them from paraphrases; the label
+      audit covers them.
+- [x] **Same-scenario criterion for the golden set** (decided 2026-11-07,
+      semantic review of edition 1): two cases are the same scenario when
+      they share the operational mechanics (what the support team must
+      recognise and do), whatever the product, the reason given or the
+      customer profile. Profiles vary across scenarios, never within one;
+      the same scenario in several voices belongs to the future invariance
+      suite (§4). Applied to the whole category, not only to flagged pairs:
+      `cancellation` had "cancel before shipping by choice" in 7 of 14
+      typical cases, so 5 are rewritten with new triggers (2 kept: formal
+      and slang); `payment-018` and `return_refund-012` are rewritten too.
+      Rewrites keep the cell (typical, difficulty, language, profile); the
+      matrix forbids removing cases. Details:
+      `golden/drafts/review-notes.md`.
+- [x] **Tie-break rule `general` × `account`** (decided 2026-11-07, label
+      audit of edition 1; adds to §4, replaces nothing): asks how to do
+      something in the account or on the platform, with no problem in the
+      account → `general`; the account has a problem (access, block, wrong
+      data) or the customer asks the company to change something in it →
+      `account`. Reason: the audit's only flag (`general-002`, "where do I
+      save my address in the app?") and its only no-consensus case
+      (`general-018`, "how do I open an account?") are both "how-to about the
+      account", which no rule covered; all 3 variants read the subject
+      (account data) instead of the request (an explanation). Added to
+      `config/taxonomy/v1.md` before classifier prompt v1 is written, so v1
+      starts from it. The audit of 2026-11-07 ran on the taxonomy without
+      this rule; edition 1 is still a draft, so `v1` keeps its name.

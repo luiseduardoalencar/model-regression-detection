@@ -28,20 +28,30 @@ in [`../CLAUDE.md`](../CLAUDE.md) also apply.
   errors, cached-input price, `live` marker, own parsing instead of
   `responses.parse`). `uv run pytest`: 67 passed, 1 deselected; the real
   call (`uv run --env-file .env pytest -m live -s`) passed.
-- **Next step: 3** (embeddings, semantic duplicates, LLM label audit). Not
-  started; nothing is built until Luis asks for the step. One branch and one
-  PR per step, merged by Luis. Code and test files are handed to Luis in
-  the chat (all files of the step at once, on his request of 2026-11-07).
+- **Step 3 done (2026-11-07)** on branch
+  `step-3-semantic-dedup-and-label-audit`: `EmbeddingClient` port and OpenAI
+  adapter, semantic layer in `validate-golden` (threshold 0.74, measured on
+  23 crafted pairs), Portuguese taxonomy `config/taxonomy/v1.md`, LLM label
+  audit `uv run audit-labels` (3 variants in `config/label-audit/`). Audit
+  result: 138 confirmed, 1 flagged (`general-002`), 1 no consensus
+  (`general-018`). Decisions in `docs/planning.md` §12.
+- **Next step: 4** (`PromptConfig`, YAML loader, `classify()`, classifier
+  prompt v1 with 7 few-shot examples). Not started; nothing is built until
+  Luis asks for the step. One branch and one PR per step, merged by Luis.
+  Code and test files are handed to Luis in the chat (all files of the step
+  at once, on his request of 2026-11-07).
 - **Code that exists:** domain models, golden schema, duplicate detection
-  (exact and lexical), validation, LLM port, OpenAI adapter and cost
-  computation. No classifier or evaluation code yet.
+  (exact, lexical, semantic), validation, label audit, LLM and embedding
+  ports, OpenAI adapters and cost computation. No classifier or evaluation
+  code yet.
 - **Golden edition 1:** 140 cases drafted and reviewed (2026-11-04); review
   items R1–R5 resolved
   ([`golden/drafts/review-notes.md`](golden/drafts/review-notes.md)). The
-  validation script confirms every exact coverage target and finds no exact
-  or lexical duplicates (2026-11-06). Still draft: semantic duplicates and
-  label audit (step 3), few-shot overlap (step 4), intra-annotator check and
-  freeze (step 10).
+  validation script confirms every exact coverage target (2026-11-06); the
+  semantic review (2026-11-07) left 23 warnings, all resolved with `notes`
+  or rewrites. Before the freeze (step 10): resolve the audit flag
+  `general-002`, decide the parked `account` / `payment` rewrites, few-shot
+  overlap (step 4), intra-annotator check.
 - **Progress tracking:** steps cross phases, so a §7 box in
   `docs/planning.md` is ticked only when every part of it is built; a box a
   step covers only in part stays unticked with a dated status line under it.
@@ -137,6 +147,17 @@ Ready-to-paste agent prompts for the long manual tasks:
 (making the build order with Luis and building step by step) and
 [`docs/agent-prompts/judge-calibration-agent.md`](docs/agent-prompts/judge-calibration-agent.md)
 (labeling the 100 calibration summaries, after the code generates them).
+
+## Lessons learned
+
+When a problem of this kind shows up, add an entry to
+[`docs/lessons-learned.md`](docs/lessons-learned.md) the same day (Luis's
+request of 2026-11-07, for content): a decision that did not hold against
+real data, a threshold or measurement that misled, a tool or library behaving
+differently than expected, a collision between two decisions, a process or
+security slip. Keep the evidence (numbers, file names) and the takeaway.
+Do not log code mistakes: typos, lint, wrong file names, tests failing from
+typing.
 
 ## When a decision is made or changed
 

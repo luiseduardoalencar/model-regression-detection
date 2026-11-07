@@ -66,7 +66,7 @@ Working rules set by Luis on 2026-11-05:
 |---|---|---|---|---|
 | 1 | Git repository and public GitHub repository (pushed from the first commit; progress pushed step by step); `Category` enum and `EmailClassification` (1.1); Pydantic schema of the golden file; **offline** validation: unique IDs, enums, coverage matrix (2.1–2.3), exact and lexical duplicates, label conflicts; crafted fixture of text pairs | `uv run validate-golden` lists the flags of the draft; `uv run pytest` passes | Resolve flags (`guides/validation-flags.md`) | F1 output models (part); F2 schema + validation (part); F2 fixture |
 | 2 | `LLMClient` port (`LLMRequest` / `LLMResult`); `OpenAIClient` adapter (Responses API, `max_retries=4`, 60 s timeout, status mapping); cost from `config/pricing.yaml` (prices re-checked) | Unit tests with simulated HTTP responses for each failure type; one real call with an invented email | OpenAI key and monthly limit (`guides/initial-setup.md` §1) | F1 port + adapter; F1 pricing and cost; F1 failure handling |
-| 3 | Semantic duplicate layer (embeddings, ≥ 0.92 warns); label audit command (`gpt-6.1-terra`, 3 prompt variants) | Full validation; `uv run audit-labels` writes the list of flagged cases | Semantic flags (`guides/validation-flags.md`); audit flags (`guides/label-audit.md`). The interval required before step 10 starts here | F2 validation (complete except few-shot); F2 label audit |
+| 3 | Semantic duplicate layer (embeddings, ≥ 0.74 warns; was 0.92, changed 2026-11-07); label audit command (`gpt-6.1-terra`, 3 prompt variants) | Full validation; `uv run audit-labels` writes the list of flagged cases | Semantic flags (`guides/validation-flags.md`); audit flags (`guides/label-audit.md`). The interval required before step 10 starts here | F2 validation (complete except few-shot); F2 label audit |
 | 4 | `PromptConfig`; YAML loader (enum, temperature × effort rule, `version_id` = file name, sha256); `prompts/active.yaml`; `classify()`; draft of classifier prompt v1 with 7 few-shot examples | `uv run classify "<email>"` returns `{category, summary}`; the loader rejects invalid YAML files; few-shot × golden overlap check passes | Review v1 and approve the 7 few-shot examples (`guides/prompt-change.md`); overlap flags (`guides/validation-flags.md`) | F1 classifier; F1 versioned prompts + loader; F1 `PromptConfig`; F1 few-shot examples |
 | 5 | Async runner with a concurrency limit; run validity (infra errors > 2 % → inconclusive); `CachingLLMClient`; `RunRepository` + `SQLiteRunRepository`; `Tracer` port + `NoopTracer` | The full exam runs offline with a fake client; a re-run only spends calls on failed cases | — | F3 runner; F3 run validity (infra); F3 re-run; F3 cache; F3 repository; F1 Tracer (part) |
 | 6 | Per-case scoring: category (exact / acceptable / miss), format code checks, latency, tokens, cost; 3.1 metrics (`classification_report`, confusion matrix + "no answer" column, slices with n) | Tests with fabricated results match hand-computed numbers | The "starts with Cliente" × summary rule 9 case (see open items) | F3 multi-dimensional scoring (without summary); F3 classification metrics |
@@ -150,12 +150,23 @@ None of these changes a recorded decision until Luis approves.
   (`planning.md` §7, Phase 2). The step 1 schema has no such fields and
   forbids extra keys, and `quality_checks` holds untyped dictionaries; step
   10 adds and types them.
-- **Step 3 — embeddings.** The `LLMClient` port only has `complete`; how the
-  embeddings call is wired, and how the semantic layer behaves in
-  `checks.yml` on fork PRs (no secrets).
+- **Step 3 — embeddings (resolved 2026-11-07).** Own port
+  (`EmbeddingClient`); without a key (fork PRs in `checks.yml`) the semantic
+  layer is skipped with a printed reason (`planning.md` §12).
+- **Step 3 — semantic threshold (resolved 2026-11-07: 0.74, `planning.md` §12).** With
+  `text-embedding-3-large`, the first crafted pairs scored: paraphrases
+  0.754 / 0.858 / 0.806, different requests 0.774 / 0.451 / 0.421. 0.92
+  catches no paraphrase, and no threshold separates the six pairs (a
+  paraphrase at 0.754 sits below a "não chegou, onde está?" × "quero
+  cancelar" pair at 0.774). Luis chose to widen the fixture first: 10
+  paraphrases, 7 minimal pairs (one per tie-break rule) and 6 unrelated
+  pairs in `tests/test_semantic_live.py`. The threshold, and whether minimal
+  pairs should warn as label conflicts, are decided from those scores, never
+  from the golden set.
 - **Steps 3 and 13 — support prompts.** The label-audit prompts and the
   degraded calibration prompt live outside `prompts/`, because any change
-  there triggers the eval gate.
+  there triggers the eval gate. Step 3 part resolved 2026-11-07:
+  `config/label-audit/`.
 - **Step 4 — few-shot approval (resolved 2026-11-05).** The GitHub
   repository now exists from step 1, so v1 and its 7 few-shot examples are
   approved in a real PR, as decision 1.4 says.
@@ -173,4 +184,5 @@ None of these changes a recorded decision until Luis approves.
 |---|---|
 | 1 | Done (2026-11-06), branch `step-1-models-and-golden-validation`: `feature/models.py`, `golden/schema.py`, `golden/dedup.py`, `golden/validation.py`, `golden/cli.py` and their tests; `uv run pytest` passes (41 tests); `uv run validate-golden` reports 0 flags on the draft. §7: F1 output models, F2 schema + validation and F2 fixture partly done, so no box is ticked yet (status lines in `planning.md`) |
 | 2 | Done (2026-11-06), branch `step-2-llm-client`: `ports/llm.py`, `adapters/openai_client.py`, `pricing.py`, `config/pricing.yaml` (`cached_input`), `live` marker in `pyproject.toml`; `tests/test_pricing.py`, `tests/test_openai_client.py`, `tests/test_openai_live.py`. `uv run pytest`: 67 passed, 1 deselected; one real call to `gpt-6-luna` passed (completed, 153 input / 38 output tokens, US$ 0.000034). §7 Phase 1: port + adapter, pricing and failure handling ticked |
-| 3–18 | Not started |
+| 3 | Done (2026-11-07), branch `step-3-semantic-dedup-and-label-audit`: `ports/embeddings.py`, `adapters/openai_embeddings.py`, `golden/semantic.py`, `golden/audit.py`, `golden/audit_cli.py`, changes in `golden/validation.py` and `golden/cli.py`; `config/embeddings.yaml`, `config/taxonomy/v1.md`, `config/label-audit/variant-{a,b,c}.yaml`, `config/pricing.yaml`; tests `test_semantic.py`, `test_openai_embeddings.py`, `test_audit.py`, `test_golden_cli.py`, `test_semantic_live.py`. `uv run pytest`: 93 passed, 2 deselected; `live` tests pass. Semantic threshold measured and set to 0.74 (23 crafted pairs). Golden review: 23 warnings, 0 blocking, all resolved with `notes` or rewrites (7 cases rewritten); category-wide rewrites of `account` and `payment` parked until before step 10. `audit-labels`: 138 confirmed, 1 flagged (`general-002`, label kept), 1 no consensus, US$ 0.52; both pointed at a missing tie-break rule, so `general` × `account` was added to `config/taxonomy/v1.md`. §7: F2 fixture ticked; F2 validation and label audit with status lines |
+| 4–18 | Not started |

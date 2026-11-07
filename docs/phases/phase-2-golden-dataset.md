@@ -7,8 +7,11 @@ that make a fair, hard-enough exam for the classifier, frozen and versioned.
 `golden/drafts/edition-1.json` (2026-11-04, review items R1–R5 resolved).
 Build step 1 (2026-11-06) delivered the file schema and the offline
 validation (`uv run validate-golden`): every exact target met, no exact or
-lexical duplicates. Pending: semantic duplicates and label audit (step 3),
-few-shot overlap (step 4), intra-annotator check and freeze (step 10).
+lexical duplicates. Build step 3 (2026-11-07) added the semantic layer
+(0.74) and the label audit: 23 semantic warnings resolved (7 cases
+rewritten), audit 138 confirmed / 1 flagged / 1 no consensus. Pending: the
+audit flag and the parked `account` / `payment` rewrites, few-shot overlap
+(step 4), intra-annotator check and freeze (step 10).
 Edition 1 stays frozen once released: tests and demos
 change prompts only (decisions 5.1, 6.1).
 Implementation checklist: [`planning.md` §7, Phase 2](../planning.md#phase-2--golden-dataset).
@@ -147,6 +150,16 @@ confident disagreements, followed by expert review, found 6–21 % label errors;
 above 95 % confidence, more than two-thirds of flags were human errors [12].
 Kappa below 0.7 means the guidance must be fixed before scaling [2].
 
+Implementation (build step 3, decided 2026-11-07): the 3 variants live in
+`config/label-audit/` (A definitions, B support queues, C main action first),
+outside `prompts/`, and include the Portuguese taxonomy
+`config/taxonomy/v1.md`. A variant without a valid answer leaves the case
+`not_audited` (no unanimity, no flag). `uv run audit-labels` prints only
+counts and IDs; labels go to `golden/drafts/label-audit.json` (no
+anchoring). The single-model, three-prompt ensemble is smaller than the
+multi-model ensemble of [12], so it finds fewer errors, but the paper shows
+that agreement across more prompts and models raises precision [27].
+
 Procedures: [`guides/label-audit.md`](../guides/label-audit.md),
 [`guides/intra-annotator-check.md`](../guides/intra-annotator-check.md).
 
@@ -159,7 +172,7 @@ few-shot examples:
 |---|---|---|
 | Exact | Hash of normalized text (NFKC, casefold, no punctuation, collapsed whitespace) | Blocks |
 | Lexical | `rapidfuzz.token_sort_ratio` | ≥ 90 blocks; 80–90 warns; < 5 words → exact check only |
-| Semantic | Cosine of OpenAI embeddings (model ID in config) | ≥ 0.92 warns |
+| Semantic | Cosine of OpenAI embeddings (model ID in config) | ≥ 0.74 warns (was 0.92; changed 2026-11-07) |
 | Label conflict | Lexical/semantic pair with different `expected_category` | Highest-priority flag |
 
 Thresholds are checked against a crafted fixture of pairs in unit tests,
@@ -170,6 +183,21 @@ not block on their own, because one of the guide's resolutions ("explain the
 difference in `notes`") leaves the pair in place and a blocking conflict
 could never be cleared. The pair's duplicate flag still blocks when its
 score is ≥ 90.
+
+Implementation note (build step 3, decided 2026-11-07): the semantic layer
+uses `text-embedding-3-large` (`config/embeddings.yaml`) behind an
+`EmbeddingClient` port. Cosine thresholds are specific to the embedding
+model — newer OpenAI models give much lower similarities than `ada-002` [28]
+and a cutoff must be re-checked whenever the model changes [29] — so the
+threshold is checked by a `live` test with crafted pairs, never on the golden
+set. On 23 crafted pairs, 0.92 caught no paraphrase (paraphrases 0.745–0.875,
+unrelated 0.300–0.451), so it became 0.74: the highest value that catches
+every paraphrase. Minimal pairs with different categories (0.565–0.803)
+overlap the paraphrases, because embeddings measure the topic rather than
+the request; those above 0.74 warn as label conflicts, and the label audit
+covers the rest. Without
+an API key the layer is skipped with a printed reason (it only warns). A pair
+already caught lexically is not repeated.
 
 **Why.** Dedup practice uses three layers with strategy-specific thresholds
 (TF-IDF cosine 0.9 conservative, embeddings 0.85–0.95) and warns against
@@ -211,6 +239,14 @@ Build step 1 (schema, duplicate detection and validation code):
 24. Langfuse — Datasets (schema enforcement) — https://langfuse.com/docs/evaluation/experiments/datasets
 25. Pydantic — Strict mode — https://pydantic.dev/docs/validation/latest/concepts/strict%5Fmode/
 26. Pydantic — Standard library types — https://pydantic.dev/docs/validation/latest/api/pydantic/standard_library_types/
+
+Build step 3 (semantic layer and label audit):
+
+27. Nahum et al., *Are LLMs Better than Reported?* (EMNLP 2025) — ensemble size and error detection — https://arxiv.org/pdf/2410.18889 ; https://alphaxiv.org/overview/2410.18889v2
+28. S. Anand — Embeddings similarity threshold (`ada-002` vs `text-embedding-3`) — https://www.s-anand.net/blog/embeddings-similarity-threshold/
+29. FutureAGI — Embedding similarity (thresholds are per model) — https://futureagi.com/glossary/embedding-similarity/
+30. OpenAI — `text-embedding-3-small` model page and prices; `text-embedding-3-large` price — https://developers.openai.com/api/docs/models/text-embedding-3-small ; https://learn.engineering.vips.edu/ai-models/openai-text-embedding-3-large
+31. OpenAI community — embeddings request limits (2048 inputs, 300k tokens) — https://community.openai.com/t/embeddings-api-max-batch-size/655329 ; https://community.openai.com/t/max-total-embeddings-tokens-per-request/1254699
 27. Pydantic — Performance (`model_validate_json`) — https://pydantic.dev/docs/validation/latest/concepts/performance
 28. Python — `unicodedata` — https://docs.python.org/3/library/unicodedata.html ; Unicode HOWTO — https://docs.python.org/3/howto/unicode.html
 29. James Bennett — Compare strings the right way — https://www.b-list.org/weblog/2023/dec/23/compare-python-strings/
