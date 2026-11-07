@@ -51,6 +51,12 @@ the duplicate-charge scenario appears in 6 of 20 `payment` cases (`payment-001`,
 `-003`, `-008`, `-011`, `-013`, `-014`) and passwords in 8 of 20 `account`
 cases; if the embeddings check flags pairs among them, vary the scenario.
 
+## Validation script (2026-11-06)
+
+`uv run validate-golden` (build step 1) on this draft: 0 flags. It confirms
+the structural targets above and finds no exact duplicates and no lexical
+pairs at or above 80.
+
 ## Not checked yet (need code)
 
 - Semantic duplicates (embeddings) — validation script, guide

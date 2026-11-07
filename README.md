@@ -12,15 +12,18 @@ categories plus a one-sentence summary. It is never deployed to production.
 
 **Status:** all planning decisions closed (Phases 1–6); the
 [implementation plan](docs/implementation-plan.md) (18 build steps) was
-approved on 2026-11-05 and the build starts at step 1. The project is
-scaffolded (package skeleton, folders, smoke tests) but has no feature or
-evaluation code yet.
+approved on 2026-11-05. Steps 1 and 2 are done (2026-11-06): domain models,
+the golden file schema and offline validation of the golden draft; the LLM
+port, the OpenAI adapter and cost per call from `config/pricing.yaml`. There
+is no classifier or evaluation code yet.
 
-## Quick start (scaffold)
+## Quick start
 
 ```bash
 uv sync          # Python 3.12, dependencies from uv.lock
-uv run pytest    # scaffold checks
+uv run pytest    # unit tests (tests marked `live` are skipped)
+uv run validate-golden   # validate the golden draft and list its flags
+uv run --env-file .env pytest -m live -s   # one real OpenAI call; spends money
 uv run ruff check .
 cp .env.example .env   # fill in secrets locally; never commit .env
 ```

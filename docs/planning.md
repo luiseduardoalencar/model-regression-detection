@@ -151,6 +151,12 @@ the context they tell. Secondary requests may go into `acceptable_categories`.
   | `edge_types` | List of edge / adversarial types from decision 2.2 (empty for most `typical` cases) | Claude, from the brief |
   | `notes` | Why the case exists (PT) | Drafted by Claude, reviewed by Luis |
 
+  Schema rules enforced when the file is loaded (build step 1): every field
+  is required and unknown keys are rejected; `id` matches
+  `<category>-NNN` with a category label as prefix; IDs are unique;
+  `acceptable_categories` never repeats `expected_category`; the header
+  `categories` lists the 7 labels in enum order.
+
 - **Coverage matrix, golden edition 1** (decision 2.1) — per category, the
   same for all 7:
 
@@ -419,18 +425,28 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
       a loader that validates labels against the enum and rejects
       `temperature` with a reasoning effort other than `none`.
 - [ ] `PromptConfig` and output models in Pydantic; structured JSON output.
+      Status 2026-11-06: output models done in build step 1 (`Category`,
+      `EmailClassification` in `feature/models.py`); `PromptConfig` and
+      structured output come in step 4.
 - [ ] 7 static few-shot examples in classifier prompt v1 (one per category,
       typical `easy` cases, Portuguese), drafted by Claude and approved by
       Luis in the prompt's PR (decision 1.4).
-- [ ] `LLMClient` port (`LLMRequest` / `LLMResult`, decision 1.5) +
+- [x] `LLMClient` port (`LLMRequest` / `LLMResult`, decision 1.5) +
       `OpenAIClient` adapter so another provider could be plugged in later
       without touching the feature.
-- [ ] `config/pricing.yaml` (price per model, date checked) and cost
+      Done 2026-11-06 (build step 2): `ports/llm.py`,
+      `adapters/openai_client.py`; one real call to `gpt-6-luna` passed.
+- [x] `config/pricing.yaml` (price per model, date checked) and cost
       computation per call.
-- [ ] Failure handling in `OpenAIClient` (decision 1.6): SDK retries
-      (`max_retries=4`, 60 s timeout per call); config errors (400/401/404)
-      abort the run; refusal / incomplete / invalid output mapped to
-      `LLMResult.status`, never retried.
+      Done 2026-11-06 (build step 2): `cached_input` price per model;
+      `pricing.py` (`PriceTable.cost_usd`, `price_for`).
+- [x] Failure handling in `OpenAIClient` (decision 1.6): SDK retries
+      (`max_retries=4`, 60 s timeout per call); config errors (every
+      non-retried HTTP error: 400/401/403/404/422) abort the run; refusal /
+      incomplete / invalid output mapped to `LLMResult.status`
+      (`refusal` / `incomplete` / `invalid_output`), never retried.
+      Done 2026-11-06 (build step 2): each case covered by
+      `tests/test_openai_client.py` against simulated HTTP answers.
 - [ ] Local Langfuse via Docker Compose (`infra/langfuse/`); keys in the
       local `.env` (`LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`,
       `LANGFUSE_HOST`).
@@ -447,16 +463,27 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
       shows it back; Luis confirms label and difficulty.
       Status 2026-11-04: 140 cases drafted in `golden/drafts/edition-1.json`;
       review items R1–R5 in `golden/drafts/review-notes.md` resolved the same
-      day; coverage targets met. Next: validation script, label audit,
-      intra-annotator check, freeze.
+      day; coverage targets met. Status 2026-11-06: the validation script
+      (build step 1) confirms every exact target and finds no exact or
+      lexical duplicates. Next: semantic duplicates and label audit (step
+      3), intra-annotator check and freeze (step 10).
 - [ ] Pydantic schema + validation script: unique IDs, labels in the enum,
       matrix balance (2.1, 2.2, 2.3; exact targets flagged, approximate
       targets shown as information), duplicate detection (2.6) within the
       golden set and between the golden set and the prompt's few-shot
       examples (1.4); runs locally and in CI whenever `prompts/` or
       `golden/` change.
+      Status 2026-11-06: built in step 1 — schema, unique IDs, enums,
+      exact targets, approximate targets as information, exact and lexical
+      duplicates and label conflicts within the golden set, and
+      `uv run validate-golden` (0 flags on the draft). Remaining: semantic
+      layer (step 3), few-shot × golden overlap (step 4; `find_cross_pairs`
+      exists but is not wired), CI (step 14).
 - [ ] Unit-test fixture of crafted text pairs (must / must not be flagged)
       to check the duplicate thresholds — never tuned on the golden set.
+      Status 2026-11-06: exact and lexical pairs done in build step 1
+      (`tests/test_dedup.py`); pairs for the semantic threshold come in
+      step 3.
 - [ ] Label audit (decision 2.5): `gpt-6.1-terra` with 3 prompt variants
       re-labels every case; cases where the 3 agree with each other and
       disagree with Luis's label are flagged; Luis resolves each flag (keep /
@@ -1156,3 +1183,52 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
       exists until step 14, so pushes trigger nothing. Side effect: classifier
       prompt v1 and its few-shot examples are approved in a real PR
       (decision 1.4).
+- [x] **Golden schema rules recorded** (decided 2026-11-06, build step 1):
+      two rules written into the schema while building step 1 are now part
+      of the golden file contract (§4): `acceptable_categories` never
+      repeats `expected_category`, and the header `categories` lists the 7
+      labels in enum order. Reason: a repeated label adds nothing to the
+      three-way scoring and hides a typing mistake; a header that differs
+      from the enum would mean the file was written for another taxonomy.
+      Adds to §4; replaces nothing.
+- [x] **Partial progress in §7** (decided 2026-11-06): build steps cross
+      phases, so a §7 box is ticked only when every part of it is built; a
+      box a step covers only in part stays unticked with a dated status line
+      saying what exists and which step completes it. The status table in
+      `implementation-plan.md` remains the per-step record.
+- [x] **`invalid_output` status** (decided 2026-11-06, build step 2,
+      changes 1.5): `LLMResult.status` gains `invalid_output`; `error` is
+      kept for infrastructure failures only. Reason: decision 1.6 treats
+      invalid output as a classifier miss and infrastructure errors as
+      not-a-miss that count toward the 2 % run-validity limit; with one
+      shared `error` status the runner could not tell them apart.
+      Replaces the 1.5 status list completed / incomplete / refusal / error.
+      `LLMResult` also gains `requested_model` (price lookup) and `detail`
+      (short reason for a non-completed status).
+- [x] **Configuration errors widened** (decided 2026-11-06, build step 2,
+      changes 1.6): every HTTP error the OpenAI SDK does not retry
+      (400 / 401 / 403 / 404 / 422) aborts the run, raised as
+      `LLMConfigurationError`. Replaces "400 / 401 / 404". Reason: 403
+      (permission, e.g. a model not enabled for the project) and 422 never
+      succeed on a retry either.
+- [x] **Cached-input price and lookup rule** (decided 2026-11-06, build
+      step 2, refines 1.5): `config/pricing.yaml` gets `cached_input` per
+      model; cost = (input − cached) × input + cached × cached_input +
+      output × output (reasoning tokens are already output). Prices are
+      looked up by the requested model; a model missing from the file is a
+      configuration error, never a zero cost (LiteLLM's cost map silently
+      prices unknown models at $0, which a gate report cannot afford).
+- [x] **Live test marker** (decided 2026-11-06, build step 2): the one real
+      call of each step is a pytest test marked `live`, excluded from the
+      default `uv run pytest` and run on purpose with
+      `uv run --env-file .env pytest -m live`, so no test spends money by
+      accident and CI never needs the key for unit tests.
+- [x] **Own parsing instead of `responses.parse`** (decided 2026-11-06,
+      build step 2): `OpenAIClient` calls `responses.create` with the same
+      strict JSON-schema format (`type_to_text_format_param` from the SDK)
+      and validates the text itself. Reason: in openai 3.45.0
+      `responses.parse` raises on text that does not match the schema,
+      including answers cut by `max_output_tokens`, which would lose the
+      `incomplete` status, the token usage (cost) and the request ID. The
+      helper lives in an internal SDK module; the version is locked in
+      `uv.lock` and a unit test checks the strict format is still sent.

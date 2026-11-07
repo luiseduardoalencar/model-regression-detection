@@ -3,7 +3,7 @@
 Entry point for any AI agent helping Luis on this project. The portfolio rules
 in [`../CLAUDE.md`](../CLAUDE.md) also apply.
 
-## Current state (updated 2026-11-05)
+## Current state (updated 2026-11-06)
 
 - **Decisions closed:** foundations, Phase 1 (1.1–1.6), Phase 2 (2.1–2.6),
   Phase 3 (3.1–3.6), Phase 4 (4.1–4.2), Phase 5 (5.1–5.3), Phase 6
@@ -12,20 +12,40 @@ in [`../CLAUDE.md`](../CLAUDE.md) also apply.
 - **Implementation plan approved (2026-11-05):** 18 build steps in
   [`docs/implementation-plan.md`](docs/implementation-plan.md), with the
   working rules for each step and a status table.
-- **Current step: 1** (git + public GitHub repository, domain models,
-  offline golden validation), on branch
-  `step-1-models-and-golden-validation`. One branch and one PR per step,
-  merged by Luis. Detail and references presented on 2026-11-05; waiting for
-  Luis to approve before the first file. Approximate coverage targets are
-  information only and edition 1 is kept as it is (decided 2026-11-05).
-- **Scaffold exists** (uv project, package skeleton, empty folders, golden
-  draft file, smoke tests). No feature or evaluation code yet; nothing is
-  built until Luis asks for the step.
+- **Step 1 done (2026-11-06)** on branch
+  `step-1-models-and-golden-validation`: public GitHub repository;
+  `Category` and `EmailClassification` (`feature/models.py`); golden file
+  schema (`golden/schema.py`); exact and lexical duplicate detection
+  (`golden/dedup.py`); offline validation (`golden/validation.py`) and the
+  `uv run validate-golden` command (`golden/cli.py`); crafted fixture of
+  text pairs (`tests/test_dedup.py`). `uv run pytest` passes (41 tests) and
+  the draft has 0 flags.
+- **Step 2 done (2026-11-06)** on branch `step-2-llm-client`: `LLMClient`
+  port (`ports/llm.py`), `OpenAIClient` adapter
+  (`adapters/openai_client.py`), cost from `config/pricing.yaml`
+  (`pricing.py`), `live` pytest marker. Decisions of the step in
+  `docs/planning.md` §12 (`invalid_output` status, wider configuration
+  errors, cached-input price, `live` marker, own parsing instead of
+  `responses.parse`). `uv run pytest`: 67 passed, 1 deselected; the real
+  call (`uv run --env-file .env pytest -m live -s`) passed.
+- **Next step: 3** (embeddings, semantic duplicates, LLM label audit). Not
+  started; nothing is built until Luis asks for the step. One branch and one
+  PR per step, merged by Luis. Code and test files are handed to Luis in
+  the chat (all files of the step at once, on his request of 2026-11-07).
+- **Code that exists:** domain models, golden schema, duplicate detection
+  (exact and lexical), validation, LLM port, OpenAI adapter and cost
+  computation. No classifier or evaluation code yet.
 - **Golden edition 1:** 140 cases drafted and reviewed (2026-11-04); review
-  items R1–R5 resolved and coverage targets met
-  ([`golden/drafts/review-notes.md`](golden/drafts/review-notes.md)). Still
-  draft: validation script (semantic duplicates), label audit and
-  intra-annotator check come next and need code.
+  items R1–R5 resolved
+  ([`golden/drafts/review-notes.md`](golden/drafts/review-notes.md)). The
+  validation script confirms every exact coverage target and finds no exact
+  or lexical duplicates (2026-11-06). Still draft: semantic duplicates and
+  label audit (step 3), few-shot overlap (step 4), intra-annotator check and
+  freeze (step 10).
+- **Progress tracking:** steps cross phases, so a §7 box in
+  `docs/planning.md` is ticked only when every part of it is built; a box a
+  step covers only in part stays unticked with a dated status line under it.
+  The status table in `docs/implementation-plan.md` is the per-step record.
 - Decisions are made one sub-step at a time: research, explain the terms,
   recommend, wait for Luis's approval, then record (see the last section).
 
