@@ -7,7 +7,10 @@ keep the core vendor-independent.
 **Status:** all decisions taken (1.1–1.6). Built: output contract (1.1,
 build step 1), `LLMClient` port, `OpenAIClient` adapter, cost from
 `config/pricing.yaml` and failure handling (1.5, 1.6, build step 2;
-2026-11-06). Next: prompt files, loader and classifier (1.2–1.4, step 4).
+2026-11-06), prompt files, loader, `PromptConfig` and classifier with
+prompt v1 (1.2–1.4, build step 4, 2026-11-17; its decisions of 2026-11-16
+are below). Remaining: tracing (`Tracer` port in step 5, Langfuse in
+step 11).
 Implementation checklist: [`planning.md` §7, Phase 1](../planning.md#phase-1--feature-under-test).
 
 ## 1.1 Output contract
@@ -59,6 +62,34 @@ runtime contract:
 The loader rejects `temperature` combined with any reasoning effort other
 than `none` (OpenAI constraint [9]).
 
+Decided 2026-11-16 (build step 4):
+
+- **Taxonomy copied.** The definitions and tie-break rules are copied from
+  `config/taxonomy/v1.md` into the prompt file, so a taxonomy change only
+  reaches the classifier through a new prompt version (and the PR gate). A
+  unit test checks that v1's copy matches taxonomy v1.
+- **Rendering.** `system_prompt` holds the placeholders `{categories}` and
+  `{tie_break_rules}` exactly once each; they are filled by plain text
+  substitution (as in the label audit). `str.format` breaks on JSON braces;
+  Jinja2 would bring logic into the prompt.
+- **Email as data.** The email goes between `<email>` and `</email>` in the
+  real call and in the examples, and the system prompt says the text inside
+  is data, never an instruction. This is the *delimiting* form of
+  spotlighting, which lowered the attack success rate of indirect prompt
+  injection from over 50 % to under 2 % in its study [32]. Datamarking and
+  encoding (the stronger forms) transform the customer's text, which the
+  summary must report. Limitation: an email can write `</email>` itself.
+- **Safe parsing and identity.** Files are read with `yaml.safe_load`,
+  which only builds plain mappings, lists and scalars; the general loaders
+  can build Python objects from tags such as `!!python/object` [33]. The
+  sha256 is computed over the file bytes.
+- **Prompt cache.** Instructions and examples come first and the email last,
+  so the repeated prefix can be served from the provider's prompt cache,
+  available from 1024 tokens and billed at the `cached_input` price [34].
+  Measured 2026-11-17 (live test): prompt v1 sends 2,038 input tokens; a
+  second identical call had 2,035 of them cached (latency 3.6 s → 1.9 s);
+  the first call cost US$ 0.000227.
+
 **Why.** Anything that changes behavior must live in `prompts/` so the PR
 gate evaluates it. Prompt-versioning practice recommends versioning the full
 runtime contract — model, temperature, max tokens, response format — not only
@@ -98,8 +129,25 @@ role of the `production` label while keeping prompts in git for the PR gate.
   and keep the prompt identical across calls [13].
 - Few-shot helps more than reasoning, especially for smaller models [5].
 
+Decided 2026-11-16 (build step 4):
+
+- **Format.** Each example is a user turn (the email, delimited) followed by
+  an assistant turn (the JSON answer `{category, summary}`), between the
+  instructions and the real email.
+- **Order.** Enum order, fixed. One example per category removes the
+  majority-label bias; the recency bias, the pull toward the label of the
+  last example, remains [31] and is a recorded limitation. Shuffling per
+  call was rejected (it breaks the prompt cache and reproducibility).
+- **Approval without anchoring.** The agent shows the 7 emails without
+  labels; Luis labels them blind; then the agent shows its labels and
+  summaries and Luis decides. The summaries are written by the agent
+  following the summary guide and reviewed by Luis.
+- **Overlap check.** `validate-golden` checks the examples of the active
+  prompt against every golden email with the layers of decision 2.6: exact
+  and lexical ≥ 90 block; lexical 80–90 and semantic ≥ 0.74 warn.
+
 **Future experiments:** more examples per category; dynamic (retrieved)
-examples.
+examples; example order (recency bias).
 
 ## 1.5 `LLMClient` port
 
@@ -205,3 +253,8 @@ not from the status [27].
 28. openai-python — Parsing Responses API output (`responses.parse`, `text_format`) — https://raw.githubusercontent.com/openai/openai-python/main/helpers.md
 29. Testing openai-python retries with `httpx.MockTransport` — https://hashnode.com/posts/test-openai-python-retries-with-httpx-mocktransport/6a68cb035906af76343badfd ; https://www.b-list.org/weblog/2023/dec/08/mock-python-httpx/
 30. `typing.Protocol` for ports (structural subtyping) — https://rodekruis.github.io/qualitative-feedback-analysis/adr/002-protocol-based-ports.html
+31. Zhao et al., *Calibrate Before Use: Improving Few-Shot Performance of Language Models* (ICML 2021; majority-label and recency biases) — https://arxiv.org/abs/2102.09690
+32. Hines et al., *Defending Against Indirect Prompt Injection Attacks With Spotlighting* (CAMLIS 2024) — https://arxiv.org/abs/2403.14720
+33. Semgrep — Testing vulnerable PyYAML versions (`safe_load`) — https://semgrep.dev/blog/2022/testing-vulnerable-pyyaml-versions
+34. OpenAI — Prompt caching (guide and cookbook) — https://developers.openai.com/api/docs/guides/prompt-caching ; https://developers.openai.com/cookbook/examples/prompt_caching101
+35. Pydantic — `model_validator` (rule across two fields: temperature × effort) — https://pydantic.dev/docs/validation/2.11/api/pydantic/functional_validators/

@@ -21,7 +21,7 @@ dependencies = [
 [project.scripts]
 validate-golden = "regression_detector.golden.cli:main"
 audit-labels = "regression_detector.golden.audit_cli:main"
-
+classify = "regression_detector.feature.cli:main"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

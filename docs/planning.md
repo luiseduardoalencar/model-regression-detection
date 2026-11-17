@@ -47,7 +47,7 @@ and `agent-orchestration-system`.
 | Language | Python 3.11+ | Python 3.12 + `uv` | Free |
 | LLM (feature under test) | OpenAI gpt-4o / gpt-4o-mini | `gpt-6-luna` ($0.10 / $0.50 per 1M tokens, `reasoning.effort=none`); model ID set in the prompt YAML | Paid — OpenAI credits |
 | LLM-as-judge | (implicit) | `gpt-6.1-terra` ($1 / $5 per 1M tokens, `reasoning.effort=none`, temperature 0); model ID set in the judge's versioned config (Phase 3). Single judge, no second provider | Paid — OpenAI credits |
-| LLM API | — | OpenAI **Responses API** (`responses.parse` with Pydantic `text_format`), isolated inside the `OpenAIClient` adapter | — |
+| LLM API | — | OpenAI **Responses API** (`responses.create` with a strict JSON-schema format built from the Pydantic model; the text is validated by our code, see §12 "Own parsing instead of `responses.parse`"), isolated inside the `OpenAIClient` adapter | — |
 | Eval framework | Custom + RAGAS or DeepEval | **DeepEval** (open source, Apache 2.0; runs locally and in CI with no account): G-Eval metric for the summary judge. Runner, baseline comparison, signal vs noise and the PR gate are our code — no market tool covers them | Free |
 | Observability | — | **Langfuse** (open source, MIT core), self-hosted **locally** with Docker Compose (`localhost:3000`): golden edition as a dataset, prompt versions, one trace per case, scores, experiments side by side. Local runs only; CI uses a no-op tracer | Free |
 | Typed contracts | Pydantic | Pydantic v2 | Free |
@@ -421,17 +421,28 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
 ## 7. Build plan
 
 ### Phase 1 — Feature under test
-- [ ] Classifier function with the prompt as a configurable parameter.
-- [ ] Versioned prompts in `prompts/` (YAML layout from decision 1.2), with
+- [x] Classifier function with the prompt as a configurable parameter.
+      Done 2026-11-17 (build step 4): `feature/classifier.py`
+      (`build_request`, `classify`) and `uv run classify "<email>"`
+      (`feature/cli.py`).
+- [x] Versioned prompts in `prompts/` (YAML layout from decision 1.2), with
       a loader that validates labels against the enum and rejects
       `temperature` with a reasoning effort other than `none`.
-- [ ] `PromptConfig` and output models in Pydantic; structured JSON output.
+      Done 2026-11-17 (build step 4): `prompts/classifier/v1.yaml`,
+      `prompts/active.yaml`, `prompts/loader.py` (`yaml.safe_load`,
+      `version_id` = file name, sha256 of the file bytes).
+- [x] `PromptConfig` and output models in Pydantic; structured JSON output.
       Status 2026-11-06: output models done in build step 1 (`Category`,
-      `EmailClassification` in `feature/models.py`); `PromptConfig` and
-      structured output come in step 4.
-- [ ] 7 static few-shot examples in classifier prompt v1 (one per category,
+      `EmailClassification` in `feature/models.py`). Done 2026-11-17 (build
+      step 4): `PromptConfig` in `feature/prompt_config.py`; the structured
+      output (strict JSON schema from `EmailClassification`) goes through the
+      `OpenAIClient` of step 2.
+- [x] 7 static few-shot examples in classifier prompt v1 (one per category,
       typical `easy` cases, Portuguese), drafted by Claude and approved by
       Luis in the prompt's PR (decision 1.4).
+      Done 2026-11-17 (build step 4): Luis labeled the 7 emails blind and
+      matched the draft labels 7/7; no `few_shot_overlap` flag against
+      edition 1 (lexical and semantic).
 - [x] `LLMClient` port (`LLMRequest` / `LLMResult`, decision 1.5) +
       `OpenAIClient` adapter so another provider could be plugged in later
       without touching the feature.
@@ -479,22 +490,26 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
       duplicates and label conflicts within the golden set, and
       `uv run validate-golden` (0 flags on the draft). Status 2026-11-07:
       semantic layer built in step 3 (0.74, skipped without a key).
-      Remaining: few-shot × golden overlap (step 4; `find_cross_pairs`
-      exists but is not wired), CI (step 14).
+      Status 2026-11-17: few-shot × golden overlap wired in step 4
+      (`few_shot_overlap`; 0 flags for v1's 7 examples). Remaining: CI
+      (step 14).
 - [x] Unit-test fixture of crafted text pairs (must / must not be flagged)
       to check the duplicate thresholds — never tuned on the golden set.
       Done 2026-11-07: exact and lexical pairs in build step 1
       (`tests/test_dedup.py`); 23 semantic pairs in build step 3
       (`tests/test_semantic_live.py`, `live`), which set the threshold 0.74.
-- [ ] Label audit (decision 2.5): `gpt-6.1-terra` with 3 prompt variants
+- [x] Label audit (decision 2.5): `gpt-6.1-terra` with 3 prompt variants
       re-labels every case; cases where the 3 agree with each other and
       disagree with Luis's label are flagged; Luis resolves each flag (keep /
       relabel / add `acceptable_categories` / rewrite) and records the reason
       in `notes`. The LLM never writes a label.
       Status 2026-11-07: built in step 3 (`uv run audit-labels`) and run on
       the draft: 138 confirmed, 1 flagged (`general-002`), 1 no consensus
-      (`general-018`), 0 not audited, US$ 0.52. Remaining: Luis resolves the
-      flag (before the freeze, step 10).
+      (`general-018`), 0 not audited, US$ 0.52. Done 2026-11-07 (box ticked
+      2026-11-16): Luis resolved the flag the same day (label kept, reason in
+      the `notes` of `general-002`; tie-break rule `general` × `account`
+      added, §12). The audit result is written into the header
+      (`quality_checks`) at the freeze (step 10).
 - [ ] Intra-annotator check (decision 2.5): days later, Luis blindly
       re-labels 20 random cases (~15 %); Cohen's kappa ≥ 0.7 required,
       otherwise revise taxonomy definitions / tie-break rules before freezing.
@@ -1321,3 +1336,62 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
       `config/taxonomy/v1.md` before classifier prompt v1 is written, so v1
       starts from it. The audit of 2026-11-07 ran on the taxonomy without
       this rule; edition 1 is still a draft, so `v1` keeps its name.
+- [x] **Agent writes the code, test and config files** (decided 2026-11-16,
+      build step 4; replaces "Luis types the code" of 2026-11-05): the agent
+      writes the full content of every code, test and config file of a step
+      in the chat, already tested in a scratch copy under `/tmp`, and
+      explains each one; Luis copies each file into its place in the
+      repository. The agent still never writes into the repository's code
+      directly, and documentation stays written by the agent. Reason: Luis's
+      choice; the project is local, never in production, and the part that
+      needed his hand (the golden content) is done.
+- [x] **Taxonomy copied into the prompt file** (decided 2026-11-16, build
+      step 4, applies 1.2): `prompts/classifier/v1.yaml` carries its own copy
+      of the definitions and tie-break rules of `config/taxonomy/v1.md`, and
+      `tests/test_prompt_v1.py` checks that the copy matches. Considered, not
+      adopted: the prompt pointing to the taxonomy file, which would let a
+      taxonomy edit change the classifier without touching `prompts/`, so
+      the PR gate would not run.
+- [x] **Rendering by named placeholders** (decided 2026-11-16, build step
+      4): `system_prompt` holds `{categories}` and `{tie_break_rules}` once
+      each, replaced by plain text substitution, as in the label audit; the
+      loader rejects a prompt where either appears zero or several times.
+      Considered, not adopted: `str.format` (breaks on the braces of JSON)
+      and Jinja2 (loops and logic inside the prompt, not needed).
+- [x] **The email is delimited as data** (decided 2026-11-16, build step
+      4): the email, in the real call and in the few-shot examples, goes
+      between `<email>` and `</email>`, and the system prompt says the text
+      inside is data, never an instruction (spotlighting by delimiting,
+      Hines et al. 2024). Datamarking and encoding were not adopted because
+      they transform the customer's text that the summary must report.
+      Limitation: an email that writes `</email>` itself can close the
+      delimiter; the adversarial cases measure what that costs.
+- [x] **Few-shot format and order** (decided 2026-11-16, build step 4,
+      applies 1.4): the 7 examples go as user/assistant turns (the
+      assistant turn is the JSON answer) after the instructions and before
+      the email, in enum order, fixed. One example per category removes the
+      majority-label bias; the recency bias toward the last label
+      (`general`) remains and is recorded as a limitation and a future
+      experiment. Shuffling per call was rejected: it breaks the provider's
+      prompt cache and reproducibility.
+- [x] **Few-shot overlap severities** (decided 2026-11-16, build step 4,
+      confirms 2.6 for few-shot pairs): the `few_shot_overlap` flag uses the
+      same layers and thresholds as golden pairs: exact and lexical ≥ 90
+      block; lexical 80–90 and semantic ≥ 0.74 warn. It replaces the
+      "Blocks" for every few-shot overlap written in
+      `guides/validation-flags.md`. `validate-golden` checks the examples of
+      the active classifier prompt (or of `--prompt`), embedded in the same
+      call as the golden emails.
+- [x] **Approval of the few-shot examples** (decided 2026-11-16, build step
+      4, applies 1.4): the agent shows the 7 example emails without labels
+      or summaries; Luis labels each one blind; only then the agent shows
+      its labels and summaries, and Luis decides. The summaries are written
+      by the agent (Luis's choice) following the summary guide, and Luis
+      reviews them.
+- [x] **Byte check before the commit** (decided 2026-11-17, build step 4):
+      before each step's commit the agent compares the files Luis placed
+      with the tested copy byte by byte, including the sha256 of any prompt
+      file, and `uv run ruff format --check src tests` joins the step
+      checks. Reason: copying from the chat dropped the final newline of 17
+      files and changed the hash of classifier prompt v1 while every test
+      and `ruff check` passed (`docs/lessons-learned.md`).

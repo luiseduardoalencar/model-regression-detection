@@ -1,4 +1,8 @@
-"""`uv run validate-golden [path]`: validate a golden edition and list its flags."""
+"""`uv run validate-golden [path]`: validate a golden edition and list its flags.
+
+The few-shot examples of the active classifier prompt (or of `--prompt`) are checked
+against the golden emails too (decision 1.4).
+"""
 
 import argparse
 import asyncio
@@ -19,6 +23,12 @@ from regression_detector.golden.validation import Severity, coverage_summary, va
 from regression_detector.ports.embeddings import EmbeddingClient, EmbeddingUnavailableError
 from regression_detector.ports.llm import LLMConfigurationError
 from regression_detector.pricing import load_price_table
+from regression_detector.prompts.loader import (
+    LoadedPrompt,
+    PromptFileError,
+    load_active_classifier,
+    load_classifier_prompt,
+)
 
 DEFAULT_PATH = Path("golden/drafts/edition-1.json")
 
@@ -26,6 +36,9 @@ DEFAULT_PATH = Path("golden/drafts/edition-1.json")
 def main(argv: list[str] | None = None, embedding_client: EmbeddingClient | None = None) -> int:
     parser = argparse.ArgumentParser(description="Validate a golden set edition file.")
     parser.add_argument("path", nargs="?", type=Path, default=DEFAULT_PATH)
+    parser.add_argument(
+        "--prompt", type=Path, help="classifier prompt whose examples are checked (default: active)"
+    )
     args = parser.parse_args(argv)
     if not args.path.is_file():
         parser.error(f"file not found: {args.path}")
@@ -37,12 +50,15 @@ def main(argv: list[str] | None = None, embedding_client: EmbeddingClient | None
         return 1
 
     try:
-        vectors = _semantic_vectors(edition, embedding_client)
-    except LLMConfigurationError as error:
+        prompt = load_classifier_prompt(args.prompt) if args.prompt else load_active_classifier()
+        few_shot = few_shot_emails(prompt)
+        print(f"few-shot: classifier {prompt.version_id}, {len(few_shot)} examples\n")
+        vectors = _semantic_vectors(edition, few_shot, embedding_client)
+    except (PromptFileError, LLMConfigurationError) as error:
         print(f"configuration error: {error}")
         return 1
 
-    flags = validate(edition, vectors)
+    flags = validate(edition, vectors, few_shot)
     for flag in flags:
         ids = f" [{', '.join(flag.case_ids)}]" if flag.case_ids else ""
         print(f"{flag.severity.upper():<5} {flag.kind}{ids}: {flag.message}")
@@ -58,10 +74,19 @@ def main(argv: list[str] | None = None, embedding_client: EmbeddingClient | None
     return 1 if blocking else 0
 
 
+def few_shot_emails(prompt: LoadedPrompt) -> dict[str, str]:
+    """Example emails keyed `<version>:few-shot-<n>` (n from 1), as shown in the flags."""
+    return {
+        f"{prompt.version_id}:few-shot-{number}": example.email
+        for number, example in enumerate(prompt.config.few_shot_examples, start=1)
+    }
+
+
 def _semantic_vectors(
-    edition: GoldenEdition, client: EmbeddingClient | None
+    edition: GoldenEdition, few_shot: dict[str, str], client: EmbeddingClient | None
 ) -> dict[str, Sequence[float]] | None:
-    """Embeddings of every email, or None (with a printed reason) when the layer is skipped."""
+    """Embeddings of every golden and example email, or None (with a printed reason) when the
+    layer is skipped."""
     if client is None:
         if not os.environ.get("OPENAI_API_KEY"):
             print("semantic layer skipped: OPENAI_API_KEY not set\n")
@@ -71,7 +96,7 @@ def _semantic_vectors(
     config = load_embeddings_config()
     price_table = load_price_table()
     price_table.price_for(config.model)
-    texts = {case.id: case.input_email for case in edition.cases}
+    texts = {case.id: case.input_email for case in edition.cases} | few_shot
     try:
         vectors, result = asyncio.run(embed_texts(client, config.model, texts))
     except EmbeddingUnavailableError as error:

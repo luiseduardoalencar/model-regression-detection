@@ -6,11 +6,12 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+import yaml
 
 from regression_detector.golden.cli import main
 from regression_detector.ports.embeddings import EmbeddingResult, EmbeddingUnavailableError
 from regression_detector.ports.llm import Usage
-from tests.factories import case_data, edition_data, full_matrix_cases
+from tests.factories import case_data, edition_data, full_matrix_cases, prompt_data
 
 
 @pytest.fixture(autouse=True)
@@ -75,3 +76,41 @@ def test_unavailable_api_skips_the_semantic_layer_without_failing(tmp_path, caps
     client = FakeEmbeddingClient(error=EmbeddingUnavailableError("RateLimitError"))
     assert main([path], embedding_client=client) == 0
     assert "semantic layer skipped: RateLimitError" in capsys.readouterr().out
+
+
+def test_few_shot_of_the_active_prompt_is_checked(tmp_path, capsys):
+    path = write_edition(tmp_path, edition_data(full_matrix_cases()))
+    assert main([path]) == 0
+    assert "few-shot: classifier v1, 7 examples" in capsys.readouterr().out
+
+
+def test_few_shot_equal_to_a_golden_email_blocks(tmp_path, capsys):
+    prompt = tmp_path / "v1.yaml"
+    example = {"email": "email delivery-001", "category": "delivery", "summary": "Cliente."}
+    prompt.write_text(
+        yaml.safe_dump(prompt_data(few_shot_examples=[example]), sort_keys=False), "utf-8"
+    )
+    path = write_edition(tmp_path, edition_data(full_matrix_cases()))
+    assert main([path, "--prompt", str(prompt)]) == 1
+    out = capsys.readouterr().out
+    assert "BLOCK few_shot_overlap [v1:few-shot-1, delivery-001]: exact" in out
+
+
+def test_invalid_prompt_file_exits_one(tmp_path, capsys):
+    prompt = tmp_path / "v1.yaml"
+    prompt.write_text("version_id: [v1\n", encoding="utf-8")
+    path = write_edition(tmp_path, edition_data(full_matrix_cases()))
+    assert main([path, "--prompt", str(prompt)]) == 1
+    assert "configuration error" in capsys.readouterr().out
+
+
+def test_examples_are_embedded_with_the_golden_emails(tmp_path):
+    class CountingClient(FakeEmbeddingClient):
+        async def embed(self, model, texts):
+            self.count = len(texts)
+            return await super().embed(model, texts)
+
+    client = CountingClient()
+    path = write_edition(tmp_path, edition_data(full_matrix_cases()))
+    assert main([path], embedding_client=client) == 0
+    assert client.count == 140 + 7

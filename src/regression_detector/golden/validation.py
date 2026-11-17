@@ -1,4 +1,4 @@
-"""Golden set validation: coverage matrix, edge-type rules and duplicates (2.1-2.3, 2.6)."""
+"""Golden set validation: coverage matrix, edge-type rules and duplicates (1.4, 2.1-2.3, 2.6)."""
 
 from collections import Counter
 from collections.abc import Mapping, Sequence
@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from enum import StrEnum
 
 from regression_detector.feature.models import Category
-from regression_detector.golden.dedup import MatchKind, find_pairs
+from regression_detector.golden.dedup import MatchKind, find_cross_pairs, find_pairs
 from regression_detector.golden.schema import (
     ADVERSARIAL_TYPES,
     CaseType,
@@ -16,7 +16,7 @@ from regression_detector.golden.schema import (
     GoldenEdition,
     Language,
 )
-from regression_detector.golden.semantic import find_semantic_pairs
+from regression_detector.golden.semantic import find_semantic_cross_pairs, find_semantic_pairs
 
 CASES_PER_CATEGORY = {
     CaseType.TYPICAL: 14,
@@ -41,6 +41,7 @@ class FlagKind(StrEnum):
     SEMANTIC_PAIR = "semantic_pair"
     MATRIX_GAP = "matrix_gap"
     EDGE_TYPE_RULE = "edge_type_rule"
+    FEW_SHOT_OVERLAP = "few_shot_overlap"
 
 
 @dataclass(frozen=True)
@@ -67,15 +68,20 @@ _PAIR_FLAGS = {
 
 
 def validate(
-    edition: GoldenEdition, vectors: Mapping[str, Sequence[float]] | None = None
+    edition: GoldenEdition,
+    vectors: Mapping[str, Sequence[float]] | None = None,
+    few_shot: Mapping[str, str] | None = None,
 ) -> list[Flag]:
     """All flags: label conflicts first, then blocking flags, then warnings.
 
-    Without `vectors` (one embedding per case id) the semantic layer is skipped.
+    `few_shot` maps an example id to its email. Without `vectors` (one embedding per case id
+    and per example id) the semantic layer is skipped.
     """
     flags = check_matrix(edition) + check_edge_types(edition) + check_duplicates(edition)
     if vectors is not None:
         flags += check_semantic_duplicates(edition, vectors)
+    if few_shot:
+        flags += check_few_shot_overlap(edition, few_shot, vectors)
     return sorted(
         flags,
         key=lambda flag: (flag.kind != FlagKind.LABEL_CONFLICT, flag.severity != Severity.BLOCK),
@@ -161,6 +167,37 @@ def check_semantic_duplicates(
         message = f"semantic score {pair.score:.3f}"
         flags.append(Flag(FlagKind.SEMANTIC_PAIR, Severity.WARN, message, ids))
         flags += _label_conflict(cases[pair.first_id], cases[pair.second_id])
+    return flags
+
+
+def check_few_shot_overlap(
+    edition: GoldenEdition,
+    few_shot: Mapping[str, str],
+    vectors: Mapping[str, Sequence[float]] | None = None,
+) -> list[Flag]:
+    """Prompt examples that look like a golden case, which would leak its answer (1.4).
+
+    Exact and near duplicates block; similar and semantic pairs warn.
+    """
+    golden = {case.id: case.input_email for case in edition.cases}
+    flags = []
+    lexical = set()
+    for pair in find_cross_pairs(dict(few_shot), golden):
+        lexical.add((pair.first_id, pair.second_id))
+        _, severity = _PAIR_FLAGS[pair.match.kind]
+        message = f"{pair.match.kind}, lexical score {pair.match.score:.0f}"
+        flags.append(
+            Flag(FlagKind.FEW_SHOT_OVERLAP, severity, message, (pair.first_id, pair.second_id))
+        )
+    if vectors is not None:
+        examples = {example_id: vectors[example_id] for example_id in few_shot}
+        cases = {case_id: vectors[case_id] for case_id in golden}
+        for pair in find_semantic_cross_pairs(examples, cases):
+            if (pair.first_id, pair.second_id) in lexical:
+                continue
+            message = f"semantic score {pair.score:.3f}"
+            ids = (pair.first_id, pair.second_id)
+            flags.append(Flag(FlagKind.FEW_SHOT_OVERLAP, Severity.WARN, message, ids))
     return flags
 
 

@@ -8,6 +8,7 @@ import pytest
 from regression_detector.golden.semantic import (
     cosine_matrix,
     embed_texts,
+    find_semantic_cross_pairs,
     find_semantic_pairs,
     load_embeddings_config,
 )
@@ -87,3 +88,35 @@ def test_pair_already_caught_by_the_lexical_layer_is_not_repeated():
     cases[1] = case_data(**{**cases[1], "input_email": email + "!"})
     flags = validate(make_edition(cases), vectors_for(cases, [(cases[0]["id"], cases[1]["id"])]))
     assert [f.kind for f in flags] == [FlagKind.EXACT_DUPLICATE]
+
+
+def test_cross_pairs_take_one_id_from_each_set():
+    left = {"example-1": [1.0, 0.0], "example-2": [0.0, 1.0]}
+    right = {"case-a": [1.0, 0.1], "case-b": [1.0, 1.0], "case-c": [-1.0, 0.0]}
+    pairs = find_semantic_cross_pairs(left, right, threshold=0.7)
+    assert [(p.first_id, p.second_id) for p in pairs] == [
+        ("example-1", "case-a"),
+        ("example-1", "case-b"),
+        ("example-2", "case-b"),
+    ]
+
+
+def test_semantic_overlap_between_an_example_and_a_golden_case_warns():
+    cases = full_matrix_cases()
+    vectors = vectors_for(cases)
+    vectors["v1:few-shot-1"] = vectors["payment-003"]
+    few_shot = {"v1:few-shot-1": "Paguei duas vezes o mesmo pedido por engano, quero estorno"}
+    flags = validate(make_edition(cases), vectors, few_shot)
+    assert [(f.kind, f.severity, f.case_ids) for f in flags] == [
+        (FlagKind.FEW_SHOT_OVERLAP, Severity.WARN, ("v1:few-shot-1", "payment-003"))
+    ]
+    assert flags[0].message == "semantic score 1.000"
+
+
+def test_few_shot_pair_caught_lexically_is_not_repeated_by_the_semantic_layer():
+    cases = full_matrix_cases()
+    vectors = vectors_for(cases)
+    vectors["v1:few-shot-1"] = vectors["payment-003"]
+    few_shot = {"v1:few-shot-1": "email payment-003"}
+    flags = validate(make_edition(cases), vectors, few_shot)
+    assert [(f.kind, f.severity) for f in flags] == [(FlagKind.FEW_SHOT_OVERLAP, Severity.BLOCK)]
