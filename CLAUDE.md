@@ -3,7 +3,7 @@
 Entry point for any AI agent helping Luis on this project. The portfolio rules
 in [`../CLAUDE.md`](../CLAUDE.md) also apply.
 
-## Current state (updated 2026-11-06)
+## Current state (updated 2026-11-16)
 
 - **Decisions closed:** foundations, Phase 1 (1.1–1.6), Phase 2 (2.1–2.6),
   Phase 3 (3.1–3.6), Phase 4 (4.1–4.2), Phase 5 (5.1–5.3), Phase 6
@@ -34,24 +34,36 @@ in [`../CLAUDE.md`](../CLAUDE.md) also apply.
   23 crafted pairs), Portuguese taxonomy `config/taxonomy/v1.md`, LLM label
   audit `uv run audit-labels` (3 variants in `config/label-audit/`). Audit
   result: 138 confirmed, 1 flagged (`general-002`), 1 no consensus
-  (`general-018`). Decisions in `docs/planning.md` §12.
-- **Next step: 4** (`PromptConfig`, YAML loader, `classify()`, classifier
-  prompt v1 with 7 few-shot examples). Not started; nothing is built until
-  Luis asks for the step. One branch and one PR per step, merged by Luis.
-  Code and test files are handed to Luis in the chat (all files of the step
-  at once, on his request of 2026-11-07).
+  (`general-018`). The flag was resolved the same day: label kept, reason in
+  the case `notes`, and the missing tie-break rule `general` × `account`
+  added to the taxonomy. Decisions in `docs/planning.md` §12. Steps 1–3 are
+  merged into `main` (PRs #1, #2, #3).
+- **Step 4 done (2026-11-17)** on branch `step-4-classifier-prompt-v1`:
+  `PromptConfig` (`feature/prompt_config.py`), loader
+  (`prompts/loader.py`), `classify()` (`feature/classifier.py`),
+  `uv run classify "<email>"`, classifier prompt v1
+  (`prompts/classifier/v1.yaml`, 7 few-shot examples labeled blind by Luis,
+  7/7) and `prompts/active.yaml`; `validate-golden` checks the few-shot
+  examples (`few_shot_overlap`, 0 flags). `uv run pytest`: 140 passed;
+  the live call passed (2,038 input tokens, 2,035 cached on the repeat);
+  v1 sha256 `ef228ba56ace`, checked byte by byte against the tested copy
+  before the commit. Commit and PR pending. Decisions in `docs/planning.md` §12 (2026-11-16).
+- **Next step: 5** (async runner with a concurrency limit, run validity,
+  `CachingLLMClient`, `RunRepository` + SQLite, `Tracer` port +
+  `NoopTracer`). Not started; nothing
+  is built until Luis asks for the step. One branch and one PR per step,
+  merged by Luis.
 - **Code that exists:** domain models, golden schema, duplicate detection
   (exact, lexical, semantic), validation, label audit, LLM and embedding
-  ports, OpenAI adapters and cost computation. No classifier or evaluation
-  code yet.
+  ports, OpenAI adapters and cost computation, prompt loader and the
+  classifier with prompt v1. No evaluation code yet.
 - **Golden edition 1:** 140 cases drafted and reviewed (2026-11-04); review
   items R1–R5 resolved
   ([`golden/drafts/review-notes.md`](golden/drafts/review-notes.md)). The
   validation script confirms every exact coverage target (2026-11-06); the
   semantic review (2026-11-07) left 23 warnings, all resolved with `notes`
-  or rewrites. Before the freeze (step 10): resolve the audit flag
-  `general-002`, decide the parked `account` / `payment` rewrites, few-shot
-  overlap (step 4), intra-annotator check.
+  or rewrites. Before the freeze (step 10): decide the parked `account` /
+  `payment` rewrites, few-shot overlap (step 4), intra-annotator check.
 - **Progress tracking:** steps cross phases, so a §7 box in
   `docs/planning.md` is ticked only when every part of it is built; a box a
   step covers only in part stays unticked with a dated status line under it.
@@ -97,12 +109,13 @@ in [`../CLAUDE.md`](../CLAUDE.md) also apply.
 - **Explain before deciding.** This is a learning project: explain the
   problem, the concepts and every metric or acronym before asking Luis to
   decide.
-- **Luis types the code.** Agents never create code, test or config files
-  unless Luis asks: they prepare each file's content, Luis types or copies
-  it, and the agent explains the code. Documentation files are written by
-  the agent (delegated by Luis on 2026-11-05). The agent may test code in a
-  scratch copy under `/tmp` (never in the repository) to verify it and to
-  compare it with what Luis typed, never as a copy-paste shortcut.
+- **The agent writes the code, Luis places it** (decided 2026-11-16,
+  replaces "Luis types the code"). The agent writes the full content of
+  every code, test and config file of a step in the chat, all files at
+  once, already tested in a scratch copy under `/tmp` (never in the
+  repository), and explains each file; Luis copies each one into its place.
+  Documentation files are written by the agent directly (delegated by Luis
+  on 2026-11-05).
 - **Before every build step:** explain it in Portuguese (what it is in
   practice; "with it done we can X, which makes Y possible"; technologies;
   every file and why it exists) and survey the references behind that

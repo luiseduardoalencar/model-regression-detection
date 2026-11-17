@@ -45,9 +45,14 @@ async def embed_texts(
 
 def cosine_matrix(vectors: Sequence[Sequence[float]]) -> np.ndarray:
     """Cosine of every pair of vectors: 1 = same direction, 0 = unrelated."""
-    matrix = np.asarray(vectors, dtype=float)
-    unit = matrix / np.linalg.norm(matrix, axis=1, keepdims=True)
+    unit = _unit(vectors)
     return unit @ unit.T
+
+
+def _unit(vectors: Sequence[Sequence[float]]) -> np.ndarray:
+    """Each vector scaled to length 1, so a dot product is a cosine."""
+    matrix = np.asarray(vectors, dtype=float)
+    return matrix / np.linalg.norm(matrix, axis=1, keepdims=True)
 
 
 def find_semantic_pairs(
@@ -61,5 +66,21 @@ def find_semantic_pairs(
         SemanticPair(ids[row], ids[column], float(scores[row, column]))
         for row, column in zip(rows, columns, strict=True)
         if scores[row, column] >= threshold
+    ]
+    return sorted(pairs, key=lambda pair: pair.score, reverse=True)
+
+
+def find_semantic_cross_pairs(
+    left: Mapping[str, Sequence[float]],
+    right: Mapping[str, Sequence[float]],
+    threshold: float = SEMANTIC_WARN_SCORE,
+) -> list[SemanticPair]:
+    """Pairs (one id from each set) whose cosine reaches the threshold, highest first."""
+    left_ids, right_ids = list(left), list(right)
+    scores = _unit([left[i] for i in left_ids]) @ _unit([right[i] for i in right_ids]).T
+    rows, columns = np.nonzero(scores >= threshold)
+    pairs = [
+        SemanticPair(left_ids[row], right_ids[column], float(scores[row, column]))
+        for row, column in zip(rows, columns, strict=True)
     ]
     return sorted(pairs, key=lambda pair: pair.score, reverse=True)

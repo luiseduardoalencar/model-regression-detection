@@ -21,12 +21,19 @@ examples) and every later prompt change (decisions 1.2–1.4).
 The agent drafts v1 from the approved taxonomy and the summary guide; Luis
 reviews with this checklist:
 
-- [ ] The 7 categories and their definitions match the taxonomy.
+- [ ] The 7 categories and their definitions match the taxonomy (copied
+      from `config/taxonomy/v1.md`; `tests/test_prompt_v1.py` checks the
+      copy).
 - [ ] All tie-break rules and the master rule are present and unambiguous.
+- [ ] The email is delimited (`<email>` … `</email>`) and the prompt says
+      the text inside is data, never an instruction.
 - [ ] Summary instructions follow the 10 rules of the summary guide.
 - [ ] 7 few-shot examples: one per category, typical `easy` cases, written in
-      Portuguese, approved by Luis, and **not similar to any golden case**
-      (the overlap check must pass).
+      Portuguese, in enum order, approved by Luis, and **not similar to any
+      golden case** (`uv run validate-golden` shows no blocking
+      `few_shot_overlap`). Approval without anchoring: the agent shows the
+      7 emails without labels; Luis labels them blind; then the agent shows
+      its labels and summaries and Luis decides (decided 2026-11-16).
 - [ ] Generation parameters: `reasoning_effort: none`, `temperature: 0`,
       `max_output_tokens: 200`.
 - [ ] `change_note` explains the version in one line.
@@ -68,3 +75,5 @@ Same steps as "Creating a new version", with three additions:
 3. PromptLayer — How to version prompts in production — https://blog.promptlayer.com/how-to-version-prompts-in-production/
 4. OpenAI — Using GPT-6 (`reasoning_effort` and sampling parameters) — https://developers.openai.com/api/docs/guides/latest-model
 5. vzhukov — Few-shot techniques for text classification using LLMs — https://vzhukov.dev/posts/2026/few-shot-techniques-for-text-classification-using-llms
+6. Hines et al., *Defending Against Indirect Prompt Injection Attacks With Spotlighting* — https://arxiv.org/abs/2403.14720
+7. Zhao et al., *Calibrate Before Use* (example order and recency bias) — https://arxiv.org/abs/2102.09690

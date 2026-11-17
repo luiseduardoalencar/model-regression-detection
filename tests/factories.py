@@ -66,3 +66,25 @@ def full_matrix_cases() -> list[dict[str, Any]]:
                 )
             )
     return cases
+
+
+def prompt_data(**overrides: Any) -> dict[str, Any]:
+    """A valid classifier prompt file as a YAML-like dict; keyword arguments replace keys."""
+    data = {
+        "version_id": "v1",
+        "created_at": "2026-11-16",
+        "change_note": "Test prompt.",
+        "model": "gpt-6-luna",
+        "generation": {"reasoning_effort": "none", "temperature": 0, "max_output_tokens": 200},
+        "categories": {category.value: f"definição de {category}" for category in Category},
+        "tie_break_rules": ["`delivery` × `cancellation`: pede para cancelar → `cancellation`."],
+        "system_prompt": "Classifique.\n\n{categories}\n\nDesempates:\n{tie_break_rules}\n",
+        "few_shot_examples": [
+            {
+                "email": "Meu pedido 111 não chegou.",
+                "category": "delivery",
+                "summary": "Cliente pergunta pelo pedido 111.",
+            }
+        ],
+    }
+    return data | overrides

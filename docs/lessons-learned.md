@@ -165,6 +165,44 @@ numbers) · why · what we decided (link to `planning.md` §12) · takeaway.
   disagreement often points at an ambiguous rule rather than a wrong label.
   Fix the rule at its source, while it is still cheap.
 
+## 2026-11-17 · Step 4 · Copying the files changed the identity of the prompt
+
+- **Expected.** Files pasted from the chat would be the same as the tested
+  copy, since the content was the same.
+- **What happened.** 17 of the 20 files lost their final newline when pasted,
+  and the `config/taxonomy/v1.md` fix left a last line holding only two
+  spaces. All 140 tests and `ruff check` passed, yet
+  `prompts/classifier/v1.yaml` hashed to `4ed7157b1f97` instead of the tested
+  `ef228ba56ace`. Only a byte-by-byte comparison with the tested copy, and
+  then `ruff format --check` (17 files), showed it.
+- **Why.** The prompt's identity is the sha256 of its bytes (decision 1.3),
+  so an invisible newline makes it a different version. The lint rules in
+  use do not include the final-newline check, and the tests read the
+  content, not the bytes.
+- **Decided.** Fixed before the merge, while v1 was still unpublished
+  (`ruff format`, final newline on the YAML files, stray line removed).
+  Before each commit the agent compares the placed files with the tested
+  copy and the sha256 of any prompt file; `ruff format --check` is part of
+  every step's checks (§12).
+- **Takeaway.** When identity is a hash, the check has to read bytes too: "the
+  tests pass" and "it looks the same" say nothing about a file's
+  fingerprint. Check the identity before it becomes immutable.
+
+## 2026-11-16 · Step 4 · A guide that said more than its decision
+
+- **What happened.** Wiring the few-shot overlap check, the validation guide
+  said any overlap between a prompt example and a golden case **blocks**,
+  while decision 2.6 applies its rules per layer (exact and lexical ≥ 90
+  block; similar and semantic only warn). Following the guide, every
+  semantic neighbour of the same topic would have blocked v1, although
+  embeddings measure the topic, not the request (step 3 lesson).
+- **Decided.** The decision wins; the guide was corrected (§12, few-shot
+  overlap severities). The v1 examples then had no overlap flag at all
+  (highest lexical score 61).
+- **Takeaway.** A guide is a summary of a decision and drifts from it
+  silently. When code implements a rule, read the decision, not only the
+  guide.
+
 ## See also
 
 - Decisions with dates and reasons: [`planning.md` §12](planning.md#12-decisions)

@@ -10,11 +10,14 @@ from regression_detector.golden.validation import (
     Severity,
     check_duplicates,
     check_edge_types,
+    check_few_shot_overlap,
     check_matrix,
     coverage_summary,
     validate,
 )
 from tests.factories import case_data, full_matrix_cases, make_edition
+
+FEW_SHOT_EMAIL = "Meu pedido 4521 não chegou e o rastreio está parado há uma semana"
 
 
 def test_complete_edition_has_no_flags():
@@ -117,3 +120,24 @@ def test_coverage_summary_counts_language_per_case_type():
     assert summaries[CaseType.TYPICAL].languages == Counter({Language.EN: 1, Language.PT: 1})
     assert summaries[CaseType.EDGE].total == 1
     assert CaseType.ADVERSARIAL not in summaries
+
+
+def test_few_shot_example_equal_to_a_golden_email_blocks():
+    edition = make_edition([case_data(input_email=FEW_SHOT_EMAIL)])
+    flags = check_few_shot_overlap(edition, {"v1:few-shot-1": FEW_SHOT_EMAIL.upper()})
+    assert [(f.kind, f.severity, f.case_ids) for f in flags] == [
+        (FlagKind.FEW_SHOT_OVERLAP, Severity.BLOCK, ("v1:few-shot-1", "delivery-001"))
+    ]
+    assert flags[0].message == "exact, lexical score 100"
+
+
+def test_few_shot_example_similar_to_a_golden_email_warns():
+    edition = make_edition([case_data(input_email=FEW_SHOT_EMAIL)])
+    example = "Meu pedido 7788 não chegou e o rastreio parou faz uma semana"
+    flags = check_few_shot_overlap(edition, {"v1:few-shot-1": example})
+    assert [(f.kind, f.severity) for f in flags] == [(FlagKind.FEW_SHOT_OVERLAP, Severity.WARN)]
+
+
+def test_different_few_shot_example_gives_no_flag():
+    edition = make_edition(full_matrix_cases())
+    assert validate(edition, few_shot={"v1:few-shot-1": FEW_SHOT_EMAIL}) == []

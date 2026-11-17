@@ -206,6 +206,12 @@ tuning on the test set [13]; MinHash thresholds of 0.7–0.85 are common
 single scenario [1]. `token_set_ratio` was rejected because it scores 100 when
 one text is contained in the other [18].
 
+Implementation note (build step 4, decided 2026-11-16): few-shot pairs use
+the same rules per layer as golden pairs (exact and lexical ≥ 90 block;
+lexical 80–90 and semantic ≥ 0.74 warn), as the `few_shot_overlap` flag.
+`validate-golden` checks the examples of the active classifier prompt (or of
+`--prompt`), embedded in the same call as the golden emails.
+
 Procedure for flags: [`guides/validation-flags.md`](../guides/validation-flags.md).
 
 ## References

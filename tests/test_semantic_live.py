@@ -135,8 +135,7 @@ UNRELATED = {
     "delivery x payment long": (
         "Comprei uma geladeira e a entrega está marcada para sexta, mas vou viajar. Dá para "
         "mudar o endereço de entrega?",
-        "Recebi a nota fiscal com o CPF errado. Preciso que emitam outra com os dados "
-        "corretos.",
+        "Recebi a nota fiscal com o CPF errado. Preciso que emitam outra com os dados corretos.",
     ),
 }
 

@@ -15,8 +15,9 @@ categories plus a one-sentence summary. It is never deployed to production.
 approved on 2026-11-05. Steps 1–3 are done (2026-11-06/07): domain models,
 the golden file schema and its validation (exact, lexical and semantic
 duplicates); the LLM and embedding ports, the OpenAI adapters and cost per
-call; the LLM label audit of the golden draft. There is no classifier or
-evaluation code yet.
+call; the LLM label audit of the golden draft. Step 4 (2026-11-17) adds the
+classifier: versioned prompt files with a validating loader and classifier
+prompt v1. There is no evaluation code yet.
 
 ## Quick start
 
@@ -25,8 +26,10 @@ uv sync          # Python 3.12, dependencies from uv.lock
 uv run pytest    # unit tests (tests marked `live` are skipped)
 uv run validate-golden   # validate the golden draft and list its flags
 uv run --env-file .env audit-labels   # LLM label audit (~US$ 0.50); prints IDs only
+uv run --env-file .env classify "<email>"   # classify one email with the active prompt
 uv run --env-file .env pytest -m live -s   # one real OpenAI call; spends money
 uv run ruff check .
+uv run ruff format --check src tests
 cp .env.example .env   # fill in secrets locally; never commit .env
 ```
 

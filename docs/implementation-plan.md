@@ -21,15 +21,16 @@ Working rules set by Luis on 2026-11-05:
    references behind that step's decisions — only that step, never all at
    once — and cites real sources. Once Luis approves the step, new sources
    go into the References section of the matching phase document.
-3. **Luis types the code.** The agent never creates code, test or config
-   files unless Luis asks. It prepares each file's content, Luis types or
-   copies it, and the agent explains the code and then reads the file to
-   check it. Before handing code over, the agent may run it in a scratch
-   copy outside the repository (`/tmp`), only to verify it and later to
-   compare it with what Luis typed; it never offers that copy as a
-   shortcut (decided 2026-11-05). Documentation files (this plan, `CLAUDE.md`, `README.md`,
-   `planning.md`, phase documents, guides, checkboxes) are written by the
-   agent.
+3. **The agent writes the code, Luis places it.** For every code, test and
+   config file of a step, the agent writes the full content in the chat,
+   already tested in a scratch copy outside the repository (`/tmp`), and
+   explains it; Luis copies each file into its place, and the agent then
+   reads the repository to check it (decided 2026-11-16; until then Luis
+   typed the code, rule of 2026-11-05). Before the commit, the agent
+   compares the placed files byte by byte with the tested copy, including
+   the sha256 of any prompt file (2026-11-17, after the step 4 lesson). Documentation files (this plan,
+   `CLAUDE.md`, `README.md`, `planning.md`, phase documents, guides,
+   checkboxes) are written by the agent directly.
 4. **Always explain and ask.** Any conflict between decisions or open
    question is explained to Luis with the evidence, and he decides. Nothing
    is changed silently.
@@ -37,7 +38,8 @@ Working rules set by Luis on 2026-11-05:
    (`step-N-<short-name>`), committed when the step is complete (not file by
    file), pushed, and opened as a pull request that Luis reviews and merges
    into `main`. The agent drafts the PR description.
-6. **Close and stop.** At the end of a step: tests pass, the §7 boxes are
+6. **Close and stop.** At the end of a step: tests pass (`uv run pytest`,
+   `uv run ruff check .`, `uv run ruff format --check src tests`), the §7 boxes are
    ticked, `CLAUDE.md` "Current state" and the status table below are
    updated, the PR is merged, and the agent offers the next step without
    starting it. Steps cross phases, so a §7 box is ticked only when every
@@ -141,10 +143,10 @@ None of these changes a recorded decision until Luis approves.
   Edition 1 is kept; the confounding of language with adversarial subtype
   is a recorded limitation (`planning.md` §12,
   `phases/phase-2-golden-dataset.md` 2.1).
-- **Step 4 — few-shot overlap wiring.** Step 1 built and tested
-  `find_cross_pairs` (few-shot × golden), but `validate()` and
-  `validate-golden` do not call it yet and there is no few-shot overlap flag
-  kind; step 4 connects them once `prompts/classifier/v1.yaml` exists.
+- **Step 4 — few-shot overlap wiring (resolved 2026-11-16).** Flag
+  `few_shot_overlap` with the 2.6 rules per layer (exact and lexical ≥ 90
+  block; lexical 80–90 and semantic ≥ 0.74 warn); `validate-golden` checks
+  the examples of the active prompt (`planning.md` §12).
 - **Step 10 — freeze header.** The freeze records the taxonomy version, the
   summary-guide version and the audit date in the header
   (`planning.md` §7, Phase 2). The step 1 schema has no such fields and
@@ -184,5 +186,6 @@ None of these changes a recorded decision until Luis approves.
 |---|---|
 | 1 | Done (2026-11-06), branch `step-1-models-and-golden-validation`: `feature/models.py`, `golden/schema.py`, `golden/dedup.py`, `golden/validation.py`, `golden/cli.py` and their tests; `uv run pytest` passes (41 tests); `uv run validate-golden` reports 0 flags on the draft. §7: F1 output models, F2 schema + validation and F2 fixture partly done, so no box is ticked yet (status lines in `planning.md`) |
 | 2 | Done (2026-11-06), branch `step-2-llm-client`: `ports/llm.py`, `adapters/openai_client.py`, `pricing.py`, `config/pricing.yaml` (`cached_input`), `live` marker in `pyproject.toml`; `tests/test_pricing.py`, `tests/test_openai_client.py`, `tests/test_openai_live.py`. `uv run pytest`: 67 passed, 1 deselected; one real call to `gpt-6-luna` passed (completed, 153 input / 38 output tokens, US$ 0.000034). §7 Phase 1: port + adapter, pricing and failure handling ticked |
-| 3 | Done (2026-11-07), branch `step-3-semantic-dedup-and-label-audit`: `ports/embeddings.py`, `adapters/openai_embeddings.py`, `golden/semantic.py`, `golden/audit.py`, `golden/audit_cli.py`, changes in `golden/validation.py` and `golden/cli.py`; `config/embeddings.yaml`, `config/taxonomy/v1.md`, `config/label-audit/variant-{a,b,c}.yaml`, `config/pricing.yaml`; tests `test_semantic.py`, `test_openai_embeddings.py`, `test_audit.py`, `test_golden_cli.py`, `test_semantic_live.py`. `uv run pytest`: 93 passed, 2 deselected; `live` tests pass. Semantic threshold measured and set to 0.74 (23 crafted pairs). Golden review: 23 warnings, 0 blocking, all resolved with `notes` or rewrites (7 cases rewritten); category-wide rewrites of `account` and `payment` parked until before step 10. `audit-labels`: 138 confirmed, 1 flagged (`general-002`, label kept), 1 no consensus, US$ 0.52; both pointed at a missing tie-break rule, so `general` × `account` was added to `config/taxonomy/v1.md`. §7: F2 fixture ticked; F2 validation and label audit with status lines |
-| 4–18 | Not started |
+| 3 | Done (2026-11-07), branch `step-3-semantic-dedup-and-label-audit`: `ports/embeddings.py`, `adapters/openai_embeddings.py`, `golden/semantic.py`, `golden/audit.py`, `golden/audit_cli.py`, changes in `golden/validation.py` and `golden/cli.py`; `config/embeddings.yaml`, `config/taxonomy/v1.md`, `config/label-audit/variant-{a,b,c}.yaml`, `config/pricing.yaml`; tests `test_semantic.py`, `test_openai_embeddings.py`, `test_audit.py`, `test_golden_cli.py`, `test_semantic_live.py`. `uv run pytest`: 93 passed, 2 deselected; `live` tests pass. Semantic threshold measured and set to 0.74 (23 crafted pairs). Golden review: 23 warnings, 0 blocking, all resolved with `notes` or rewrites (7 cases rewritten); category-wide rewrites of `account` and `payment` parked until before step 10. `audit-labels`: 138 confirmed, 1 flagged (`general-002`, label kept), 1 no consensus, US$ 0.52; both pointed at a missing tie-break rule, so `general` × `account` was added to `config/taxonomy/v1.md`. §7: F2 fixture ticked; F2 validation with a status line; F2 label audit ticked on 2026-11-16 (flag resolved, label kept) |
+| 4 | Done (2026-11-17), branch `step-4-classifier-prompt-v1`: `feature/prompt_config.py`, `prompts/loader.py`, `feature/classifier.py`, `feature/cli.py` (`uv run classify`), `prompts/classifier/v1.yaml` (7 few-shot examples, labeled blind by Luis 7/7), `prompts/active.yaml`, `few_shot_overlap` flag in `validate-golden`, taxonomy indentation fix. Decisions in `planning.md` §12 (2026-11-16). `uv run pytest`: 140 passed, 3 deselected; `validate-golden`: 0 blocking, no few-shot overlap; live call passed (2,038 input tokens, 2,035 cached on the repeat); byte check before the commit: v1 sha256 `ef228ba56ace` after restoring the final newlines lost when the files were copied (`docs/lessons-learned.md`). §7: the four Phase 1 classifier boxes ticked; F2 validation status updated |
+| 5–18 | Not started |

@@ -13,7 +13,7 @@ script reports something about the golden draft or the few-shot examples.
 | Lexical warning (80–90) | Warns | Both cases and the score | Keep (explain the difference in `notes`) or rewrite |
 | Semantic warning (cosine ≥ 0.74) | Warns | Both cases and the score | Same as above: is it really the same scenario? |
 | **Label conflict** (similar pair, different `expected_category`) | Highest priority (listed first; the pair's duplicate flag decides whether it blocks) | Both cases, both labels, the tie-break rule involved | Fix one label; or add `acceptable_categories`; or make the difference explicit in both texts and `notes` |
-| Few-shot overlap (a prompt example similar to a golden case) | Blocks | The example and the case | Change the **few-shot example** (the golden case stays) |
+| Few-shot overlap (`few_shot_overlap`: a prompt example similar to a golden case) | Exact and lexical ≥ 90 block; lexical 80–90 and semantic ≥ 0.74 warn (decided 2026-11-16) | The example (`vN:few-shot-<n>`) and the case | Change the **few-shot example** (the golden case stays) in a new prompt version, or keep it when the scenario really differs (warnings only) |
 | Matrix gap (exact targets: counts per category / case type, each edge type ≥ 2, adversarial subtypes, ≥ 35 `hard`) | Blocks freezing | The missing cells | Write the missing cases with [`golden-case-authoring.md`](golden-case-authoring.md) |
 
 Approximate targets (~10 % English/mixed per case type, the difficulty mix
@@ -28,8 +28,9 @@ step 3 (2026-11-07) adds the semantic warning (`semantic_pair`, model in
 `config/embeddings.yaml`); a pair already caught by the lexical layer is not
 repeated. Without `OPENAI_API_KEY`, or when the API stays unavailable after
 its retries, the command prints "semantic layer skipped: <reason>" and goes
-on: the layer only warns, so skipping it never hides a blocking flag. The
-few-shot overlap flag arrives in step 4.
+on: the layer only warns, so skipping it never hides a blocking flag. Build
+step 4 (2026-11-16) adds `few_shot_overlap`: the examples of the active
+classifier prompt (or of `--prompt <file>`) against every golden email.
 
 ## Procedure
 
