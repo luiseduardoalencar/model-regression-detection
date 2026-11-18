@@ -62,7 +62,13 @@ class Usage:
 
 @dataclass(frozen=True)
 class LLMResult[T: BaseModel]:
-    """What came back from one call, whatever its status."""
+    """What came back from one call, whatever its status.
+
+    `from_local_cache` is True when the answer came from our response cache
+    (`CachingLLMClient`), not from the provider; usage and latency are then those of
+    the original call. It is unrelated to `Usage.cached_input_tokens`, the
+    provider's prompt cache.
+    """
 
     status: LLMStatus
     parsed: T | None
@@ -73,6 +79,7 @@ class LLMResult[T: BaseModel]:
     latency_ms: float
     provider_request_id: str | None
     detail: str | None = None
+    from_local_cache: bool = False
 
 
 class LLMClient(Protocol):

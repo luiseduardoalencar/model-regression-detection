@@ -9,8 +9,10 @@ build step 1), `LLMClient` port, `OpenAIClient` adapter, cost from
 `config/pricing.yaml` and failure handling (1.5, 1.6, build step 2;
 2026-11-06), prompt files, loader, `PromptConfig` and classifier with
 prompt v1 (1.2–1.4, build step 4, 2026-11-17; its decisions of 2026-11-16
-are below). Remaining: tracing (`Tracer` port in step 5, Langfuse in
-step 11).
+are below). Tracing: `Tracer` port and `NoopTracer` built in build
+step 5 (2026-11-17, see
+[`phase-3-evaluation-engine.md`](phase-3-evaluation-engine.md));
+`LangfuseTracer` in step 11.
 Implementation checklist: [`planning.md` §7, Phase 1](../planning.md#phase-1--feature-under-test).
 
 ## 1.1 Output contract
@@ -177,6 +179,11 @@ examples; example order (recency bias).
   zero cost (decided 2026-11-06, build step 2) [23][24][25].
 - Judge calls go through the same port (DeepEval custom model).
 - The response cache is a `CachingLLMClient` adapter wrapping the real client.
+  `LLMResult` gains `from_local_cache` (default false): an answer served
+  from that cache carries the usage and latency of the original call. It is
+  unrelated to `cached_input_tokens`, the provider's prompt cache (decided
+  2026-11-17, build step 5; key, expiry and storage in
+  [`phase-3-evaluation-engine.md`](phase-3-evaluation-engine.md)).
 
 **Why.** Observability platforms record the same set per call (model, input,
 output, tokens, cost, latency) [14]; `served_model` detects silent alias

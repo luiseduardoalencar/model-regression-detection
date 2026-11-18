@@ -397,8 +397,9 @@ Proposed layout:
 ```
 src/regression_detector/
   ports/          # Protocols: LLMClient, Notifier, RunRepository, Tracer
-  adapters/       # openai_client, telegram_notifier, console_notifier,
-                  # sqlite_repository, langfuse_tracer, noop_tracer
+  adapters/       # openai_client, caching_client, telegram_notifier,
+                  # console_notifier, sqlite_repository, langfuse_tracer,
+                  # noop_tracer
   feature/        # classifier + PromptConfig; output models (Category, EmailClassification)
   golden/         # edition file schema, duplicate detection, validation, validate-golden CLI
   prompts/        # loader for versioned YAML
@@ -465,6 +466,9 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
 - [ ] `Tracer` port + `LangfuseTracer` / `NoopTracer` adapters; every
       classifier call becomes a trace linked to its prompt version (prompt
       registered one-way in Langfuse; its `active` label mirrors `active.yaml`).
+      Status 2026-11-17: `Tracer` port and `NoopTracer` built in step 5
+      (`start_run`, `record_case`, `finish_run`); `LangfuseTracer` and prompt
+      registration remain for step 11.
 
 ### Phase 2 — Golden dataset
 - [x] Coverage matrix approved by Luis (cases per category × difficulty ×
@@ -520,16 +524,22 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
       (`golden-edition-1`).
 
 ### Phase 3 — Evaluation engine
-- [ ] Async test runner with concurrency limit (retries come from the SDK,
-      decision 1.6).
+- [x] Async test runner with concurrency limit (retries come from the SDK,
+      decision 1.6). Built in step 5 (2026-11-17): `eval/runner.py`, at most
+      10 calls in flight, results in golden order.
 - [ ] Run validity (decision 1.6): infrastructure errors above 2 % of cases
       make the run **inconclusive** (no verdict, never a baseline, distinct
       message in the PR check and Telegram); below that, errored cases are
       excluded from both sides of the comparison and listed. Judge failures
       give a missing score (not zero) and count toward the same limit;
       DeepEval configured not to halt the run on a metric error.
-- [ ] Re-running after an inconclusive run only spends calls on failed
-      cases, because the cache holds only completed calls.
+      Status 2026-11-17: infrastructure part built in step 5
+      (`eval/validity.py`: more than 2 % `error` cases → `inconclusive`);
+      excluding errored cases from the comparison and the distinct message
+      come with steps 7 and 9; judge failures with step 8.
+- [x] Re-running after an inconclusive run only spends calls on failed
+      cases, because the cache holds only completed calls. Built and tested
+      in step 5 (2026-11-17, `tests/test_runner.py`).
 - [ ] Multi-dimensional scoring: category (exact / acceptable / miss),
       summary quality (decision 3.2), latency, token usage, cost — stored
       per case.
@@ -580,13 +590,19 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
       v1 exists, run it 3 times (cache bypassed); confirm no threshold fires
       and no adversarial case flips; report in `docs/noise-check/`. Repeat
       only if the model changes.
-- [ ] Response cache keyed by (prompt version, model, input hash) to avoid
+- [x] Response cache keyed by (prompt version, model, input hash) to avoid
       paying twice for identical calls during development, implemented as a
       `CachingLLMClient` adapter wrapping `OpenAIClient`.
+      Refined 2026-11-17 (build step 5): the key is a versioned sha256 of
+      the whole canonical request, which covers the prompt version, the
+      model and the input; entries expire after 7 days (§12). Built in
+      step 5 (2026-11-17): `adapters/caching_client.py`.
 - [ ] Judge calls go through `LLMClient` via a DeepEval custom-model adapter
       (confirm the integration against the current DeepEval version).
-- [ ] `RunRepository` port + `SQLiteRunRepository` adapter (runs,
-      case_results, golden edition used by each run).
+- [x] `RunRepository` port + `SQLiteRunRepository` adapter (runs,
+      case_results, golden edition used by each run). Built in step 5
+      (2026-11-17): `ports/run_repository.py`,
+      `adapters/sqlite_repository.py`, STRICT tables in `runs/runs.sqlite`.
 
 ### Phase 4 — Alerting and reporting
 - [ ] Self-contained HTML report (decision 4.1; Jinja2 with
@@ -1395,3 +1411,67 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
       checks. Reason: copying from the chat dropped the final newline of 17
       files and changed the hash of classifier prompt v1 while every test
       and `ruff check` passed (`docs/lessons-learned.md`).
+- [x] **Response cache key** (decided 2026-11-17, build step 5, refines
+      the §7 "prompt version, model, input hash" and 1.5): the key is
+      `v1:` + sha256 of the canonical JSON (keys sorted, compact separators,
+      UTF-8) of everything the model receives: model, rendered
+      instructions, few-shot examples, user input, output schema as
+      `model_json_schema()` and generation parameters. The `v1:` prefix
+      changes whenever this serialization changes, so old entries can never
+      match. Reason: the request that reaches the client does not carry the
+      prompt version, and any change to the prompt text, the schema or the
+      parameters must miss; the same key serves the judge calls (step 8).
+      Inspect AI and Promptfoo key their caches the same way. Considered,
+      not adopted: passing the prompt version into `LLMRequest` (a port
+      change made only for the cache).
+- [x] **`from_local_cache` and two costs** (decided 2026-11-17, build step
+      5, changes 1.5): `LLMResult` gains `from_local_cache` (default false);
+      an answer served by `CachingLLMClient` carries the usage and latency
+      of the original call. The name keeps it apart from
+      `cached_input_tokens`, the provider's prompt cache. Every run reports
+      two costs: the **exam cost** (every case at the price of its call, the
+      number runs are compared by) and the **cost spent** by the run (cases
+      answered from the local cache cost nothing). Considered, not adopted:
+      zero usage on a cache hit (a cached run would show different tokens
+      and latency from a fresh one, and step 6 scores both).
+- [x] **Cache expiry and bypass** (decided 2026-11-17, build step 5,
+      applies 1.6f–g): only `completed` calls with an answer are stored;
+      entries expire after 7 days (Inspect AI's default; Promptfoo uses 14
+      days); a bypass option neither reads nor writes the cache, for the
+      "nothing changed" check (step 12). Reason: `gpt-6-luna` is an alias,
+      so an old entry could mix two served models in a local comparison;
+      CI starts with an empty cache and is unaffected. `served_model` stays
+      recorded per case (see the step 7 open item in
+      `implementation-plan.md`).
+- [x] **Local storage** (decided 2026-11-17, build step 5): standard
+      library `sqlite3` with STRICT tables (rigid column types, SQLite 3.37
+      or newer; the SQLite bundled with Python 3.12 is newer, so there is no
+      version check: a start-up check was considered the same day and
+      dropped by Luis as not changing any result). Two files with different lifecycles, both gitignored:
+      `runs/runs.sqlite` (run history, `SQLiteRunRepository`) and
+      `.cache/llm-cache.sqlite` (response cache). The cache writes each
+      completed call as it arrives, so a crash keeps what was paid for; the
+      repository writes a run once, at the end, in one transaction, and
+      never overwrites a run id. Considered, not adopted: `aiosqlite` (a
+      thread per connection and a new dependency, for writes that take
+      microseconds), SQLAlchemy (too much for two tables), one shared file
+      (the cache can be wiped without losing the history).
+- [x] **Concurrency limit** (decided 2026-11-17, build step 5): at most 10
+      calls in flight (`asyncio.Semaphore` inside an `asyncio.TaskGroup`;
+      10 is Inspect AI's default `max_connections`), a parameter of the
+      runner. One run sends about 300 thousand input tokens, far below the
+      published per-minute limits; a 429 is retried by the SDK (1.6a) and
+      the limit can be lowered.
+- [x] **`Tracer` port shape** (decided 2026-11-17, build step 5):
+      synchronous `start_run(info)`, `record_case(case_id, request,
+      result)` and `finish_run(record)`; `NoopTracer` implements it for CI
+      and tests. Scores join in steps 6 and 8; the shape may be refined in
+      step 11, when the Langfuse SDK is researched.
+- [x] **Run-validity limit location** (decided 2026-11-17, build step 5):
+      the 2 % limit is a constant in `eval/validity.py`, kept as an integer
+      percentage so 3 of 140 is compared exactly, until `config/gate.yaml`
+      is created in step 7, where it moves.
+- [x] **An aborted run is not stored** (decided 2026-11-17, build step 5,
+      applies 1.6b): a configuration error cancels the other calls and stops
+      the run; nothing goes to the repository, because a misconfigured run
+      is not a measurement.
