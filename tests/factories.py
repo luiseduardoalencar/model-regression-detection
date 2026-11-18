@@ -1,10 +1,14 @@
 """Builders of golden cases and editions for the tests."""
 
+from datetime import UTC, datetime
 from itertools import cycle
 from typing import Any
 
+from regression_detector.eval.records import CaseResult, GoldenRef, RunInfo, RunRecord
+from regression_detector.eval.validity import assess_validity
 from regression_detector.feature.models import Category
 from regression_detector.golden.schema import ADVERSARIAL_TYPES, EdgeType, GoldenEdition
+from regression_detector.ports.llm import LLMStatus, Usage
 
 
 def case_data(**overrides: Any) -> dict[str, Any]:
@@ -88,3 +92,43 @@ def prompt_data(**overrides: Any) -> dict[str, Any]:
         ],
     }
     return data | overrides
+
+
+def case_result(case_id: str = "delivery-001", **overrides: Any) -> CaseResult:
+    """A completed answer to one case; keyword arguments replace fields."""
+    data: dict[str, Any] = {
+        "case_id": case_id,
+        "status": LLMStatus.COMPLETED,
+        "category": Category.DELIVERY,
+        "summary": "Cliente pergunta pelo pedido 12345.",
+        "raw_text": None,
+        "requested_model": "gpt-6-luna",
+        "served_model": "gpt-6-luna-2026-10-01",
+        "usage": Usage(input_tokens=1000, cached_input_tokens=800, output_tokens=30),
+        "cost_usd": 0.001,
+        "latency_ms": 100.0,
+        "provider_request_id": "req_1",
+        "from_local_cache": False,
+        "detail": None,
+    }
+    return CaseResult(**(data | overrides))
+
+
+def run_record(results: list[CaseResult], edition: int = 1) -> RunRecord:
+    """A finished run made of the given answers, with its validity computed."""
+    infra_errors = sum(result.status == LLMStatus.ERROR for result in results)
+    started_at = datetime(2026, 11, 17, 22, 0, tzinfo=UTC)
+    return RunRecord(
+        info=RunInfo(
+            run_id="run-test",
+            started_at=started_at,
+            prompt_version_id="v1",
+            prompt_sha256="f" * 64,
+            model="gpt-6-luna",
+            golden=GoldenRef(edition=edition, status="draft", sha256="0" * 64),
+        ),
+        finished_at=started_at,
+        validity=assess_validity(infra_errors, len(results)).validity,
+        infra_errors=infra_errors,
+        cases=tuple(results),
+    )

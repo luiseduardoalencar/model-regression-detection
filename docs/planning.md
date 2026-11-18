@@ -543,6 +543,13 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
 - [ ] Multi-dimensional scoring: category (exact / acceptable / miss),
       summary quality (decision 3.2), latency, token usage, cost — stored
       per case.
+      Refined 2026-11-17 (build step 6): the deterministic scores are
+      recomputed from the stored answers, not stored; judge scores will be
+      stored (§12).
+      Status 2026-11-17: built in step 6 except summary quality
+      (`eval/scoring.py`: category outcome, `category_pass`, `format_pass`
+      with the four code checks of 3.2, latency, tokens, cost, summary
+      length); summary quality comes with the judge in step 8.
 - [ ] Summary judge (decision 3.2): deterministic checks in code (one
       sentence, starts with "Cliente", no category label, Portuguese), then
       a binary checklist judged item by item by `gpt-6.1-terra` (one DeepEval
@@ -551,13 +558,15 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
       `DAGMetric`), reference-guided (email + expected summary + generated
       summary), evidence recorded per item; judge config versioned in
       `prompts/judge/v1.yaml` (Portuguese).
-- [ ] Classification metrics (decision 3.1): strict accuracy (exact label)
+- [x] Classification metrics (decision 3.1): strict accuracy (exact label)
       and acceptable accuracy (exact or in `acceptable_categories`);
       per-category precision / recall / F1 and macro-F1 on strict labels via
       scikit-learn `classification_report`; 7×7 confusion matrix plus a
       "no answer" column (refusal / incomplete / invalid); strict and
       acceptable accuracy sliced by `case_type`, `expected_difficulty`,
       `edge_types` and `language`, always shown with the slice size.
+      Built in step 6 (2026-11-17): `eval/metrics.py`, numbers checked
+      against a hand-computed run in `tests/test_metrics.py`.
 - [ ] Judge calibration (decision 3.3, guide `docs/guides/judge-calibration.md`):
       100 generated summaries (60 from classifier prompt v1, 40 from a
       deliberately degraded prompt) judged by Luis (overall pass/fail,
@@ -1475,3 +1484,46 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
       applies 1.6b): a configuration error cancels the other calls and stops
       the run; nothing goes to the repository, because a misconfigured run
       is not a measurement.
+- [x] **"Starts with Cliente" and out-of-scope emails** (decided
+      2026-11-17, build step 6, resolves the step 6 open item): cases with
+      `out_of_scope` in `edge_types` are exempt from the "starts with
+      Cliente" format check only; the other three checks still apply.
+      Reason: summary guide rule 9 and classifier prompt v1 already make
+      those summaries start with "Email de…" / "Vendedor…"
+      (`general-008`, `general-015`). The scorer may read the case metadata;
+      only the model never sees the answer key. Considered, not adopted:
+      changing rule 9 (new guide, prompt v2 and golden edits), dropping the
+      check (loses a deterministic blocking check on 138 cases), accepting
+      any of the three openers everywhere (lets a typical case start with
+      "Email de").
+- [x] **"One sentence" check** (decided 2026-11-17, build step 6): a
+      sentence ends at `.`, `!`, `?` or `…` followed by whitespace and more
+      text; a line break counts as two sentences; a short list of
+      abbreviations (`Sr.`, `Dra.`, `nº.`…) does not end a sentence.
+      Numbers (`1.200`) and emails pass. Checked against the 140 references
+      (4 have internal periods, all in numbers or emails). Considered, not
+      adopted: pySBD (a dependency for sentences of about 20 words).
+- [x] **"Portuguese" check** (decided 2026-11-17, build step 6): the
+      `lingua-language-detector` library, comparing only Portuguese, English
+      and Spanish. Checked before adoption: the 140 references are detected
+      as Portuguese, crafted English, Spanish and mixed summaries are not,
+      short summaries (5 words) are Portuguese, and repeated runs give the
+      same answer. The wheel is about 170 MB (bundled language models).
+      Considered, not adopted: `langdetect` (non-deterministic without a
+      fixed seed), a function-word heuristic (fallback if lingua is
+      dropped).
+- [x] **Scores recomputed, not stored** (decided 2026-11-17, build step 6,
+      refines the §7 "stored per case"): category outcome and format checks
+      are deterministic and are recomputed from the stored answer and the
+      golden set, so both sides of a comparison are always scored by the same
+      code. Judge scores (step 8) are not deterministic and will be stored.
+- [x] **Metric details** (decided 2026-11-17, build step 6): a case without
+      an answer counts as wrong for the recall of its expected category and
+      sits in the "no answer" column of the confusion matrix; a category
+      never predicted has precision 0 (`zero_division=0`); denominators are
+      the valid cases. "No category label" = whole-word, case-insensitive
+      match of the 7 labels, also with a space for `_`. A case enters the
+      slice of each of its edge types; cases without one form the slice
+      `none`; empty slices are left out. Latency: p50, p95 (numpy linear
+      percentile) and maximum; tokens and cost: totals and means; summary
+      length: median and maximum words, advisory only.
