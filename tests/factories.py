@@ -5,6 +5,7 @@ from itertools import cycle
 from typing import Any
 
 from regression_detector.eval.records import CaseResult, GoldenRef, RunInfo, RunRecord
+from regression_detector.eval.scoring import RunScores, score_run
 from regression_detector.eval.validity import assess_validity
 from regression_detector.feature.models import Category
 from regression_detector.golden.schema import ADVERSARIAL_TYPES, EdgeType, GoldenEdition
@@ -114,8 +115,10 @@ def case_result(case_id: str = "delivery-001", **overrides: Any) -> CaseResult:
     return CaseResult(**(data | overrides))
 
 
-def run_record(results: list[CaseResult], edition: int = 1) -> RunRecord:
-    """A finished run made of the given answers, with its validity computed."""
+def run_record(
+    results: list[CaseResult], edition: int = 1, golden_sha256: str = "0" * 64
+) -> RunRecord:
+    """A finished run made of the given answers, validity computed with the 2 % limit."""
     infra_errors = sum(result.status == LLMStatus.ERROR for result in results)
     started_at = datetime(2026, 11, 17, 22, 0, tzinfo=UTC)
     return RunRecord(
@@ -125,10 +128,25 @@ def run_record(results: list[CaseResult], edition: int = 1) -> RunRecord:
             prompt_version_id="v1",
             prompt_sha256="f" * 64,
             model="gpt-6-luna",
-            golden=GoldenRef(edition=edition, status="draft", sha256="0" * 64),
+            golden=GoldenRef(edition=edition, status="draft", sha256=golden_sha256),
         ),
         finished_at=started_at,
-        validity=assess_validity(infra_errors, len(results)).validity,
+        validity=assess_validity(infra_errors, len(results), limit_percent=2).validity,
         infra_errors=infra_errors,
         cases=tuple(results),
     )
+
+
+def scored_run(
+    edition: GoldenEdition,
+    changes: dict[str, dict[str, Any]] | None = None,
+    golden_sha256: str = "0" * 64,
+) -> RunScores:
+    """A scored run where every case gets its expected category and a valid summary,
+    except the cases in `changes` (case id -> fields of `case_result` to replace)."""
+    changes = changes or {}
+    results = [
+        case_result(case.id, **({"category": case.expected_category} | changes.get(case.id, {})))
+        for case in edition.cases
+    ]
+    return score_run(edition, run_record(results, edition.edition, golden_sha256))

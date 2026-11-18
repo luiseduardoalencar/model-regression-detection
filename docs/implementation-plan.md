@@ -180,11 +180,9 @@ None of these changes a recorded decision until Luis approves.
 - **Step 6 — format check vs summary rule 9 (resolved 2026-11-17).**
   `out_of_scope` cases are exempt from the "starts with Cliente" check only
   (`planning.md` §12).
-- **Step 7 — served model mismatch (raised by Luis, 2026-11-17).** The
-  comparison warns when `served_model` differs between the baseline and
-  the candidate. `gpt-6-luna` is an alias, and the local cache keeps an
-  answer for 7 days, so the two sides of a local comparison could come
-  from different snapshots (`planning.md` §12, cache expiry and bypass).
+- **Step 7 — served model mismatch (raised by Luis, 2026-11-17; resolved
+  2026-11-18).** A served model that differs between baseline and candidate
+  is a `warning` rule of the gate (`planning.md` §12).
 - **Step 12 — absolute floor value.** Set by Luis after the first measured
   run; recorded as a decision.
 
@@ -198,4 +196,5 @@ None of these changes a recorded decision until Luis approves.
 | 4 | Done and merged (2026-11-17), branch `step-4-classifier-prompt-v1`: `feature/prompt_config.py`, `prompts/loader.py`, `feature/classifier.py`, `feature/cli.py` (`uv run classify`), `prompts/classifier/v1.yaml` (7 few-shot examples, labeled blind by Luis 7/7), `prompts/active.yaml`, `few_shot_overlap` flag in `validate-golden`, taxonomy indentation fix. Decisions in `planning.md` §12 (2026-11-16). `uv run pytest`: 140 passed, 3 deselected; `validate-golden`: 0 blocking, no few-shot overlap; live call passed (2,038 input tokens, 2,035 cached on the repeat); byte check before the commit: v1 sha256 `ef228ba56ace` after restoring the final newlines lost when the files were copied (`docs/lessons-learned.md`). §7: the four Phase 1 classifier boxes ticked; F2 validation status updated |
 | 5 | Done (2026-11-17), branch `step-5-runner-cache-repository`: `eval/records.py`, `eval/validity.py`, `eval/runner.py`, `ports/run_repository.py`, `ports/tracer.py`, `adapters/caching_client.py`, `adapters/sqlite_repository.py`, `adapters/sqlite_support.py`, `adapters/noop_tracer.py`, `from_local_cache` in `ports/llm.py`, blank line in `pyproject.toml`; tests `fakes.py`, `test_validity.py`, `test_caching_client.py`, `test_sqlite_repository.py`, `test_runner.py`. Decisions in `planning.md` §12 (2026-11-17); the SQLite version check was dropped the same day. `uv run pytest`: 189 passed, 3 deselected; `ruff check` and `ruff format --check` clean; the 16 files match the tested copy byte for byte (sha256). No new command: `uv run eval` composes the engine in step 9. §7: runner, re-run, cache and repository ticked; run validity and `Tracer` with status lines |
 | 6 | Done (2026-11-17), branch `step-6-scoring-and-metrics`: `eval/format_checks.py`, `eval/scoring.py`, `eval/metrics.py`, two builders in `tests/factories.py`; tests `test_format_checks.py` (the 140 golden references pass all four checks), `test_scoring.py`, `test_metrics.py`; dependency `lingua-language-detector` 2.2.0 (`pyproject.toml`, `uv.lock`). Decisions in `planning.md` §12 (2026-11-17). `uv run pytest`: 235 passed, 3 deselected; `ruff check` and `ruff format --check` clean; three deliberate breaks caught; the 8 files match the tested copy byte for byte. No new command. §7: classification metrics ticked; multi-dimensional scoring with a status line (summary quality in step 8) |
-| 7–18 | Not started |
+| 7 | Done (2026-11-18), branch `step-7-comparison-and-gate`: `config/gate.yaml`, `compare/gate_config.py`, `compare/paired.py`, `compare/gate.py`; the infra-error limit moved from a constant in `eval/validity.py` to `gate.yaml` (`assess_validity()` and `run_exam()` take it as a parameter); `scored_run` builder in `tests/factories.py`; tests `test_gate_config.py`, `test_paired.py`, `test_gate.py` (the five verdict scenarios of this table), updates in `test_validity.py` and `test_runner.py`. Decisions in `planning.md` §12 (2026-11-18). `uv run pytest`: 273 passed, 3 deselected; `ruff check` and `ruff format --check` clean; four deliberate breaks caught; the 12 files match the tested copy byte for byte. No new command: `uv run eval` reads `gate.yaml` in step 9. §7: baseline, per-case diff, gate rules and F5 `gate.yaml` with status lines (summary in step 8, rendering in step 9, floor values in step 12) |
+| 8–18 | Not started |

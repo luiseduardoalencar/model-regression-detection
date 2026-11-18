@@ -6,8 +6,8 @@ changes from noise.
 
 **Status:** decisions 3.1–3.6 taken. Build step 5 (runner, run validity
 infra part, cache, run history) done on 2026-11-17; build step 6 (scoring
-and metrics) done on 2026-11-17; comparison and gate (step 7) and the summary
-judge (step 8) not implemented yet.
+and metrics) done on 2026-11-17; build step 7 (comparison and gate) done
+on 2026-11-18; the summary judge (step 8) not implemented yet.
 Implementation checklist: [`planning.md` §7, Phase 3](../planning.md#phase-3--evaluation-engine).
 
 ## Already fixed before this phase
@@ -411,6 +411,44 @@ listed).
 - Recomputing deterministic scores keeps baseline and candidate on the same
   scoring code; stored scores would mix two versions of a check.
 
+## Build step 7 — paired comparison and gate verdict (decided 2026-11-18)
+
+**Decision.**
+- **`config/gate.yaml`** (decision 5.1): golden edition in use (1),
+  infrastructure-error limit (2 %), net drop `warn: 5` / `block: 7`,
+  `adversarial_invariant: block`, absolute floor `null` until step 12.
+  Read and validated by `compare/gate_config.py`.
+- **Comparison** (`compare/paired.py`): pairs by `id`; a case with an
+  infrastructure error on either side leaves both; rates, regressions,
+  improvements and net drop per signal (`category`, `format`, `strict`) on
+  the paired cases; adversarial pass→fail list; exact→acceptable list;
+  count of outputs changed without a verdict change; per-category and slice
+  deltas with n (net drop ≥ 2 highlighted); served models of each side.
+  Runs of different golden files or cases are refused.
+- **Verdict** (`compare/gate.py`): rules `infra_errors` (inconclusive),
+  `net_drop` (category and format block at 7 and warn at 5; strict only
+  warns), `adversarial_invariant` (block or warn by config),
+  `absolute_floor` (block when strictly below), `served_model` (warn).
+  Precedence inconclusive > blocked > warning > passed; every fired rule is
+  listed. Exit codes 0 / 0 / 1 / 2 [41].
+- The summary signal (`summary_pass`, advisory) joins in step 8.
+
+**Why.**
+- GitHub Actions turns any non-zero exit code into a failed check [41];
+  separate codes for "got worse" (1) and "could not be measured" (2) keep a
+  provider outage from reading as a regression [18].
+- Paired counts on the same cases remove the variation in case difficulty
+  [23] and match the regression / improvement counts of eval tools [22].
+- Thresholds, the invariant mode and the floor in one reviewed file make
+  every change to the gate a visible, measured PR (5.1).
+
+**How it is tested.** The plan's scenarios on the 140-case matrix:
+7 regressions block, 4 pass; one adversarial flip blocks; about 3 %
+infrastructure errors is inconclusive; two drops of 4 cases crossing a 95 %
+floor block. Boundaries: 5–6 warn; improvements offset regressions; equal
+to the floor passes; a strict-only drop warns; a different served model
+warns without softening a block.
+
 ## References
 
 1. scikit-learn — `classification_report` (1.9.1) — https://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report
@@ -453,3 +491,4 @@ listed).
 38. lingua-py — language detection for short text, offline — https://github.com/pemistahl/lingua-py
 39. langdetect — non-determinism and the fixed seed — https://pypi.org/project/langdetect/1.0.7/
 40. Sadvilkar & Neumann — *PySBD: Pragmatic Sentence Boundary Disambiguation* (NLP-OSS 2020) — https://aclanthology.org/2020.nlposs-1.15
+41. GitHub Docs — Setting exit codes for actions (0 success, non-zero failure) — https://docs.github.com/en/actions/how-tos/create-and-publish-actions/set-exit-codes

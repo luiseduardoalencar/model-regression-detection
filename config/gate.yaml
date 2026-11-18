@@ -1,0 +1,27 @@
+# Gate rules of the eval (decisions 3.4, 3.5 and 5.1, build step 7).
+# Every number here decides whether a prompt PR can merge, so a change to this file
+# is reviewed like code and recorded as a decision in docs/planning.md section 12.
+
+# Golden edition the gate measures against; runs of another edition are refused.
+golden_edition: 1
+
+# More than this percentage of cases ending in an infrastructure error makes a run
+# inconclusive (decision 1.6d): 3 of 140 cases.
+infra_error_limit_percent: 2
+
+# Net drop = regressions (pass -> fail) minus improvements (fail -> pass), in cases,
+# for category_pass and format_pass (decision 3.5). 7 cases = 5 pp of 140.
+net_drop:
+  warn: 5
+  block: 7
+
+# Any adversarial case going from pass to fail on category: block or warn (decision 3.4).
+# Demoted to warn only if the "nothing changed" check (build step 12) shows flips.
+adversarial_invariant: block
+
+# Minimum rates of the candidate, as fractions from 0 to 1; null turns the rule off.
+# Set by Luis after the first measured run of classifier prompt v1 (build step 12).
+absolute_floor:
+  acceptable_accuracy: null
+  format_pass_rate: null
+  

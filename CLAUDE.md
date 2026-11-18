@@ -53,22 +53,27 @@ in [`../CLAUDE.md`](../CLAUDE.md) also apply.
   (`v1:` sha256 key, 7-day expiry, bypass), `RunRepository` +
   `SQLiteRunRepository`, `Tracer` port + `NoopTracer`. Decisions in
   `docs/planning.md` §12 (2026-11-17). 189 tests pass, 3 marked `live`.
-- **Step 6 done (2026-11-17)** on branch `step-6-scoring-and-metrics`,
-  waiting for Luis's merge: per-case scoring (`category_pass`,
+- **Step 6 done and merged (2026-11-17)**: per-case scoring (`category_pass`,
   `format_pass` with four code checks; `out_of_scope` exempt from
   "starts with Cliente"), classification metrics (accuracies,
   `classification_report`, confusion matrix with "no answer", slices with
   n, latency p50/p95). New dependency `lingua-language-detector`. 235
   tests pass, 3 marked `live`.
-- **Next step: 7** (paired comparison and gate verdict). Not started;
-  nothing is built until Luis asks for the step. One branch and one PR
-  per step, merged by Luis.
+- **Step 7 done (2026-11-18)** on branch `step-7-comparison-and-gate`:
+  paired comparison by `id`, gate verdict (net drop 5 / 7, adversarial
+  invariant, absolute floor, inconclusive), exit codes 0 / 0 / 1 / 2,
+  `config/gate.yaml` as the only source of the thresholds and of the
+  infra-error limit. Decisions in `docs/planning.md` §12 (2026-11-18).
+  273 tests pass, 3 marked `live`. Nothing after step 7 is built until
+  Luis asks for it. One branch and one PR per step, merged by Luis.
 - **Routine for pasted code:** `uv run ruff format src tests` runs first,
   then the three checks; the byte check against the tested copy follows.
 - **Code that exists:** domain models, golden schema, duplicate detection
   (exact, lexical, semantic), validation, label audit, LLM and embedding
   ports, OpenAI adapters and cost computation, prompt loader and the
-  classifier with prompt v1. No evaluation code yet.
+  classifier with prompt v1; the evaluation engine without the judge
+  (runner, cache, run history, scoring, metrics, paired comparison and
+  gate verdict). No `uv run eval` command yet (step 9).
 - **Golden edition 1:** 140 cases drafted and reviewed (2026-11-04); review
   items R1–R5 resolved
   ([`golden/drafts/review-notes.md`](golden/drafts/review-notes.md)). The

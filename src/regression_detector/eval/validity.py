@@ -1,12 +1,12 @@
-"""Run validity (decision 1.6d): too many infrastructure errors make a run inconclusive."""
+"""Run validity (decision 1.6d): too many infrastructure errors make a run inconclusive.
+
+The limit is an integer percentage read from `config/gate.yaml`
+(`infra_error_limit_percent`, decided 2026-11-17 and 2026-11-18), so the
+comparison is exact: with a limit of 2, 3 errors in 140 cases is inconclusive.
+"""
 
 from dataclasses import dataclass
 from enum import StrEnum
-
-# More than 2 % of the cases ending in an infrastructure error makes the run inconclusive
-# (3 of 140). Kept as an integer percentage so the comparison is exact.
-# Moves to config/gate.yaml in build step 7 (decided 2026-11-17).
-INFRA_ERROR_LIMIT_PERCENT = 2
 
 
 class RunValidity(StrEnum):
@@ -26,9 +26,7 @@ class ValidityAssessment:
     limit_percent: int
 
 
-def assess_validity(
-    infra_errors: int, total_cases: int, limit_percent: int = INFRA_ERROR_LIMIT_PERCENT
-) -> ValidityAssessment:
+def assess_validity(infra_errors: int, total_cases: int, limit_percent: int) -> ValidityAssessment:
     """Inconclusive when infra errors exceed `limit_percent` of the cases.
 
     The counts are passed in, so judge failures (build step 8) can join the same limit.

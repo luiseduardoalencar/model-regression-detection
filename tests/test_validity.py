@@ -17,13 +17,18 @@ from regression_detector.eval.validity import RunValidity, assess_validity
     ],
 )
 def test_more_than_two_percent_is_inconclusive(infra_errors, total_cases, expected):
-    assessment = assess_validity(infra_errors, total_cases)
+    assessment = assess_validity(infra_errors, total_cases, limit_percent=2)
     assert assessment.validity == expected
     assert (assessment.infra_errors, assessment.total_cases) == (infra_errors, total_cases)
     assert assessment.limit_percent == 2
 
 
+def test_the_limit_comes_from_the_caller():
+    assert assess_validity(3, 100, limit_percent=3).validity == RunValidity.VALID
+    assert assess_validity(1, 100, limit_percent=0).validity == RunValidity.INCONCLUSIVE
+
+
 @pytest.mark.parametrize(("infra_errors", "total_cases"), [(0, 0), (-1, 10), (11, 10)])
 def test_impossible_counts_are_rejected(infra_errors, total_cases):
     with pytest.raises(ValueError):
-        assess_validity(infra_errors, total_cases)
+        assess_validity(infra_errors, total_cases, limit_percent=2)

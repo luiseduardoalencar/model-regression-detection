@@ -578,6 +578,10 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
       dataset, with `category_match` and `summary_score` on each trace.
 - [ ] Baseline (decision 3.6): the PR job runs the active prompt on `main`
       and the candidate side by side; cases paired by `id`.
+      Status 2026-11-18: the comparison logic is built in step 7
+      (`compare/paired.py`: pairing by `id`, comparable-run checks, infra
+      errors excluded from both sides); running both sides in the PR job
+      comes with `uv run eval` (step 9) and CI (Phase 5).
 - [ ] Per-case diff (decision 3.6): headline table (baseline, candidate,
       delta in pp, regressions, improvements) for category, format and
       summary (summary marked advisory); lists ordered by severity
@@ -587,6 +591,12 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
       before → after, judge evidence; per-category and slice deltas with n
       (rows with a net drop ≥ 2 cases highlighted, verdict unchanged); count
       of cases whose output changed without a verdict change.
+      Status 2026-11-18: the data is built in step 7 (`compare/paired.py`:
+      category, format and strict deltas, regressions and improvements by
+      id, invariant violations, exact→acceptable, excluded cases, groups
+      with n and highlight, changed-without-verdict count); the summary
+      part and judge evidence come with step 8, the rendered table and
+      lists with step 9.
 - [ ] Gate rules (decisions 3.4–3.5), thresholds in versioned config
       (`config/gate.yaml`, decision 5.1):
       per-case `category_pass` / `format_pass` / `summary_pass`; net drop =
@@ -595,6 +605,11 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
       or `format_pass`, any adversarial pass→fail, or below the absolute
       floor (value set after the first v1 run); `inconclusive` on infra
       errors > 2 %; exit codes 0 / 0 / 1 / 2. The judge is always advisory.
+      Status 2026-11-18: built in step 7 (`compare/gate.py`,
+      `compare/gate_config.py`, `config/gate.yaml`) for `category_pass` and
+      `format_pass`, with the plan's verdict scenarios as tests
+      (`tests/test_gate.py`); `summary_pass` comes with step 8 and the
+      absolute floor values with step 12.
 - [ ] "Nothing changed" check (decision 3.5): once, when classifier prompt
       v1 exists, run it 3 times (cache bypassed); confirm no threshold fires
       and no adversarial case flips; report in `docs/noise-check/`. Repeat
@@ -658,6 +673,9 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
 - [ ] `config/gate.yaml` (thresholds 5 / 7, absolute floor, golden edition
       in use); the report header shows "gate config changed in this PR"
       when it changes.
+      Status 2026-11-18: the file exists since step 7 (edition 1, 2 %
+      infra limit, 5 / 7, adversarial `block`, floor `null`); the "gate
+      config changed" header comes with the report (Phase 4) and CI.
 - [ ] `eval` job set as a required status check on `main`
       (`docs/guides/initial-setup.md`).
 - [ ] No CI run history (decision 5.2): in CI, `SQLiteRunRepository` writes
@@ -692,6 +710,9 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
       identical to v1 → `passed`), 4 improvement (v5, merged last →
       `passed` with improvements); unit tests — cumulative drops crossing the
       floor, inconclusive, adversarial flip.
+      Status 2026-11-18: the three unit-test scenarios are built in step 7
+      (`tests/test_gate.py`); the four real PRs come after the first v1
+      run, the floor and the noise check.
 - [ ] `docs/proof-scenarios.md`: expected verdict written before any run;
       PR link, version, expected, observed, cost per scenario.
 - [ ] 3-minute demo video (decision 6.2, outline revisited with Luis before
@@ -1527,3 +1548,44 @@ infra/langfuse/   # docker-compose.yml for the local Langfuse
       `none`; empty slices are left out. Latency: p50, p95 (numpy linear
       percentile) and maximum; tokens and cost: totals and means; summary
       length: median and maximum words, advisory only.
+- [x] **Paired rates and comparable runs** (decided 2026-11-18, build step
+      7): rates and deltas are computed on the paired cases (valid on both
+      sides), so both sides are measured on the same cases; a case with an
+      infrastructure error on either side is left out of both (1.6). The
+      absolute floor measures the candidate alone, on its own valid cases.
+      Two runs are compared only when they used the same golden edition and
+      file (sha256) and the same cases; the prompt may be the same (the
+      "nothing changed" check, step 12) and the model may differ (a model
+      change is a legitimate PR).
+- [x] **What warns besides a net drop of 5–6 cases** (decided 2026-11-18,
+      build step 7, details 3.4, resolves the step 7 open item): a net drop
+      of 5 cases or more on the strict label (exact only) warns and never
+      blocks; a served model that differs between baseline and candidate
+      warns ("part of the difference may come from the model"). Macro-F1,
+      per-category and slice deltas, latency, tokens and cost are shown only
+      (groups with a net drop ≥ 2 highlighted, 3.6). A warning never softens
+      a block. Considered, not adopted: a differing served model as
+      `inconclusive` (a re-run would likely give the same answer).
+- [x] **Adversarial invariant mode** (decided 2026-11-18, build step 7):
+      `adversarial_invariant: block` in `config/gate.yaml`, with `warn` as
+      the only alternative; demoting it (3.4, after the step 12 check) is a
+      one-line change in a reviewed PR. Adversarial = `case_type:
+      adversarial` (14 cases in edition 1), on `category_pass` only.
+- [x] **Infrastructure-error limit in `config/gate.yaml`** (decided
+      2026-11-18, build step 7, completes the 2026-11-17 entry):
+      `infra_error_limit_percent: 2` is the only source; `assess_validity()`
+      and `run_exam()` take the limit as a required parameter and the code
+      constant is gone. The gate re-assesses each side with the configured
+      limit.
+- [x] **Absolute floor format** (decided 2026-11-18, build step 7):
+      fractions from 0 to 1 for `acceptable_accuracy` and
+      `format_pass_rate`; `null` turns the rule off until Luis sets the
+      values after the first measured run (step 12); the candidate blocks
+      when strictly below the floor.
+- [x] **Verdict precedence and diff contents** (decided 2026-11-18, build
+      step 7): `inconclusive` beats `blocked`, which beats `warning`, which
+      beats `passed`; every rule that fired is listed with its numbers, even
+      when a stronger one decides. "Changed without a verdict change" counts
+      cases whose label or summary differs with the same `category_pass` and
+      `format_pass`. The diff lists are structured data; their visual format
+      is build step 9.
