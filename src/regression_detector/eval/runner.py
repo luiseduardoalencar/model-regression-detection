@@ -53,6 +53,7 @@ async def run_exam(
     client: LLMClient,
     prices: PriceTable,
     tracer: Tracer,
+    infra_error_limit_percent: int,
     concurrency: int = DEFAULT_CONCURRENCY,
     clock: Callable[[], datetime] = utc_now,
 ) -> RunRecord:
@@ -91,7 +92,7 @@ async def run_exam(
 
     cases = tuple(task.result() for task in tasks)
     infra_errors = sum(case.status == LLMStatus.ERROR for case in cases)
-    validity = assess_validity(infra_errors, len(cases))
+    validity = assess_validity(infra_errors, len(cases), infra_error_limit_percent)
     record = RunRecord(
         info=info,
         finished_at=clock(),

@@ -48,6 +48,7 @@ def run(client, *, tracer=None, concurrency=10, **prompt_overrides):
             client=client,
             prices=PRICES,
             tracer=tracer or NoopTracer(),
+            infra_error_limit_percent=2,
             concurrency=concurrency,
         )
     )
@@ -96,6 +97,7 @@ def test_the_answer_key_never_reaches_the_model():
             client=client,
             prices=PRICES,
             tracer=NoopTracer(),
+            infra_error_limit_percent=2,
         )
     )
     for request in client.requests:
