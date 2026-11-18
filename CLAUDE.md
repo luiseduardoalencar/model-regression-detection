@@ -48,15 +48,23 @@ in [`../CLAUDE.md`](../CLAUDE.md) also apply.
   the live call passed (2,038 input tokens, 2,035 cached on the repeat);
   v1 sha256 `ef228ba56ace`, checked byte by byte against the tested copy
   before the commit. Merged into `main` (2026-11-17). Decisions in `docs/planning.md` §12 (2026-11-16).
-- **Step 5 done (2026-11-17)** on branch
-  `step-5-runner-cache-repository`, waiting for Luis's merge: async runner
+- **Step 5 done and merged (2026-11-17)**: async runner
   (10 calls in flight), run validity (infra part), `CachingLLMClient`
   (`v1:` sha256 key, 7-day expiry, bypass), `RunRepository` +
   `SQLiteRunRepository`, `Tracer` port + `NoopTracer`. Decisions in
   `docs/planning.md` §12 (2026-11-17). 189 tests pass, 3 marked `live`.
-- **Next step: 6** (per-case scoring and classification metrics). Not
-  started; nothing is built until Luis asks for the step. One branch and
-  one PR per step, merged by Luis.
+- **Step 6 done (2026-11-17)** on branch `step-6-scoring-and-metrics`,
+  waiting for Luis's merge: per-case scoring (`category_pass`,
+  `format_pass` with four code checks; `out_of_scope` exempt from
+  "starts with Cliente"), classification metrics (accuracies,
+  `classification_report`, confusion matrix with "no answer", slices with
+  n, latency p50/p95). New dependency `lingua-language-detector`. 235
+  tests pass, 3 marked `live`.
+- **Next step: 7** (paired comparison and gate verdict). Not started;
+  nothing is built until Luis asks for the step. One branch and one PR
+  per step, merged by Luis.
+- **Routine for pasted code:** `uv run ruff format src tests` runs first,
+  then the three checks; the byte check against the tested copy follows.
 - **Code that exists:** domain models, golden schema, duplicate detection
   (exact, lexical, semantic), validation, label audit, LLM and embedding
   ports, OpenAI adapters and cost computation, prompt loader and the

@@ -243,6 +243,22 @@ numbers) · why · what we decided (link to `planning.md` §12) · takeaway.
   read line by line), so the byte check stays a fixed step before every
   commit.
 
+## 2026-11-17 · Step 6 · The final newline, a third time
+
+- **Expected.** With the editor setting suggested in step 5, pasted files
+  would keep their final newline.
+- **What happened.** Seven pasted files lost it again; `ruff format
+  --check` flagged them, and the byte check showed it was the only
+  difference.
+- **Why.** The editor setting was not in place, and the check only reports
+  the problem instead of fixing it.
+- **Decided.** The formatter has no option to drop the final newline, and
+  dropping the check would move the failure to CI (step 14). The routine now
+  starts with `uv run ruff format src tests`, which adds it; the editor
+  setting covers YAML and Markdown, which ruff does not touch.
+- **Takeaway.** When a manual step keeps failing the same way, make the
+  tool fix it rather than report it, and keep the byte check as the proof.
+
 ## See also
 
 - Decisions with dates and reasons: [`planning.md` §12](planning.md#12-decisions)

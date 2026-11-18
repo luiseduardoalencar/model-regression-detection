@@ -5,9 +5,9 @@ the baseline and say whether the candidate regressed — separating real
 changes from noise.
 
 **Status:** decisions 3.1–3.6 taken. Build step 5 (runner, run validity
-infra part, cache, run history) done on 2026-11-17; scoring (step 6),
-comparison and gate (step 7) and the summary judge (step 8) not
-implemented yet.
+infra part, cache, run history) done on 2026-11-17; build step 6 (scoring
+and metrics) done on 2026-11-17; comparison and gate (step 7) and the summary
+judge (step 8) not implemented yet.
 Implementation checklist: [`planning.md` §7, Phase 3](../planning.md#phase-3--evaluation-engine).
 
 ## Already fixed before this phase
@@ -50,8 +50,9 @@ answer" column and the slices follow from our own decisions (1.6, 2.1–2.3).
 ## 3.2 Summary judge
 
 **Decision.**
-1. **Code checks first:** one sentence; starts with "Cliente"; no category
-   label; Portuguese.
+1. **Code checks first:** one sentence; starts with "Cliente" (not applied
+   to `out_of_scope` cases, summary guide rule 9; decided 2026-11-17); no
+   category label; Portuguese.
 2. **Binary checklist** derived from [`summary-guide.md`](../summary-guide.md),
    one item per prompt:
 
@@ -371,6 +372,45 @@ listed).
 - A hit keeps the original usage and latency so a cached run and a fresh
   run give the same per-case numbers; only the cost spent differs.
 
+## Build step 6 — scoring and metrics (decided 2026-11-17)
+
+**Decision.**
+- **Per case** (`eval/scoring.py`): category outcome `exact` /
+  `acceptable` / `miss` / `no_answer`; `category_pass` = exact or
+  acceptable; `format_pass` = the four code checks of 3.2; latency, tokens,
+  cost and summary length kept next to the case. Infrastructure errors are
+  excluded (1.6). Scores are recomputed, not stored.
+- **Format checks** (`eval/format_checks.py`):
+  - *one sentence*: an end mark followed by whitespace and more text starts
+    a new sentence; line breaks count; listed abbreviations do not;
+  - *starts with "Cliente"*: not applied to `out_of_scope` cases (summary
+    guide rule 9);
+  - *no category label*: whole-word match of the 7 labels;
+  - *Portuguese*: `lingua-language-detector` among Portuguese, English and
+    Spanish [38].
+- **Run metrics** (`eval/metrics.py`): strict and acceptable accuracy;
+  per-category precision, recall and F1 on strict labels and macro-F1 with
+  `classification_report(labels=…, output_dict=True, zero_division=0)`
+  [36]; confusion matrix with a "no answer" column [37]; slices with n;
+  latency p50 / p95 / max; token and cost totals and means; summary length.
+
+**Definitions.**
+- *p50 / p95*: the latency below which 50 % / 95 % of the cases fall.
+- *Slice*: a subset of the golden set (one case type, difficulty,
+  language or edge type), reported with its size.
+
+**Why.**
+- The 140 references are the test of the checks: all must pass, and they
+  do (two out-of-scope references start with "Email de"; four have periods
+  inside numbers or emails).
+- `langdetect` is non-deterministic on short or ambiguous text unless a seed
+  is fixed [39]; a blocking check must give the same verdict for the same
+  text (3.4). Lingua is built for short text and runs offline [38].
+- pySBD handles abbreviations with rules per language [40], more than a
+  one-sentence check on ~20-word summaries needs.
+- Recomputing deterministic scores keeps baseline and candidate on the same
+  scoring code; stored scores would mix two versions of a check.
+
 ## References
 
 1. scikit-learn — `classification_report` (1.9.1) — https://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report
@@ -408,3 +448,8 @@ listed).
 33. SQLite — STRICT Tables (3.37.0) — https://sqlite.org/stricttables.html
 34. OpenTelemetry Python — trace API, `NoOpTracer` — https://opentelemetry-python.readthedocs.io/en/stable/_modules/opentelemetry/trace.html
 35. OpenAI — Rate limits (RPM, TPM); per-tier figures — https://developers.openai.com/api/docs/guides/rate-limits ; https://www.respan.ai/articles/openai-api-rate-limits
+36. scikit-learn — `classification_report` (`labels`, `output_dict`, `zero_division`) — https://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report
+37. scikit-learn — `confusion_matrix` — https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html
+38. lingua-py — language detection for short text, offline — https://github.com/pemistahl/lingua-py
+39. langdetect — non-determinism and the fixed seed — https://pypi.org/project/langdetect/1.0.7/
+40. Sadvilkar & Neumann — *PySBD: Pragmatic Sentence Boundary Disambiguation* (NLP-OSS 2020) — https://aclanthology.org/2020.nlposs-1.15
