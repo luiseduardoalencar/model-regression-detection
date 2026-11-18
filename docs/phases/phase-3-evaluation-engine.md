@@ -4,7 +4,10 @@
 the baseline and say whether the candidate regressed — separating real
 changes from noise.
 
-**Status:** decisions 3.1–3.6 taken. Not implemented yet.
+**Status:** decisions 3.1–3.6 taken. Build step 5 (runner, run validity
+infra part, cache, run history) done on 2026-11-17; scoring (step 6),
+comparison and gate (step 7) and the summary judge (step 8) not
+implemented yet.
 Implementation checklist: [`planning.md` §7, Phase 3](../planning.md#phase-3--evaluation-engine).
 
 ## Already fixed before this phase
@@ -314,6 +317,60 @@ listed).
   updates the model, both sides change together and the PR is not blamed
   (our reasoning; there are no scheduled runs in this project).
 
+## Build step 5 — runner, cache and run history (decided 2026-11-17)
+
+**Decision.**
+- **Runner.** Every golden case goes through `classify`'s request builder
+  (only the email and the prompt; the answer key never leaves the case),
+  with at most **10 calls in flight**: an `asyncio.Semaphore` inside an
+  `asyncio.TaskGroup` [26][27]. Results keep golden order. A configuration
+  error cancels the other calls and stops the run; an aborted run is not
+  stored (1.6b).
+- **Run validity.** `infra_errors` = cases with status `error`; more than
+  2 % of the cases makes the run `inconclusive` (3 of 140), compared as an
+  integer percentage. The function takes counts, so judge failures (step 8)
+  join the same limit. The limit is a constant until `config/gate.yaml`
+  exists (step 7).
+- **Response cache (`CachingLLMClient`).** Key = `v1:` + sha256 of the
+  canonical JSON (keys sorted) of the whole request: model, instructions,
+  few-shot examples, user input, output schema (`model_json_schema()`) and
+  generation parameters [28][31]. Only `completed` calls with an answer are
+  stored; entries expire after 7 days [28]; a bypass option neither reads
+  nor writes (step 12). A hit returns the original usage and latency with
+  `from_local_cache = True`.
+- **Two costs per run.** The exam cost (every case at the price of its
+  call) and the cost spent (cases from the local cache cost nothing).
+- **Storage.** Standard library `sqlite3`, STRICT tables [33] (SQLite ≥ 3.37,
+  bundled with Python 3.12; no version check); `runs/runs.sqlite` (`SQLiteRunRepository`: tables
+  `runs` and `case_results`, one transaction per run, a run id is never
+  overwritten) and `.cache/llm-cache.sqlite` (cache, written per completed
+  call). `aiosqlite` not adopted [32].
+- **Tracer.** Port with `start_run`, `record_case`, `finish_run`;
+  `NoopTracer` for CI and tests [34]. Scores join in steps 6 and 8;
+  `LangfuseTracer` in step 11.
+
+**Definitions.**
+- *Concurrency limit*: how many calls may wait for the API at the same time.
+- *Cache key*: the fingerprint that decides whether two calls are "the
+  same"; any difference in what the model receives must change it.
+- *TTL* (time to live): how long a cache entry is trusted.
+- *STRICT table*: an SQLite table that rejects a value of the wrong type
+  instead of storing it silently.
+
+**Why.**
+- `TaskGroup` cancels the remaining tasks when one fails, which is decision
+  1.6b for free; the semaphore is the documented way to cap concurrent
+  work [26][27]. 10 is Inspect AI's default `max_connections` [29]; one run
+  is about 300 thousand input tokens, below the published per-minute
+  limits [35].
+- Inspect AI keys its cache on model, messages, epoch and generation
+  config, expires entries after one week and warns that aliases can move to
+  new model versions [28]; Promptfoo keys on provider, prompt and provider
+  configuration, with a 14-day TTL [31]. Re-running only failed cases is
+  Inspect's `eval-retry` pattern, obtained here through the cache [30].
+- A hit keeps the original usage and latency so a cached run and a fresh
+  run give the same per-case numbers; only the cost spent differs.
+
 ## References
 
 1. scikit-learn — `classification_report` (1.9.1) — https://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report
@@ -341,3 +398,13 @@ listed).
 23. Anthropic — A statistical approach to model evaluations (Miller, *Adding Error Bars to Evals*) — https://www.anthropic.com/research/statistical-approach-to-model-evals ; https://arxiv.org/abs/2411.00640
 24. OneUptime — Measure variance before setting thresholds (2026) — https://oneuptime.com/blog/post/2026-08-31-measure-llm-eval-variance-thresholds/view
 25. Langfuse — Compare experiments — https://langfuse.com/docs/evaluation/experiments/compare-experiments
+26. Python 3.12 — Coroutines and Tasks, Task Groups — https://docs.python.org/3.12/library/asyncio-task.html#task-groups
+27. Python 3.12 — Synchronization Primitives, Semaphore — https://docs.python.org/3.12/library/asyncio-sync.html#semaphore
+28. Inspect AI — Caching (key, one-week default expiry, model aliases) — https://inspect.aisi.org.uk/caching.html
+29. Inspect AI — Parallelism (`max_connections` default 10) — https://ukgovernmentbeis.github.io/inspect_ai/parallelism.html
+30. Inspect AI — Handling errors (`fail_on_error`, `eval-retry`) — https://inspect.aisi.org.uk/handling-errors.html
+31. Promptfoo — Caching (composite key, 14-day TTL) — https://www.promptfoo.dev/docs/configuration/caching
+32. aiosqlite — asyncio bridge to sqlite3 (one thread per connection) — https://aiosqlite.readthedocs.io
+33. SQLite — STRICT Tables (3.37.0) — https://sqlite.org/stricttables.html
+34. OpenTelemetry Python — trace API, `NoOpTracer` — https://opentelemetry-python.readthedocs.io/en/stable/_modules/opentelemetry/trace.html
+35. OpenAI — Rate limits (RPM, TPM); per-tier figures — https://developers.openai.com/api/docs/guides/rate-limits ; https://www.respan.ai/articles/openai-api-rate-limits

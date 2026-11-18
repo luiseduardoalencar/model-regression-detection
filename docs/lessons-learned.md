@@ -203,6 +203,46 @@ numbers) · why · what we decided (link to `planning.md` §12) · takeaway.
   silently. When code implements a rule, read the decision, not only the
   guide.
 
+## 2026-11-17 · Step 5 · A fake kinder than the real adapter
+
+- **Expected.** Cache tests with a fake client covering every status would
+  prove that only `completed` calls are stored.
+- **What happened.** Before delivering the code, the status check was
+  removed on purpose to see a test fail. All 190 tests stayed green. The
+  fake returned no text for `invalid_output` and `incomplete`, while the
+  real `OpenAIClient` keeps the broken text the model wrote; and the cache
+  re-validates the text on read, which hid the rest.
+- **Why.** The fake was built from the list of statuses, not from what the
+  adapter actually returns for each one; and with two layers of defence,
+  an end-to-end test cannot see either layer alone.
+- **Decided.** The fake returns broken text for those two statuses, like
+  the adapter, and the test reads the cache table directly. Both deliberate
+  breaks (no concurrency limit; storing non-completed calls) now fail
+  tests.
+- **Takeaway.** A fake must reproduce the real adapter's outputs, not a
+  tidy version of them; and a test must be seen failing against the break
+  it claims to catch: the step 3 rule for thresholds, applied to tests.
+
+## 2026-11-17 · Step 5 · Pasted code, checked by hash again
+
+- **Expected.** With the step 4 lesson known, the 16 files pasted from the
+  chat would match the tested copy.
+- **What happened.** Two pasted files lost their final newline again, and
+  one test file was pasted twice under two names
+  (`test_client_cache.py` and `test_caching_client.py`), the first copy
+  from an older version of the file. The import error and the sha256
+  comparison caught both before the commit.
+- **Why.** The editor does not add a final newline on save, and the step
+  delivered one file in two versions (the SQLite version check was removed
+  after the first delivery).
+- **Decided.** The editor inserts a final newline on save; a file that
+  changes after delivery is sent again in full with a note naming the
+  version to use; the expected test count is given with the commands, so
+  a duplicate shows up as a wrong total.
+- **Takeaway.** Copying by hand is the chosen workflow (it keeps the code
+  read line by line), so the byte check stays a fixed step before every
+  commit.
+
 ## See also
 
 - Decisions with dates and reasons: [`planning.md` §12](planning.md#12-decisions)
